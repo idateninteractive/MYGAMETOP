@@ -46,6 +46,9 @@
             <div class="game_card" onclick="showProfile('aslh')"><div class="game_img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/951530/capsule_616x353.jpg?t=1687441319');"></div>Alien Shooter – Last Hope</div>
             <div class="game_card" onclick="showProfile('igi')"><div class="game_img" style="background-image: url('https://staticdelivery.nexusmods.com/mods/5349/images/5/5-1756602565-549867849.png');"></div>Project IGI: Neonix Remastered</div>
             <div class="game_card" onclick="showProfile('igi2')"><div class="game_img" style="background-image: url('https://staticdelivery.nexusmods.com/mods/5664/images/8/8-1726626244-2078707165.png');"></div>I.G.I 2 Neonix Patch</div>
+            <div class="game_card" onclick="showProfile('codwaw')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5xv_1WGz3PbaLKb5s7HcdNSZOKebc8wodaUMR259yoA&s=10');"></div>Call of Duty: World At War</div>
+            <!-- SPECNAZ Store Card Image applied here -->
+            <div class="game_card" onclick="showProfile('specnaz')"><div class="game_img" style="background-image: url('https://images.launchbox-app.com/35e3c64e-00cf-48ad-aaa4-0419e961bd62.jpg');"></div>SPECNAZ Project Wolf</div>
         </div>
     </div>
 
@@ -74,13 +77,25 @@
             'as2r': { title: 'Alien Shooter 2: Reloaded', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVxaxvDT3IN0n1Wi0s0fgnr1MDpsqdHQ2v6KezP8h9eC4sa_mb2OGu1-6R&s=10', video: 'https://www.youtube.com/embed/x9o284YDetQ', dl: 'https://megaup.net/d1a512ef48369657acaea7ab17b981bd/AlienShoot2ReloadedGOG.rar' },
             'aslh': { title: 'Alien Shooter – Last Hope', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCZZnY9mjgser5R6WcFyBve0i7_JeRqFMIBvS1DotZtk7NrS3bTtUhEz4&s=10', video: 'https://www.youtube.com/embed/rbexTPNjWlY', dl: 'https://pixeldrain.com/u/di996nxv' },
             'igi': { title: 'Project IGI: Neonix Remastered', img: 'https://cdn.phototourl.com/free/2026-07-16-91347105-2bb4-4628-a285-ab75cb20e9fc.png', video: 'https://www.youtube.com/embed/tq5N5CmAY0w', dl: 'https://files.nexus-cdn.com/5349/5/IGI%201%20Neonix%20Remastered%201.4-5-1-4-1757006135.zip?md5=2PlnvN9RAf0lIt6nUG66lA&expires=1784202951&user_id=257889931' },
-            'igi2': { title: 'I.G.I 2 Neonix Patch', img: 'https://staticdelivery.nexusmods.com/mods/5664/images/8/8-1726689161-1674143600.png', video: 'https://www.youtube.com/embed/hUqyL1vWMuY', dl: 'https://files.nexus-cdn.com/5664/8/IGI2NeonixPatch%201.3-8-1-3-1738873666.zip?md5=O6rs0IfUuqhUihE_hKd6qg&expires=1784203382&user_id=257889931' }
+            'igi2': { title: 'I.G.I 2 Neonix Patch', img: 'https://staticdelivery.nexusmods.com/mods/5664/images/8/8-1726689161-1674143600.png', video: 'https://www.youtube.com/embed/hUqyL1vWMuY', dl: 'https://files.nexus-cdn.com/5664/8/IGI2NeonixPatch%201.3-8-1-3-1738873666.zip?md5=O6rs0IfUuqhUihE_hKd6qg&expires=1784203382&user_id=257889931' },
+            'codwaw': { title: 'Call of Duty: World At War', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5xv_1WGz3PbaLKb5s7HcdNSZOKebc8wodaUMR259yoA&s=10', video: 'https://www.youtube.com/embed/AbBoxahWa6g', dl: 'https://pixeldrain.com/u/W1FSW38W' },
+            
+            // SPECNAZ Profile Details mapped here
+            'specnaz': { 
+                title: 'SPECNAZ Project Wolf', 
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWubElW5aTiTcYOeBOB7CLNJUtgdKhRkCq6cdtBanjyQ&s=10', 
+                video: 'https://www.youtube.com/embed/W7uS_0WRPeQ', 
+                dl: 'https://pixeldrain.com/u/7tHMytvk' 
+            }
         };
 
         function showProfile(id) {
             const profile = document.getElementById('profile_section');
             const g = games[id];
-            if (!g) return;
+            if (!g) {
+                console.error("Game ID not found:", id);
+                return;
+            }
             
             document.getElementById('p_title').innerText = g.title;
             document.getElementById('p_img').style.backgroundImage = 'url("' + g.img + '")';
