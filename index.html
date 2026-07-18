@@ -8,14 +8,15 @@
         .header_wrapper { background-color: #171a21; padding: 15px 0; border-bottom: 2px solid #66c0f4; }
         .content { max-width: 940px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
         .logo { font-size: 28px; font-weight: bold; color: #ffffff; }
-        .search_bar { width: 300px; padding: 8px; background: #101822; border: 1px solid #334455; color: #fff; }
+        .search_bar { width: 300px; padding: 8px; background: #101822; border: 1px solid #334455; color: #fff; outline: none; }
+        .search_bar:focus { border-color: #66c0f4; }
         .discord_link { color: #7289da; text-decoration: none; font-weight: bold; }
 
         .game_container { max-width: 940px; margin: 30px auto; }
         .game_grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .game_card { background: #16202d; padding: 10px; border: 1px solid #000; cursor: pointer; transition: 0.2s; text-align: center; }
         .game_card:hover { transform: scale(1.03); background: #1a293a; }
-        .game_img { width: 100%; height: 100px; background-size: cover; background-position: center; margin-bottom: 10px; }
+        .game_img { width: 100%; height: 100px; background-size: cover; background-position: center; margin-bottom: 10px; pointer-events: none; }
 
         #profile_section { max-width: 940px; margin: 30px auto; background: #101822; padding: 25px; display: none; border: 1px solid #334455; }
         .profile_layout { display: flex; gap: 30px; margin-bottom: 30px; }
@@ -32,13 +33,14 @@
     <div class="header_wrapper">
         <div class="content">
             <div class="logo">Sigma Team</div>
-            <input type="text" class="search_bar" placeholder="Search games...">
+            <!-- Added id="search_input" to target it easily -->
+            <input type="text" id="search_input" class="search_bar" placeholder="Search games...">
             <a href="#" class="discord_link">DISCORD</a>
         </div>
     </div>
 
     <div class="game_container">
-        <div class="game_grid">
+        <div class="game_grid" id="game_grid">
             <div class="game_card" onclick="showProfile('asv')"><div class="game_img" style="background-image: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/6290/header.jpg?t=1740580528');"></div>Alien Shooter: Vengeance</div>
             <div class="game_card" onclick="showProfile('zs2')"><div class="game_img" style="background-image: url('https://gogunlocked.com/wp-content/uploads/2021/03/Zombie-Shooter-2-Free-Download.jpg');"></div>Zombie Shooter 2</div>
             <div class="game_card" onclick="showProfile('as2l')"><div class="game_img" style="background-image: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1007400/header.jpg?t=1700734144');"></div>Alien Shooter 2: The Legend</div>
@@ -56,12 +58,15 @@
             <div class="game_card" onclick="showProfile('dw8xl')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuk4odKEu8g0EwOLyh7aAmZf9GKLpGLEHphtptTgFb4QhmSXZZYYeJnxG9&s=10');"></div>Dynasty Warriors 8: Xtreme Legends</div>
             <div class="game_card" onclick="showProfile('gow1')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBxQRYfj0agm_k6jl8EPs9TGoZynaafNZuzvmCGr2yrQ&s=10');"></div>GOD OF WAR 1</div>
             <div class="game_card" onclick="showProfile('asrev')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREkKvXZiA_d0IwrzH7-m55bbSHrqcZ7GXQYSigOpNPpQ&s=10');"></div>Alien Shooter: Revisited</div>
-            
-            <!-- Added Alien Shooter 2 - New Era -->
             <div class="game_card" onclick="showProfile('as2ne')"><div class="game_img" style="background-image: url('https://gogunlocked.com/wp-content/uploads/2026/06/Alien-Shooter-2-New-Era-Free-Download-1-639x361.jpg');"></div>Alien Shooter 2 - New Era</div>
-            
-            <!-- Added Alien Shooter -->
             <div class="game_card" onclick="showProfile('as')"><div class="game_img" style="background-image: url('https://gogunlocked.com/wp-content/uploads/2026/06/Alien-Shooter-Free-Download-1-639x361.jpg');"></div>Alien Shooter</div>
+            <div class="game_card" onclick="showProfile('a_iso')"><div class="game_img" style="background-image: url('https://cdn-ext.fanatical.com/production/product/1280x720/fca6f42b-3fd3-481d-a4d7-a9f7345b509f.jpeg');"></div>Alien Isolation Collection</div>
+            <div class="game_card" onclick="showProfile('hl2')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0_2ayluJq6puf8DGYoLLDYfG7fa8-r7VxRMVnwjTWMQ&s');"></div>Half-Life 2</div>
+            <div class="game_card" onclick="showProfile('quake_ee')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNTiP6IhQXZL2n_CHAqa4LDuEM-CelP0B14ZD7Usm40g&s=10');"></div>Quake Enhanced Edition</div>
+            <div class="game_card" onclick="showProfile('blacklight')"><div class="game_img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/209870/header.jpg?t=1552433159');"></div>Blacklight Retribution</div>
+            <div class="game_card" onclick="showProfile('prodeus')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWQ32O1tttI6nASnowxJINTWhY-qfbC3YVlrnaXnf5BJaQioVLUQsqDOlt&s=10');"></div>Prodeus</div>
+            <div class="game_card" onclick="showProfile('opflash')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrrgoJlxAHgHfn49hAn-Su-zqjcg9u1wtMvfaA92p73A&s=10');"></div>Operation Flashpoint GOTY</div>
+            <div class="game_card" onclick="showProfile('metro_redux')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxLyaBb5fbfTQ3-mJl1U8UtbVsgh-g8t---UmGpoFukA&s=10');"></div>Metro Redux Bundle</div>
         </div>
     </div>
 
@@ -90,32 +95,30 @@
             'as2r': { title: 'Alien Shooter 2: Reloaded', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVxaxvDT3IN0n1Wi0s0fgnr1MDpsqdHQ2v6KezP8h9eC4sa_mb2OGu1-6R&s=10', video: 'https://www.youtube.com/embed/x9o284YDetQ', dl: 'https://megaup.net/d1a512ef48369657acaea7ab17b981bd/AlienShoot2ReloadedGOG.rar' },
             'aslh': { title: 'Alien Shooter – Last Hope', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCZZnY9mjgser5R6WcFyBve0i7_JeRqFMIBvS1DotZtk7NrS3bTtUhEz4&s=10', video: 'https://www.youtube.com/embed/rbexTPNjWlY', dl: 'https://pixeldrain.com/u/di996nxv' },
             'igi': { title: 'Project IGI: Neonix Remastered', img: 'https://cdn.phototourl.com/free/2026-07-16-91347105-2bb4-4628-a285-ab75cb20e9fc.png', video: 'https://www.youtube.com/embed/tq5N5CmAY0w', dl: 'https://files.nexus-cdn.com/5349/5/IGI%201%20Neonix%20Remastered%201.4-5-1-4-1757006135.zip?md5=2PlnvN9RAf0lIt6nUG66lA&expires=1784202951&user_id=257889931' },
-            'igi2': { title: 'I.G.I 2 Neonix Patch', img: 'https://staticdelivery.nexusmods.com/mods/5664/images/8/8-1726689161-1674143600.png', video: 'https://www.youtube.com/embed/hUqyL1vWMuY', dl: 'https://files.nexus-cdn.com/5664/8/IGI2NeonixPatch%201.3-8-1-3-1738873666.zip?md5=O6rs0IfUuqhUihE_hKd6qg&expires=1784203382&user_id=257889931' },
+            'igi2': { title: 'I.G.I 2 Neonix Patch', img: 'https://staticdelivery.nexusmods.com/mods/5664/images/8/8-1726626244-2078707165.png', video: 'https://www.youtube.com/embed/hUqyL1vWMuY', dl: 'https://files.nexus-cdn.com/5664/8/IGI2NeonixPatch%201.3-8-1-3-1738873666.zip?md5=O6rs0IfUuqhUihE_hKd6qg&expires=1784203382&user_id=257889931' },
             'codwaw': { title: 'Call of Duty: World At War', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5xv_1WGz3PbaLKb5s7HcdNSZOKebc8wodaUMR259yoA&s=10', video: 'https://www.youtube.com/embed/AbBoxahWa6g', dl: 'https://pixeldrain.com/u/W1FSW38W' },
             'specnaz': { title: 'SPECNAZ Project Wolf', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWubElW5aTiTcYOeBOB7CLNJUtgdKhRkCq6cdtBanjyQ&s=10', video: 'https://www.youtube.com/embed/W7uS_0WRPeQ', dl: 'https://pixeldrain.com/u/7tHMytvk' },
             'ewv': { title: 'Elite Warriors Vietnam', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwl2Ury485T2c-6erBpCXoARHzuy_bjh9MFDmyNmSALw&s=10', video: 'https://www.youtube.com/embed/YVPCzs3ntBg', dl: 'https://pixeldrain.com/u/kjAAPmVx' },
             'dfx': { title: 'Delta Force Xtreme', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_O67XuiTpdrz3UJI7RmdvIntaOS65c-0OgXrqnWA_jxyeOxfQtJORpOo&s=10', video: 'https://www.youtube.com/embed/WhLH77RrCYc', dl: 'https://pixeldrain.com/u/ciz3xqvp' },
             'ccftf': { title: 'Close Combat First To Fight', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6OQ0OualLbpknrDnvNxNTDAwXJP46V7YWmWpi9jt1dGaiPeJJBnxIGCI&s=10', video: 'https://www.youtube.com/embed/-pFWZWLEej4', dl: 'https://pixeldrain.com/u/Yqd92dzx' },
             'insurgency': { title: 'Insurgency Sandstorm', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQx42hAW1xOm3J364nH7vldr08VndBbP9pVdGpr1z9Mw&s=10', video: 'https://www.youtube.com/embed/J5KDp5h72Wo', dl: 'https://1fichier.com/?z2tj2g3saojvvm9erdxd' },
-            'losv': { title: 'Line of Sight Vietnam', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6pf6z1HWEFlHS-4sXSX9ox4NRDblchJSH4Jx3WvOWiA&s', video: 'https://www.youtube.com/embed/4Rfmyc4JEJw', dl: 'https://www.mediafire.com/file/801o3kyrgu4ko2k/lineofsightvietnam.zip/file' },
+            'losv': { title: 'Line of Sight Vietnam', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9R6pf6z1HWEFlHS-4sXSX9ox4NRDblchJSH4Jx3WvOWiA&s', video: 'https://www.youtube.com/embed/4Rfmyc4JEJw', dl: 'https://www.mediafire.com/file/801o3kyrgu4ko2k/lineofsightvietnam.zip/file' },
             'dw8xl': { title: 'Dynasty Warriors 8: Xtreme Legends', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYqOEW1uDT1QFMdE20cwj5IzMQH15AePf_4GvC9EUPOQ&s=10', video: 'https://www.youtube.com/embed/59WUommXTus', dl: 'https://megaup.net/folder/4563fcb76b0c63a015df91b8e8594524/Dynasty_Warriors_8' },
             'gow1': { title: 'GOD OF WAR 1', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQwtSCk4RtUFHrP9gdRu5ER5ZUOwqrVOhwnyvOEZ3bvA&s=10', video: 'https://www.youtube.com/embed/Lbj5C-Sw2_A', dl: 'https://pixeldrain.com/u/B8iAv4aq' },
             'asrev': { title: 'Alien Shooter: Revisited', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Nq2OiyR3gu9peBUPaQJFu50_Ek_4kLhR6djgnL2iqg&s=10', video: 'https://www.youtube.com/embed/IMZE9O9b_2c', dl: 'https://download.informer.com/win-1191510807-6a5652f8-654d816e-2e2c9f2e59fe7de817-a8ce1dc7a8b1fabeb-5012947902-1124846395/asrevdemo.exe' },
-            
-            // Added Alien Shooter 2 - New Era
-            'as2ne': { 
-                title: 'Alien Shooter 2 - New Era', 
-                img: 'https://images.gog.com/4ee50c12b9aabba54c56a71679974f52162f557e2d0fab1c881e00d34dbd8422_glx_vertical_cover.webp?namespace=gamesdb', 
-                video: 'https://www.youtube.com/embed/bo1z1ZDxNNA', 
-                dl: 'https://download192.uploadhaven.com/1/application/zip/FaHTaGM3xzJr0DbaSHCDjwB4jWhZ9vzKUd2ZICeF.zip?key=3dovYZeBGxbTQ02DUkg0IA&expire=1784475328&filename=Alien.Shooter.2.NE.v1.0.1.zip' 
-            },
-
-            // Added Alien Shooter
-            'as': { 
-                title: 'Alien Shooter', 
-                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_DLL8uwcnCJyvkYE4S8IM38hGBBKzRukTurDHomU2wA&s=10', 
-                video: 'https://www.youtube.com/embed/hL7Ci3MX82s', 
-                dl: 'https://download191.uploadhaven.com/1/application/zip/87wrm7DQFMgT01hvAfsBiq2dTWBg7N9NNPcoHmnL.zip?key=1e9TmopCbBMJfsuwMSHIJg&expire=1784476103&filename=alien.shooter.expansions.zip' 
+            'as2ne': { title: 'Alien Shooter 2 - New Era', img: 'https://images.gog.com/4ee50c12b9aabba54c56a71679974f52162f557e2d0fab1c881e00d34dbd8422_glx_vertical_cover.webp?namespace=gamesdb', video: 'https://www.youtube.com/embed/bo1z1ZDxNNA', dl: 'https://download192.uploadhaven.com/1/application/zip/FaHTaGM3xzJr0DbaSHCDjwB4jWhZ9vzKUd2ZICeF.zip?key=3dovYZeBGxbTQ02DUkg0IA&expire=1784475328&filename=Alien.Shooter.2.NE.v1.0.1.zip' },
+            'as': { title: 'Alien Shooter', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_DLL8uwcnCJyvkYE4S8IM38hGBBKzRukTurDHomU2wA&s=10', video: 'https://www.youtube.com/embed/hL7Ci3MX82s', dl: 'https://download191.uploadhaven.com/1/application/zip/87wrm7DQFMgT01hvAfsBiq2dTWBg7N9NNPcoHmnL.zip?key=1e9TmopCbBMJfsuwMSHIJg&expire=1784476103&filename=alien.shooter.expansions.zip' },
+            'a_iso': { title: 'Alien Isolation Collection', img: 'https://upload.wikimedia.org/wikipedia/en/6/6e/Alien_Isolation.jpg', video: 'https://www.youtube.com/embed/1pvaw3tqgaw', dl: 'https://pixeldrain.com/u/VQjTpbDh' },
+            'hl2': { title: 'Half-Life 2', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9QrQWTkvhwqtabvBJ-VsyQHOOlGJiHMaNjmhdf0b1fRUhRnWcb5nqADNbpI&s=10', video: 'https://www.youtube.com/embed/laGws1MYMq0', dl: 'https://pixeldrain.com/u/AykDHogE' },
+            'quake_ee': { title: 'Quake Enhanced Edition', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOGOd8_Yi6NNKCdZwfxtlj1gjBGR8qApgs89N8OdUwIznxK40cetUEPuU&s=10', video: 'https://www.youtube.com/embed/vi-bdUd9J3E', dl: 'https://pixeldrain.com/u/VMdXEXBD' },
+            'blacklight': { title: 'Blacklight Retribution', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQglG59vTFdpjqMn4AHZAfkAP8hRgnVcJkgcrmNaY-aRA&s=10', video: 'https://www.youtube.com/embed/vXVbKds7dSQ', dl: 'https://pixeldrain.com/u/xg3fXRwG' },
+            'prodeus': { title: 'Prodeus', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZNcneG9bLBJk5eYQxyQDdocI8p8IUbk906Y0904lMKw&s=10', video: 'https://www.youtube.com/embed/AUN7t2RyMSs', dl: 'https://uptobox.com/jhvgpet8gis5' },
+            'opflash': { title: 'Operation Flashpoint GOTY', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs7vjMjeN0dsr0h8r8jYNDrnjhX7ACvR5exY6WkyYWhw&s', video: 'https://www.youtube.com/embed/LE0lIpifstA', dl: 'https://pixeldrain.com/u/v3Te5p81' },
+            'metro_redux': { 
+                title: 'Metro Redux Bundle', 
+                img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHYB2x2KOYPj-xl3M4FB6JmBNoZb4IhBIJlHZYokpZNw&s=10', 
+                video: 'https://www.youtube.com/embed/kPEh8XlSQuI', 
+                dl: 'https://pixeldrain.com/u/iJ1JyPxi' 
             }
         };
 
@@ -138,6 +141,23 @@
             profile.style.display = 'block';
             profile.scrollIntoView({ behavior: 'smooth' });
         }
+
+        // Live Search Bar Logic
+        document.getElementById('search_input').addEventListener('input', function(e) {
+            const searchQuery = e.target.value.toLowerCase();
+            const gameCards = document.querySelectorAll('.game_card');
+
+            gameCards.forEach(card => {
+                // Card ke andar ka text content check karega
+                const gameTitle = card.textContent.toLowerCase();
+                
+                if (gameTitle.includes(searchQuery)) {
+                    card.style.display = ''; // Visible rakhega (Grid layout maintain karega)
+                } else {
+                    card.style.display = 'none'; // Hide kar dega
+                }
+            });
+        });
     </script>
 </body>
 </html>
