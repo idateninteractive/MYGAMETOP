@@ -32,7 +32,6 @@
 
     <div class="header_wrapper">
         <div class="content">
-            <!-- Badla hua naam yahan hai -->
             <div class="logo">PC GAME OF CHILDHOOD</div>
             <input type="text" id="search_input" class="search_bar" placeholder="Search games...">
             <a href="#" class="discord_link">DISCORD</a>
@@ -41,6 +40,15 @@
 
     <div class="game_container">
         <div class="game_grid" id="game_grid">
+            <!-- The King of Fighters XIII Steam Edition -->
+            <div class="game_card" onclick="showProfile('kof13')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIKxUHJaFisPrKxPLuutmolS9o1Z1uKddsAAGCgeCkWkOOnt35tVKQpzo&s=10');"></div>The King of Fighters XIII Steam Edition</div>
+            
+            <!-- Mortal Kombat Komplete -->
+            <div class="game_card" onclick="showProfile('mkk')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFGzaU0yzNxUw9NpOojJmShlnZb_4i4nThpjjArHUoQA&s=10');"></div>Mortal Kombat Komplete</div>
+            
+            <div class="game_card" onclick="showProfile('dj')"><div class="game_img" style="background-image: url('https://cdn.myrealgames.com/catalog/cache/catalog/items/40/screenshots/161.jpg');"></div>Diver Jimmy</div>
+            <div class="game_card" onclick="showProfile('cec2d')"><div class="game_img" style="background-image: url('https://cdn.myrealgames.com/catalog/cache/catalog/items/61/screenshots/245.jpg');"></div>Car Eats Car 2 Deluxe</div>
+            <div class="game_card" onclick="showProfile('ah')"><div class="game_img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/98900/capsule_616x353.jpg?t=1731074846');"></div>Alien Hallway</div>
             <div class="game_card" onclick="showProfile('asv')"><div class="game_img" style="background-image: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/6290/header.jpg?t=1740580528');"></div>Alien Shooter: Vengeance</div>
             <div class="game_card" onclick="showProfile('zs2')"><div class="game_img" style="background-image: url('https://gogunlocked.com/wp-content/uploads/2021/03/Zombie-Shooter-2-Free-Download.jpg');"></div>Zombie Shooter 2</div>
             <div class="game_card" onclick="showProfile('as2l')"><div class="game_img" style="background-image: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1007400/header.jpg?t=1700734144');"></div>Alien Shooter 2: The Legend</div>
@@ -89,6 +97,15 @@
 
     <script>
         const games = {
+            // The King of Fighters XIII Steam Edition data
+            'kof13': { title: 'The King of Fighters XIII Steam Edition', img: 'https://upload.wikimedia.org/wikipedia/en/1/13/Kofxiiips3.png', video: 'https://www.youtube.com/embed/FHo-rwNVbBk', dl: 'https://pixeldrain.com/u/q1GGCVs6' },
+            
+            // Mortal Kombat Komplete data
+            'mkk': { title: 'Mortal Kombat Komplete', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDDkGbNBTJlyT1LKLlGoIR1lKfZSiokiQHR0gXEEPCTQ&s=10', video: 'https://www.youtube.com/embed/PloamVW-eX0', dl: 'https://megaup.net/03494621d88dba8d609b413dde7f4a59/Mortal.Kombat.Komplete.Edition-incl..Update.2.rar' },
+            
+            'dj': { title: 'Diver Jimmy', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ08LifM4ABZOXXRrVe12tcQrvCqcjmh9FgreQ-CTVkZm2u65OAB3U3FUHH&s=10', video: 'https://www.youtube.com/embed/iuUq113tltY', dl: 'https://www.myrealgames.com/files/diver-jimmy.exe' },
+            'cec2d': { title: 'Car Eats Car 2 Deluxe', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5eGK7kVoePYhJ4RUSVyZ5puveDFRgcK1HWDxu1ie2qA&s=10', video: 'https://www.youtube.com/embed/_TG-aL9MrPA', dl: 'https://www.myrealgames.com/files/car-eats-car-2-deluxe.exe' },
+            'ah': { title: 'Alien Hallway', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUpcBgpWPNgm7ZTBIpdBmww19qNslBnWroIzCUJG3y_A&s=10', video: 'https://www.youtube.com/embed/ukL6xgCOyV4', dl: 'https://www.myrealgames.com/files/alien-hallway.exe' },
             'asv': { title: 'Alien Shooter: Vengeance', img: 'https://cdn.mobygames.com/covers/4787964-alien-shooter-vengeance-windows-front-cover.jpg', video: 'https://www.youtube.com/embed/ACVLiM7OmaI', dl: 'https://pixeldrain.com/u/tKndRgP9' },
             'zs2': { title: 'Zombie Shooter 2', img: 'https://cdn2.steamgriddb.com/grid/8b335fa0f1f44814d43a9f6560794acd.png', video: 'https://www.youtube.com/embed/YhMCWhnABN8', dl: 'https://pixeldrain.com/u/jAjo27A3' },
             'as2l': { title: 'Alien Shooter 2: The Legend', img: 'https://cdn2.steamgriddb.com/grid/8aafbec485367229542990511bafc0b5.png', video: 'https://www.youtube.com/embed/iiiLRqRVgbA', dl: 'https://megaup.net/d1a512ef48369657acaea7ab17b981bd/AlienShoot2ReloadedGOG.rar' },
