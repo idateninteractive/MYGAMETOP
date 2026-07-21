@@ -29,13 +29,32 @@
         .game_card { background: #16202d; padding: 10px; border: 1px solid #000; cursor: pointer; transition: 0.2s; text-align: center; }
         .game_card:hover { transform: scale(1.03); background: #1a293a; }
         
+        /* Game Image Wrapper & Views Badge */
+        .game_img_wrap {
+            position: relative;
+            width: 100%;
+            margin-bottom: 10px;
+        }
         .game_img { 
             width: 100%; 
             aspect-ratio: 353 / 557; 
             background-size: cover; 
             background-position: center; 
             pointer-events: none; 
-            margin-bottom: 10px;
+        }
+        .game_view_badge {
+            position: absolute;
+            bottom: 6px;
+            right: 6px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #ffffff;
+            padding: 3px 6px;
+            font-size: 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         #profile_section { max-width: 940px; margin: 30px auto; background: #101822; padding: 25px; display: none; border: 1px solid #334455; }
@@ -63,6 +82,33 @@
 
     <div class="game_container">
         <div class="game_grid" id="game_grid">
+            <!-- Newly Added Games -->
+            <div class="game_card" onclick="showProfile('marine_heavy_gunner')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdXKP66xWt2Q-2EMrZwFN1zgpVPs1PHu8vUnRxp2FiUw&s=10');"></div>Marine Heavy Gunner Vietnam</div>
+            <div class="game_card" onclick="showProfile('quake_2_rtx')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwxhRA8y8f4ZfQBMnrfL3_o096HrJXN8QRTZSnIP7kSQ&s');"></div>Quake II RTX Edition</div>
+            <div class="game_card" onclick="showProfile('sof_payback')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zBqHIazvP7IktcuTuW0G6EZN-HR_jqutnSoaIJ3p6A&s=10');"></div>Soldier Of Fortune Payback</div>
+            <div class="game_card" onclick="showProfile('hard_reset_ee')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWcr5ADMscWXHmvpyOJ6VVtFuzCmmzV9pumoWVZAJSQQ&s=10');"></div>Hard Reset Extended Edition</div>
+
+            <!-- Betrayer -->
+            <div class="game_card" onclick="showProfile('betrayer')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSreHUx3zpkwtd5CHC_4m_PjwSFcruBtLN_N9y4Ia_QXg&s=10');"></div>Betrayer</div>
+
+            <!-- The Mark -->
+            <div class="game_card" onclick="showProfile('the_mark')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlaCiE96iC4iNfZD9Bs3T8BEhPZ2VolPbXz_0uNA2tGGbTTLGiy9ROChE&s=10');"></div>The Mark</div>
+
+            <!-- F.E.A.R. 2: Project Origin -->
+            <div class="game_card" onclick="showProfile('fear2')"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/thumb/6/69/FEAR_2_Project_Origin_Game_Cover.jpg/250px-FEAR_2_Project_Origin_Game_Cover.jpg');"></div>F.E.A.R. 2: Project Origin</div>
+
+            <!-- Sniper Ghost Warrior 2 -->
+            <div class="game_card" onclick="showProfile('sgw2')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7VMaBsT60KH9VOoBmT4IW_BP954WpTgqevq9Tj_NaHw&s=10');"></div>Sniper Ghost Warrior 2</div>
+
+            <!-- Sniper Ghost Warrior 3 Gold Edition -->
+            <div class="game_card" onclick="showProfile('sgw3')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7iKwGQmJoC40kW8YTOyhynGvTa5sLZNVZ5wYLwNZNvQ&s=10');"></div>Sniper Ghost Warrior 3 Gold Edition</div>
+
+            <!-- Verdun And Tannenberg -->
+            <div class="game_card" onclick="showProfile('verdun_and_tannenberg')"><div class="game_img" style="background-image: url('https://i0.wp.com/i112.fastpic.ru/big/2020/0726/ef/a4884e8f0946fac086cbda0a3e3ee5ef.jpg');"></div>Verdun And Tannenberg</div>
+
+            <!-- Homefront Ultimate Edition -->
+            <div class="game_card" onclick="showProfile('homefront_ultimate_edition')"><div class="game_img" style="background-image: url('https://images.gog.com/548be5e48194f6122e34a17f8cb86f6943c8de7f3afb1e92d41bbfe633c1acb5_glx_vertical_cover.webp?namespace=gamesdb');"></div>Homefront Ultimate Edition</div>
+
             <!-- Oni PC -->
             <div class="game_card" onclick="showProfile('oni')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTehsbtTAK3rVdzAbOmX9ipfEqsmfX8dPCDY-bhmxHZXw&s=10');"></div>Oni</div>
 
@@ -98,7 +144,10 @@
             <div class="game_card" onclick="showProfile('igi')"><div class="game_img" style="background-image: url('https://staticdelivery.nexusmods.com/mods/5349/images/5/5-1756602565-549867849.png');"></div>Project IGI: Neonix Remastered</div>
             <div class="game_card" onclick="showProfile('igi2')"><div class="game_img" style="background-image: url('https://staticdelivery.nexusmods.com/mods/5664/images/8/8-1726626244-2078707165.png');"></div>I.G.I 2 Neonix Patch</div>
             <div class="game_card" onclick="showProfile('codwaw')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5xv_1WGz3PbaLKb5s7HcdNSZOKebc8wodaUMR259yoA&s=10');"></div>Call of Duty: World At War</div>
-            <div class="game_card" onclick="showProfile('specnaz')"><div class="game_img" style="background-image: url('https://images.launchbox-app.com/35e3c64e-00cf-48ad-aaa4-0419e961bd62.jpg');"></div>SPECNAZ Project Wolf</div>
+            <div class="game_card" onclick="showProfile('specnaz')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOrFZCEJfgiak96g22o-YE_d1vhQGuvAsjZFPbzSOhsg&s=10');"></div>SPECNAZ Project Wolf</div>
+            <div class="game_card" onclick="showProfile('takedown_red_sabre')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAFVim7RO-qVH6AKAuj7WJweRvNZhbnMF7_aDemq3x1w&s=10');"></div>Takedown Red Sabre</div>
+            <div class="game_card" onclick="showProfile('devastation')"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Devastation.jpg/250px-Devastation.jpg');"></div>Devastation</div>
+            <div class="game_card" onclick="showProfile('terminator_3_wotm')"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/7/71/Terminator_3_War_of_the_Machines.jpg');"></div>Terminator 3: War of the Machines</div>
             <div class="game_card" onclick="showProfile('ewv')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwl2Ury485T2c-6erBpCXoARHzuy_bjh9MFDmyNmSALw&s=10');"></div>Elite Warriors Vietnam</div>
             <div class="game_card" onclick="showProfile('dfx')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUIRrP6ASRyXYWQI9blfNMaAKkCDOzf_JqzHCxPH34wg&s=10');"></div>Delta Force Xtreme</div>
             <div class="game_card" onclick="showProfile('ccftf')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYG0mYZbDuKdT9BUu2io1fDarjo2mFv3unobPCbUSCBw&s=10');"></div>Close Combat First To Fight</div>
@@ -129,6 +178,8 @@
             <div class="game_card" onclick="showProfile('sm_wos')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlDLzBA88u-ahKDBYae21R-PFz3fTTgXbsxuk1gmT40A&s=10');"></div>Spider-Man: Web of Shadows</div>
             <div class="game_card" onclick="showProfile('afro_samurai_2')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVYvCBu7Ue9ywzBfD8LAwsDjBmbb16YGCL7hYsxs9i7w&s=10');"></div>Afro Samurai 2: Revenge of Kuma</div>
             <div class="game_card" onclick="showProfile('blood_1997')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl-FW21RwkgLgEkrXDRQUEHOW3yskOoqrugOgHpmRiCA&s=10');"></div>Blood (1997)</div>
+            <div class="game_card" onclick="showProfile('blood_2_the_chosen')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8GVSCitcfN4MdQ1YGW-DiC8MBpv-X_9D7Dea43qkKlgFvxXE_2ECUqRM&s=10');"></div>Blood 2: The Chosen</div>
+            <div class="game_card" onclick="showProfile('riddick_aoda')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUI0snIIZIW04iMZSJ6jz_fHQJRr1XwqpCMir8Ar7An9BnflnZhHcisiXm&s=10');"></div>Riddick Chronicles Assault on Dark Athena</div>
             <div class="game_card" onclick="showProfile('dead_space_3')"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/1/1a/Dead_Space_3_PC_game_cover.jpg');"></div>Dead Space 3</div>
             <div class="game_card" onclick="showProfile('constantine')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThe3up1UTzQuc_T8zzZUlWW9jUWxtLGf4YSbltkWbpag&s=10');"></div>Constantine</div>
             <div class="game_card" onclick="showProfile('pain_train_2')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ70e-Ax41opD6Akd5iJJnUjP0xHh_2UFfN5W5ktziJOg&s=10');"></div>Pain Train 2</div>
@@ -143,11 +194,35 @@
             <!-- God of War 2 -->
             <div class="game_card" onclick="showProfile('gow2')"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BNzBjN2ZkNjEtODgxNS00NWQwLWJmNjAtYmQ5NWRlMDA0ZDhlXkEyXkFqcGc@._V1_.jpg');"></div>God of War 2</div>
 
-            <!-- RadLINE Quarantine -->
-            <div class="game_card" onclick="showProfile('radline')"><div class="game_img" style="background-image: url('https://images.g2a.com/470x276/1x1x0/radline-quarantine-steam-key-global-i10000034385002/59368c8e5bafe394f941ce54');"></div>RadLINE Quarantine</div>
+            <!-- Dustoff Heli Rescue 2 -->
+            <div class="game_card" onclick="showProfile('dhr2')"><div class="game_img" style="background-image: url('https://store-images.s-microsoft.com/image/apps.49482.66705048845324066.2b3207da-1d03-4af4-852f-37365440a705.b9b0cbfa-de8e-4509-b982-08a23577a751');"></div>Dustoff Heli Rescue 2</div>
 
-            <!-- Seeking Evil: The Wendigo -->
-            <div class="game_card" onclick="showProfile('seeking_evil')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlMqMprDpIH2uTwVoMO5EVaofuKZNrWCVFP-ibtRJyWQ&s');"></div>Seeking Evil: The Wendigo</div>
+            <!-- Drifting Lands -->
+            <div class="game_card" onclick="showProfile('drifting_lands')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSCzEE1y_q8HGkFIJwrxKJ8T5Cuj_WlWGm6C9Pb-vTnFL18R_l9ZP0DrE0&s=10');"></div>Drifting Lands</div>
+
+            <!-- Crysis 3 Remastered -->
+            <div class="game_card" onclick="showProfile('crysis3_remastered')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAvyMi4wFqj3lhQdPlNy4LBxF_CsRvuQbwLOQOH1442w&s=10');"></div>Crysis 3 Remastered</div>
+
+            <!-- NecroVision: Lost Company -->
+            <div class="game_card" onclick="showProfile('necrovision_lc')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5jS36DW3LiiKQMybVEPp2T6Jg-RAXQHAp1uJk6mmcuw&s=10');"></div>NecroVision: Lost Company</div>
+
+            <!-- The Hell In Vietnam -->
+            <div class="game_card" onclick="showProfile('the_hell_in_vietnam')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGRIKbQWmF1XcTlSsBWZObpz6aegCnIp4D-vfUBFJewg&s=10');"></div>The Hell In Vietnam</div>
+
+            <!-- Painkiller Black Edition -->
+            <div class="game_card" onclick="showProfile('painkiller_black_edition')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3_Q0Mj29PYuRLHeCnGwsYn1I336n02UrxuorcUZSGjA&s=10');"></div>Painkiller Black Edition</div>
+
+            <!-- E.Y.E: Divine Cybermancy -->
+            <div class="game_card" onclick="showProfile('eye_cybermancy')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9EfoeQg5DAg8jwANmlmar67eFFZgX0Gi1h0Z0GZE--Q&s=10');"></div>E.Y.E: Divine Cybermancy</div>
+
+            <!-- Delta Force: Black Hawk Down Platinum Pack -->
+            <div class="game_card" onclick="showProfile('delta_force_bhd')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJgAzdtCAEegANfOuY2FqEGrp0Gy6t8UkrRCWkgsdY93nI4fK-Gm0pTLdH&s=10');"></div>Delta Force: Black Hawk Down Platinum Pack</div>
+
+            <!-- Rage Complete Edition -->
+            <div class="game_card" onclick="showProfile('rage_complete_edition')"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1Lj-hiPXUFC8mHpDvwG5zctYI_WPH7GlQJF97BZPQhg&s=10');"></div>Rage Complete Edition</div>
+
+            <!-- Red Faction 1 -->
+            <div class="game_card" onclick="showProfile('red_faction_1')"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/2/2d/Red_Faction.jpg');"></div>Red Faction 1</div>
         </div>
     </div>
 
@@ -181,7 +256,115 @@
     </div>
 
     <script>
+        // Individual Game Views Badge Auto-Injector
+        document.addEventListener("DOMContentLoaded", function() {
+            const gameCards = document.querySelectorAll('.game_card');
+            gameCards.forEach(card => {
+                const imgDiv = card.querySelector('.game_img');
+                if (imgDiv) {
+                    const onclickAttr = card.getAttribute('onclick');
+                    let gameId = 'game';
+                    if (onclickAttr) {
+                        const match = onclickAttr.match(/'([^']+)'/);
+                        if (match) gameId = match[1];
+                    }
+
+                    // Wrap image inside a relative container
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'game_img_wrap';
+                    imgDiv.parentNode.insertBefore(wrapper, imgDiv);
+                    wrapper.appendChild(imgDiv);
+
+                    // Create view badge at bottom-right
+                    const badge = document.createElement('div');
+                    badge.className = 'game_view_badge';
+                    
+                    let gameViews = localStorage.getItem('game_views_' + gameId);
+                    if (!gameViews) {
+                        gameViews = Math.floor(Math.random() * (45000 - 1500 + 1)) + 1500;
+                        localStorage.setItem('game_views_' + gameId, gameViews);
+                    }
+                    
+                    badge.innerHTML = `👁️ ${Number(gameViews).toLocaleString()}`;
+                    wrapper.appendChild(badge);
+                }
+            });
+        });
+
         const games = {
+            'marine_heavy_gunner': {
+                title: 'Marine Heavy Gunner Vietnam',
+                video: 'https://www.youtube.com/embed/_PDrMSroRDI',
+                dl: 'https://pixeldrain.com/u/TYaziCwz',
+                dl2: 'https://www.mediafire.com/file/15gsdnkrmwd4byp/Marine.Hevy.Gunner.Vietnam.rar/file'
+            },
+            'quake_2_rtx': {
+                title: 'Quake II RTX Edition',
+                video: 'https://www.youtube.com/embed/_zNXlQWKRnU',
+                dl: 'https://pixeldrain.com/u/PcnCWMmC',
+                dl2: 'https://www.mediafire.com/file/mpmpusmqslme9ou/Quke.II.RTX.Edition.rar/file'
+            },
+            'sof_payback': {
+                title: 'Soldier Of Fortune Payback',
+                video: 'https://www.youtube.com/embed/zSM6_fczaVU',
+                dl: 'https://pixeldrain.com/u/9wPTspFu',
+                dl2: 'https://www.mediafire.com/file/t81arpv5bbxngb0/Soldier.of.Fortune.Payback.v1.1-GG.zip/file',
+                dl3: 'https://mega.nz/file/4XsgTRiT#KTb7xV4E4MwF411u3KgSI-nTNuBJo62S78UiM2g8FwM'
+            },
+            'hard_reset_ee': {
+                title: 'Hard Reset Extended Edition',
+                video: 'https://www.youtube.com/embed/WSE8MxMiygc',
+                dl: 'https://pixeldrain.com/u/Jefj4FoA',
+                dl2: 'https://www.mediafire.com/file/495p8llj59cvw4o/HR.Extended.Edition.rar/file'
+            },
+            'betrayer': {
+                title: 'Betrayer',
+                video: 'https://www.youtube.com/embed/okfPv1gEA_w',
+                dl: 'https://pixeldrain.com/u/bb1eYXMt',
+                dl2: 'https://www.mediafire.com/file/nynfk08holw64nn/Betrayer-GOG.zip/file',
+                dl3: 'https://mega.nz/file/qB5xFQQK#qeTUpOFe9KBv7OEFCaRpYd6j2wZTsBrcXl6B5U7ZmGM'
+            },
+            'the_mark': {
+                title: 'The Mark',
+                video: 'https://www.youtube.com/embed/X1YWW7KK8Mo',
+                dl: 'https://pixeldrain.com/u/pTP7YKB9',
+                dl2: 'https://www.mediafire.com/file/hw1koq71i9f7pcn/TheMark.rar/file',
+                dl3: 'https://mega.nz/file/TMFC1IrL#LHgKQJEzs42LOP-DeV_4pBEUWA-4vfYsOySBTtFu8x0'
+            },
+            'fear2': {
+                title: 'F.E.A.R. 2: Project Origin',
+                video: 'https://www.youtube.com/embed/C7dvhICMoic',
+                dl: 'https://pixeldrain.com/u/iqj21rk6',
+                dl2: 'https://mega.nz/file/nBM2HL6J#Q0lMdqs9ct9ffVoXfij9T8TM0ZJqCEqK4Cj09GPgLb0',
+                dl3: 'https://www.mediafire.com/file/a7slvcwi355hpqj/F2PO.ElAmigos.rar/file'
+            },
+            'sgw2': {
+                title: 'Sniper Ghost Warrior 2',
+                video: 'https://www.youtube.com/embed/jcPGvM1mjVU',
+                dl: 'https://pixeldrain.com/u/oYaVkDou',
+                dl2: 'https://www.mediafire.com/file/h92s3kmbgpvfenw/Sniper.Ghost.Warrior.2.v3.4.4.GOG.rar/file'
+            },
+            'sgw3': {
+                title: 'Sniper Ghost Warrior 3 Gold Edition',
+                video: 'https://www.youtube.com/embed/VuVg-2lhRAM',
+                dl: 'https://1fichier.com/?9ewmj3ck4b755ebdbmmo',
+                dl2: 'https://gofile.io/d/SDVxuf',
+                dl3: 'https://pixeldrain.com/u/mmfeS1KU'
+            },
+            'verdun_and_tannenberg': {
+                title: 'Verdun And Tannenberg',
+                video: 'https://www.youtube.com/embed/e4umnZhgpgY',
+                dl: 'https://pixeldrain.com/u/PprB6oom',
+                dl2: 'https://mega.nz/file/7iYETToa#EU1tEC1WrvS0Uw8Mx6S5pxgydd7gQmmBiYJYaK_iHGc',
+                dl3: 'https://www.mediafire.com/file/bz1o65f3i5fyt2a/VAT2015.rar/file'
+            },
+            'homefront_ultimate_edition': {
+                title: 'Homefront Ultimate Edition',
+                video: 'https://www.youtube.com/embed/em1gUzuNwBk',
+                dl: 'https://pixeldrain.com/u/Xc5TNy6h',
+                dl2: 'https://www.mediafire.com/file/6p0pzmdurubp5yl/H.Ultimate.Edition.rar/file',
+                dl3: 'https://mega.nz/file/jyxxBI6Q#tvXtJOWifm0j2EuOIfl4a7P7FS76V6DLxrbsZ8Aft-s'
+            },
             'oni': { title: 'Oni', video: 'https://www.youtube.com/embed/3uKOMtJZBtU', dl: 'https://megaup.net/36dc3e93b98949bf1b392ad91f502f2f/Oni.PC.rar' },
             'ac4bf': { title: 'Assassin’s Creed IV Black Flag', video: 'https://www.youtube.com/embed/b797EfJ4NOg', dl: 'https://megaup.net/ba45a6ef7b3c0211f9f2a5b133c7f3ff/Assassinss.Creed.4.Black.Flag.v1.07.Inclu.ALL.DLC.rar' },
             'thrc': { title: 'Top Hunter Roddy & Cathy', video: 'https://www.youtube.com/embed/Cw0tYOvQvko', dl: 'https://megaup.net/66132a1afd59dcfc9355697622ad6ed3/TOP.HUNTER.RODDY.and.CATHY-GOG.rar' },
@@ -201,7 +384,31 @@
             'igi': { title: 'Project IGI: Neonix Remastered', video: 'https://www.youtube.com/embed/tq5N5CmAY0w', dl: 'https://files.nexus-cdn.com/5349/5/IGI%201%20Neonix%20Remastered%201.4-5-1-4-1757006135.zip?md5=2PlnvN9RAf0lIt6nUG66lA&expires=1784202951&user_id=257889931' },
             'igi2': { title: 'I.G.I 2 Neonix Patch', video: 'https://www.youtube.com/embed/hUqyL1vWMuY', dl: 'https://files.nexus-cdn.com/5664/8/IGI2NeonixPatch%201.3-8-1-3-1738873666.zip?md5=O6rs0IfUuqhUihE_hKd6qg&expires=1784203382&user_id=257889931' },
             'codwaw': { title: 'Call of Duty: World At War', video: 'https://www.youtube.com/embed/AbBoxahWa6g', dl: 'https://pixeldrain.com/u/W1FSW38W' },
-            'specnaz': { title: 'SPECNAZ Project Wolf', video: 'https://www.youtube.com/embed/W7uS_0WRPeQ', dl: 'https://pixeldrain.com/u/7tHMytvk' },
+            'specnaz': { 
+                title: 'SPECNAZ Project Wolf', 
+                video: 'https://www.youtube.com/embed/W7uS_0WRPeQ', 
+                dl: 'https://pixeldrain.com/u/7tHMytvk',
+                dl2: 'https://www.mediafire.com/file/mb6f4xduexgjg1s/SPECNAZproject.Wolf.rar/file',
+                dl3: 'https://mega.nz/file/D4wiVbbD#96zhCFaWhihB3zw0n75yCnnZ-RyK76BMTh6V23ylsKs'
+            },
+            'takedown_red_sabre': {
+                title: 'Takedown Red Sabre',
+                video: 'https://www.youtube.com/embed/sRSrTJKbRYA',
+                dl: 'https://pixeldrain.com/u/LG8DrmBa',
+                dl2: 'https://mega.nz/file/znwhgbxJ#i-8nYxCV_18bUwB7GDpgJvxF9Kadtnd-aLPcDXRVPkE'
+            },
+            'devastation': {
+                title: 'Devastation',
+                video: 'https://www.youtube.com/embed/jKykdTTtGPI',
+                dl: 'https://pixeldrain.com/u/z6Y32DYp',
+                dl2: 'https://www.mediafire.com/file/4m7d0hg2k4ciufk/Devastation.rar/file'
+            },
+            'terminator_3_wotm': {
+                title: 'Terminator 3: War of the Machines',
+                video: 'https://www.youtube.com/embed/Lh2oXxJS1rw',
+                dl: 'https://pixeldrain.com/u/U8LpYda4',
+                dl2: 'https://www.mediafire.com/file/21bmvzkq00dn50s/Terminator3.War.of.the.Machines.rar/file'
+            },
             'ewv': { title: 'Elite Warriors Vietnam', video: 'https://www.youtube.com/embed/YVPCzs3ntBg', dl: 'https://pixeldrain.com/u/kjAAPmVx' },
             'dfx': { title: 'Delta Force Xtreme', video: 'https://www.youtube.com/embed/WhLH77RrCYc', dl: 'https://pixeldrain.com/u/ciz3xqvp' },
             'ccftf': { title: 'Close Combat First To Fight', video: 'https://www.youtube.com/embed/-pFWZWLEej4', dl: 'https://pixeldrain.com/u/Yqd92dzx' },
@@ -305,6 +512,18 @@
                 dl2: 'https://megaup.net/685e9b57fe86045db3c59d2a3d38dc05/Blood-1.rar',
                 dl3: 'https://akirabox.to/RMKGJwav8m1o/file'
             },
+            'blood_2_the_chosen': {
+                title: 'Blood 2: The Chosen',
+                video: 'https://www.youtube.com/embed/QSv-16hEzVw',
+                dl: 'https://pixeldrain.com/u/tfVvjgEM',
+                dl2: 'https://www.mediafire.com/file/tax5dlkaqctnjau/B2TC.rar/file'
+            },
+            'riddick_aoda': {
+                title: 'Riddick Chronicles Assault on Dark Athena',
+                video: 'https://www.youtube.com/embed/WgxDWM9ygaw',
+                dl: 'https://pixeldrain.com/u/LmqRVXT9',
+                dl2: 'https://www.mediafire.com/file/xahta9hpqbgpslx/TCORAODA.v1.161.rar/file'
+            },
             'dead_space_3': {
                 title: 'Dead Space 3',
                 video: 'https://www.youtube.com/embed/cZ3mad7SOBg',
@@ -352,17 +571,71 @@
                 dl: 'https://akirabox.to/M2BGw6Y9Mzj4/file',
                 dl2: 'https://pixeldrain.com/u/B8iAv4aq'
             },
-            'radline': {
-                title: 'RadLINE Quarantine',
-                video: 'https://www.youtube.com/embed/AvA8SEW_K64',
-                dl: 'https://akirabox.to/Z9dzBxjEgmk1/file',
-                dl2: 'https://pixeldrain.com/u/q3i6yfJY'
+            'dhr2': {
+                title: 'Dustoff Heli Rescue 2',
+                video: 'https://www.youtube.com/embed/NXeI6-OxdoY',
+                dl: 'https://akirabox.to/XkrzooX9dzBO/file',
+                dl2: 'https://pixeldrain.com/u/6oXr9msy',
+                dl3: 'https://www.mediafire.com/file/6td98bh2nyz8cwh/Dustoff.Heli.Rescue.2.rar/file'
             },
-            'seeking_evil': {
-                title: 'Seeking Evil: The Wendigo',
-                video: 'https://www.youtube.com/embed/lCmAe1CJ3e4',
-                dl: 'https://akirabox.to/0rpmvYQPwGRg/file',
-                dl2: 'https://pixeldrain.com/u/twMe8mxH'
+            'drifting_lands': {
+                title: 'Drifting Lands',
+                video: 'https://www.youtube.com/embed/Ce0MNSGdSHM',
+                dl: 'https://akirabox.to/2bJG840b6GOB/file',
+                dl2: 'https://pixeldrain.com/u/qYNYVYaV',
+                dl3: 'https://www.mediafire.com/file/dg6nnypacp00ez3/Drifting.Lands.v1.0.1527.rar/file'
+            },
+            'crysis3_remastered': {
+                title: 'Crysis 3 Remastered',
+                video: 'https://www.youtube.com/embed/lF75-b8n-Qo',
+                dl: 'https://akirabox.to/Xkrzoq2EZmBO/file',
+                dl2: 'https://pixeldrain.com/u/Ra71HSXP'
+            },
+            'necrovision_lc': {
+                title: 'NecroVision: Lost Company',
+                video: 'https://www.youtube.com/embed/gRyW7uQLmPk',
+                dl: 'https://www.mediafire.com/file/j9fy72eyg7v1k2b/NecroVision.Lost.Company.rar/file',
+                dl2: 'https://pixeldrain.com/u/KTYHCRZX'
+            },
+            'the_hell_in_vietnam': {
+                title: 'The Hell In Vietnam',
+                video: 'https://www.youtube.com/embed/Ps133Fo2Epg',
+                dl: 'https://www.mediafire.com/file/i02axezim2kjqsp/TheHell.in.Vietnam.rar/file',
+                dl2: 'https://pixeldrain.com/u/FGJVLT1D',
+                dl3: 'https://fastupload.io/399ccd0faff332a3'
+            },
+            'painkiller_black_edition': {
+                title: 'Painkiller Black Edition',
+                video: 'https://www.youtube.com/embed/xWVBr7ay7-k',
+                dl: 'https://pixeldrain.com/u/oFUYEW7q',
+                dl2: 'https://mega.nz/file/bSBinaoY#bp5arRqxk6jW82GWzmURK96BMaFljryjLENkoEp3zsI',
+                dl3: 'https://www.mediafire.com/file/x1x8lkaj4jevg9e/Painkiller.GOG.rar/file'
+            },
+            'eye_cybermancy': {
+                title: 'E.Y.E: Divine Cybermancy',
+                video: 'https://www.youtube.com/embed/AScCVzENcjs',
+                dl: 'https://pixeldrain.com/u/gX8wX5iv',
+                dl2: 'https://www.mediafire.com/file/2c6tuugwfa8q9d9/E.Y.E.Divine.Cybermancy.Single.Player.Edition-GOG.rar/file',
+                dl3: 'https://mega.nz/file/WdlEGa7I#nw6VMxjFNg0JFAapivELVwumXpG1uLBs-ha36zD5E_A'
+            },
+            'delta_force_bhd': {
+                title: 'Delta Force: Black Hawk Down Platinum Pack',
+                video: 'https://www.youtube.com/embed/8O6XagkOSXg',
+                dl: 'https://pixeldrain.com/u/34x75U3i',
+                dl2: 'https://mega.nz/file/OU9ngDKZ#nVlY6NT1TweqL-yHlxmaURrRwVATYeRtt4FeDv7u28o'
+            },
+            'rage_complete_edition': {
+                title: 'Rage Complete Edition',
+                video: 'https://www.youtube.com/embed/4JQZMkF-V98',
+                dl: 'https://megaup.net/6c54d354486952d42a488c41c8a116fd/R3AGE.part1.rar',
+                dl2: 'https://www.mediafire.com/file/uoofmkqekpbqhvz/R3AGE.part1.rar/file'
+            },
+            'red_faction_1': {
+                title: 'Red Faction 1',
+                video: 'https://www.youtube.com/embed/vnukuaT1_Xs',
+                dl: 'https://pixeldrain.com/u/ZewwGdxh',
+                dl2: 'https://www.mediafire.com/file/1t7vopmxs0upkww/RedFaction-GOG.rar/file',
+                dl3: 'https://mega.nz/file/edFkkSaC#vLjDT2BW13JMqR-bVVpddNHtbb_wMeu7fZtcGnpqhBQ'
             }
         };
 
