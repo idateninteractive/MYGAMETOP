@@ -364,6 +364,57 @@
             }
         });
 
+        function showProfile(gameId, event) {
+            if (event) event.stopPropagation();
+            const game = games[gameId];
+            if (!game) return;
+
+            document.querySelectorAll('.game_card').forEach(c => c.classList.remove('active'));
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+
+            document.getElementById('p_title').textContent = game.title;
+            document.getElementById('p_video').src = game.video;
+
+            const dlLink = document.getElementById('dl_link');
+            const dlLink2 = document.getElementById('dl_link2');
+            const dlLink3 = document.getElementById('dl_link3');
+            const dlLink4 = document.getElementById('dl_link4');
+
+            if (game.dl) {
+                dlLink.href = game.dl;
+                dlLink.style.display = 'inline-block';
+            } else {
+                dlLink.style.display = 'none';
+            }
+
+            if (game.dl2) {
+                dlLink2.href = game.dl2;
+                dlLink2.style.display = 'inline-block';
+            } else {
+                dlLink2.style.display = 'none';
+            }
+
+            if (game.dl3) {
+                dlLink3.href = game.dl3;
+                dlLink3.style.display = 'inline-block';
+            } else {
+                dlLink3.style.display = 'none';
+            }
+
+            if (game.dl4) {
+                dlLink4.href = game.dl4;
+                dlLink4.style.display = 'inline-block';
+            } else {
+                dlLink4.style.display = 'none';
+            }
+
+            const profileSection = document.getElementById('profile_section');
+            profileSection.style.display = 'block';
+            profileSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
         const games = {
             // Newly Added Games Data
             'dying_light_fe': { title: 'Dying Light The Following Enhanced Edition', video: 'https://www.youtube.com/embed/vD1ye7rOgOA', dl: 'https://filecrypt.cc/Container/6F6CE1333F.html', dl2: 'https://filecrypt.cc/Container/1A46A8D81B.html', dl3: 'https://filecrypt.cc/Container/3CB6AC69D9.html' },
@@ -392,7 +443,7 @@
             'ah': { title: 'Alien Hallway', video: 'https://www.youtube.com/embed/ukL6xgCOyV4', dl: 'https://www.myrealgames.com/files/alien-hallway.exe' },
             'asv': { title: 'Alien Shooter: Vengeance', video: 'https://www.youtube.com/embed/ACVLiM7OmaI', dl: 'https://pixeldrain.com/u/tKndRgP9' },
             'zs2': { title: 'Zombie Shooter 2', video: 'https://www.youtube.com/embed/YhMCWhnABN8', dl: 'https://pixeldrain.com/u/jAjo27A3' },
-            'as2l': { title: 'Alien Shooter 2: The Legend', video: 'https://www.youtube.com/embed/iiiLRqRVgbA', dl: 'https://megaup.net/d1a512ef48369657acaea7ab17b981bd/AlienShoot2ReloadedGOG.rar' },
+            'as2l': { title: 'Alien Shooter 2: The Legend', video: 'https://www.youtube.com/embed/iiiLRqRVgbA', dl: 'https://www.filecrypt.cc/Container/65B6DDFC2C.html' },
             'as2r': { title: 'Alien Shooter 2: Reloaded', video: 'https://www.youtube.com/embed/x9o284YDetQ', dl: 'https://megaup.net/d1a512ef48369657acaea7ab17b981bd/AlienShoot2ReloadedGOG.rar' },
             'aslh': { title: 'Alien Shooter – Last Hope', video: 'https://www.youtube.com/embed/rbexTPNjWlY', dl: 'https://pixeldrain.com/u/di996nxv' },
             'igi': { title: 'Project IGI: Neonix Remastered', video: 'https://www.youtube.com/embed/tq5N5CmAY0w', dl: 'https://files.nexus-cdn.com/5349/5/IGI%201%20Neonix%20Remastered%201.4-5-1-4-1757006135.zip?md5=2PlnvN9RAf0lIt6nUG66lA&expires=1784202951&user_id=257889931' },
@@ -406,9 +457,9 @@
             'losv': { title: 'Line of Sight Vietnam', video: 'https://www.youtube.com/embed/4Rfmyc4JEJw', dl: 'https://www.mediafire.com/file/801o3kyrgu4ko2k/lineofsightvietnam.zip/file' },
             'dw8xl': { title: 'Dynasty Warriors 8: Xtreme Legends', video: 'https://www.youtube.com/embed/59WUommXTus', dl: 'https://megaup.net/folder/4563fcb76b0c63a015df91b8e8594524/Dynasty_Warriors_8' },
             'gow1': { title: 'GOD OF WAR 1', video: 'https://www.youtube.com/embed/Lbj5C-Sw2_A', dl: 'https://pixeldrain.com/u/B8iAv4aq' },
-            'asrev': { title: 'Alien Shooter: Revisited', video: 'https://www.youtube.com/embed/IMZE9O9b_2c', dl: 'https://download.informer.com/win-1191510807-6a5652f8-654d816e-2e2c9f2e59fe7de817-a8ce1dc7a8b1fabeb-5012947902-1124846395/asrevdemo.exe' },
-            'as2ne': { title: 'Alien Shooter 2 - New Era', video: 'https://www.youtube.com/embed/bo1z1ZDxNNA', dl: 'https://download192.uploadhaven.com/1/application/zip/FaHTaGM3xzJr0DbaSHCDjwB4jWhZ9vzKUd2ZICeF.zip?key=3dovYZeBGxbTQ02DUkg0IA&expire=1784475328&filename=Alien.Shooter.2.NE.v1.0.1.zip' },
-            'as': { title: 'Alien Shooter', video: 'https://www.youtube.com/embed/hL7Ci3MX82s', dl: 'https://download191.uploadhaven.com/1/application/zip/87wrm7DQFMgT01hvAfsBiq2dTWBg7N9NNPcoHmnL.zip?key=1e9TmopCbBMJfsuwMSHIJg&expire=1784476103&filename=alien.shooter.expansions.zip' },
+            'asrev': { title: 'Alien Shooter: Revisited', video: 'https://www.youtube.com/embed/IMZE9O9b_2c', dl: 'https://gofile.io/d/Jt5uJv', dl2: 'https://vik1ngfile.site/f/oN8sMTPar8' },
+            'as2ne': { title: 'Alien Shooter 2 - New Era', video: 'https://www.youtube.com/embed/bo1z1ZDxNNA', dl: 'https://gofile.io/d/y8ULxo', dl2: 'https://vik1ngfile.site/f/FmQqgevq8w' },
+            'as': { title: 'Alien Shooter', video: 'https://www.youtube.com/embed/hL7Ci3MX82s', dl: 'https://gofile.io/d/Mv1tOQ', dl2: 'https://vik1ngfile.site/f/y5zwdFnQ3O' },
             'a_iso': { title: 'Alien Isolation Collection', video: 'https://www.youtube.com/embed/1pvaw3tqgaw', dl: 'https://pixeldrain.com/u/VQjTpbDh' },
             'hl2': { title: 'Half-Life 2', video: 'https://www.youtube.com/embed/laGws1MYMq0', dl: 'https://pixeldrain.com/u/AykDHogE' },
             'quake_ee': { title: 'Quake Enhanced Edition', video: 'https://www.youtube.com/embed/vi-bdUd9J3E', dl: 'https://pixeldrain.com/u/VMdXEXBD' },
@@ -494,75 +545,22 @@
             'outer_worlds': { title: 'The Outer Worlds', video: 'https://www.youtube.com/embed/5E6F7A8B9C0', dl: 'https://filecrypt.cc/Container/2B3C4D5E6F.html' },
             'mass_builder': { title: 'M.A.S.S Builder', video: 'https://www.youtube.com/embed/7A8B9C0D1E2', dl: 'https://filecrypt.cc/Container/3C4D5E6F7A.html' },
             'hotd2_remake': { title: 'THE HOUSE OF THE DEAD 2 Remake', video: 'https://www.youtube.com/embed/9C0D1E2F3A4', dl: 'https://filecrypt.cc/Container/4D5E6F7A8B.html' },
-            'bloodkill_go': { title: 'BLOODKILL Goreblast Overkill', video: 'https://www.youtube.com/embed/1E2F3A4B5C6', dl: 'https://filecrypt.cc/Container/5E6F7A8B9C.html' },
-            'cod_mw3': { title: 'Call of Duty Modern Warfare III', video: 'https://www.youtube.com/embed/3A4B5C6D7E8', dl: 'https://filecrypt.cc/Container/6F7A8B9C0D.html' },
-            'cod_mw2': { title: 'Call of Duty Modern Warfare II', video: 'https://www.youtube.com/embed/5C6D7E8F9A0', dl: 'https://filecrypt.cc/Container/7A8B9C0D1E.html' },
-            'chaos_on_wheels': { title: 'Chaos on Wheels', video: 'https://www.youtube.com/embed/7E8F9A0B1C2', dl: 'https://filecrypt.cc/Container/8B9C0D1E2F.html' },
-            'ripout': { title: 'RIPOUT', video: 'https://www.youtube.com/embed/9A0B1C2D3E4', dl: 'https://filecrypt.cc/Container/9C0D1E2F3A.html' },
-            'swat_commander': { title: 'SWAT Commander', video: 'https://www.youtube.com/embed/1C2D3E4F5A6', dl: 'https://filecrypt.cc/Container/0D1E2F3A4B.html' },
-            'cod_bo6': { title: 'Call of Duty Black Ops 6', video: 'https://www.youtube.com/embed/3E4F5A6B7C8', dl: 'https://filecrypt.cc/Container/1E2F3A4B5C.html' },
-            'cod_mw_2019': { title: 'Call of Duty Modern Warfare (2019)', video: 'https://www.youtube.com/embed/5A6B7C8D9E0', dl: 'https://filecrypt.cc/Container/2F3A4B5C6D.html' },
-            'killing_floor_3': { title: 'Killing Floor 3', video: 'https://www.youtube.com/embed/7C8D9E0F1A2', dl: 'https://filecrypt.cc/Container/3A4B5C6D7E.html' },
-            'six_days_fallujah': { title: 'Six Days in Fallujah', video: 'https://www.youtube.com/embed/9E0F1A2B3C4', dl: 'https://filecrypt.cc/Container/4B5C6D7E8F.html' },
-            'wh40k_sm_mce': { title: 'Warhammer 40000 Space Marine – Master Crafted Edition', video: 'https://www.youtube.com/embed/1A2B3C4D5E6', dl: 'https://filecrypt.cc/Container/5C6D7E8F9A.html' },
-            'ebola_village': { title: 'EBOLA VILLAGE', video: 'https://www.youtube.com/embed/3C4D5E6F7A8', dl: 'https://filecrypt.cc/Container/6D7E8F9A0B.html' },
-            'sker_ritual_anniv': { title: 'Sker Ritual Anniversary', video: 'https://www.youtube.com/embed/5E6F7A8B9C0', dl: 'https://filecrypt.cc/Container/7E8F9A0B1C.html' },
-            'half_life_2_rtx': { title: 'Half Life 2 RTX', video: 'https://www.youtube.com/embed/7A8B9C0D1E2', dl: 'https://filecrypt.cc/Container/8F9A0B1C2D.html' },
-            'immortals_aveum': { title: 'Immortals of Aveum', video: 'https://www.youtube.com/embed/9C0D1E2F3A4', dl: 'https://filecrypt.cc/Container/9A0B1C2D3E.html' }
+            'bloodkill_go': { title: 'BLOODKILL Goreblast Overkill', video: 'https://www.youtube.com/embed/1E2F3A4B4E5', dl: 'https://filecrypt.cc/Container/4D5E6F7A8B.html' },
+            'cod_mw3': { title: 'Call of Duty Modern Warfare III', video: 'https://www.youtube.com/embed/v_UQec9u05E', dl: 'https://filecrypt.cc/Container/5E6F7A8B9C.html' },
+            'cod_mw2': { title: 'Call of Duty Modern Warfare II', video: 'https://www.youtube.com/embed/oLV_Kp_RK3E', dl: 'https://filecrypt.cc/Container/6F7A8B9C0D.html' },
+            'chaos_on_wheels': { title: 'Chaos on Wheels', video: 'https://www.youtube.com/embed/aWxwB7w5uFs', dl: 'https://filecrypt.cc/Container/7A8B9C0D1E.html' },
+            'ripout': { title: 'RIPOUT', video: 'https://www.youtube.com/embed/cJOY0VE0D0g', dl: 'https://filecrypt.cc/Container/8B9C0D1E2F.html' },
+            'swat_commander': { title: 'SWAT Commander', video: 'https://www.youtube.com/embed/xiSJbOKofoU', dl: 'https://filecrypt.cc/Container/9C0D1E2F3A.html' },
+            'cod_bo6': { title: 'Call of Duty Black Ops 6', video: 'https://www.youtube.com/embed/YVDk58R2Bn4', dl: 'https://filecrypt.cc/Container/0D1E2F3A4B.html' },
+            'cod_mw_2019': { title: 'Call of Duty Modern Warfare (2019)', video: 'https://www.youtube.com/embed/tUaDfQdOoEg', dl: 'https://filecrypt.cc/Container/1E2F3A4B5C.html' },
+            'killing_floor_3': { title: 'Killing Floor 3', video: 'https://www.youtube.com/embed/4UyC9DVOVGU', dl: 'https://filecrypt.cc/Container/2F3A4B5C6D.html' },
+            'six_days_fallujah': { title: 'Six Days in Fallujah', video: 'https://www.youtube.com/embed/g1F0QnSngu4', dl: 'https://filecrypt.cc/Container/3A4B5C6D7E.html' },
+            'wh40k_sm_mce': { title: 'Warhammer 40000 Space Marine – Master Crafted Edition', video: 'https://www.youtube.com/embed/IVvE-E73v2A', dl: 'https://filecrypt.cc/Container/4B5C6D7E8F.html' },
+            'ebola_village': { title: 'EBOLA VILLAGE', video: 'https://www.youtube.com/embed/fHDFXvZQc4g', dl: 'https://filecrypt.cc/Container/5C6D7E8F9A.html' },
+            'sker_ritual_anniv': { title: 'Sker Ritual Anniversary', video: 'https://www.youtube.com/embed/hF0Nfo6hczg', dl: 'https://filecrypt.cc/Container/6D7E8F9A0B.html' },
+            'half_life_2_rtx': { title: 'Half Life 2 RTX', video: 'https://www.youtube.com/embed/Z3Clu6l7Ws4', dl: 'https://filecrypt.cc/Container/7E8F9A0B1C.html' },
+            'immortals_aveum': { title: 'Immortals of Aveum', video: 'https://www.youtube.com/embed/9R9mr5BPo9I', dl: 'https://filecrypt.cc/Container/8F9A0B1C2D.html' }
         };
-
-        function showProfile(gameKey, event) {
-            // Remove active class from all cards
-            document.querySelectorAll('.game_card').forEach(card => card.classList.remove('active'));
-            // Add active class to clicked card
-            if (event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
-            }
-
-            const game = games[gameKey];
-            if (!game) return;
-
-            document.getElementById('p_title').textContent = game.title;
-            document.getElementById('p_video').src = game.video;
-
-            // Handle Download Links
-            const dlLink = document.getElementById('dl_link');
-            const dlLink2 = document.getElementById('dl_link2');
-            const dlLink3 = document.getElementById('dl_link3');
-            const dlLink4 = document.getElementById('dl_link4');
-
-            if (game.dl) {
-                dlLink.href = game.dl;
-                dlLink.style.display = 'inline-block';
-            } else {
-                dlLink.style.display = 'none';
-            }
-
-            if (game.dl2) {
-                dlLink2.href = game.dl2;
-                dlLink2.style.display = 'inline-block';
-            } else {
-                dlLink2.style.display = 'none';
-            }
-
-            if (game.dl3) {
-                dlLink3.href = game.dl3;
-                dlLink3.style.display = 'inline-block';
-            } else {
-                dlLink3.style.display = 'none';
-            }
-
-            if (game.dl4) {
-                dlLink4.href = game.dl4;
-                dlLink4.style.display = 'inline-block';
-            } else {
-                dlLink4.style.display = 'none';
-            }
-
-            const profileSection = document.getElementById('profile_section');
-            profileSection.style.display = 'block';
-            profileSection.scrollIntoView({ behavior: 'smooth' });
-        }
     </script>
 </body>
 </html>
