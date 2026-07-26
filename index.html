@@ -1,566 +1,522 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="google-site-verification" content="B2xRy7vwpQA0ahzbNS29keCqi16WUXf2YrJUC03Q69U" />
-    <title>Sigma Team Games</title>
-    <style>
-        body { 
-            margin: 0; 
-            font-family: Arial, sans-serif; 
-            color: #c6d4df; 
-            background-image: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.88)), url('https://www.chromethemer.com/wallpapers/chromebook-wallpapers/images/960/assassins-creed-rogue-chromebook-wallpaper.jpg'); 
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed; 
-            background-repeat: no-repeat; 
-        }
-        .header_wrapper { background-color: #0d131d; padding: 15px 0; border-bottom: 2px solid #2563eb; }
-        .content { max-width: 940px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
-        .logo { font-size: 24px; font-weight: bold; color: #ffffff; flex: 1; }
-        
-        /* Chukor & Centered Search Bar */
-        .search_bar_wrapper { flex: 1; display: flex; justify-content: center; }
-        .search_bar { width: 300px; padding: 8px 12px; background: #0f172a; border: 1px solid #3b82f6; color: #fff; outline: none; border-radius: 0px; text-align: center; }
-        .search_bar:focus { border-color: #60a5fa; box-shadow: 0 0 10px rgba(59, 130, 246, 0.6); }
-        
-        .nav_right { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 20px; }
-        .discord_link { color: #60a5fa; text-decoration: none; font-weight: bold; }
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Official site of Sigma Team company - Home</title>
+<meta name="description" content="Official site of Sigma Team company. Games development, games publishing, online distribution. Alien Shooter, Zombie Shooter, etc."/>
+<style>
+/* Reset & Base Styles (Sigma Team Design) */
+* { box-sizing: border-box; }
+body {
+    background-color: #1a1a1a;
+    background-image: linear-gradient(to bottom, #262626, #111111);
+    color: #cccccc;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    background-attachment: fixed;
+}
+a {
+    color: #e6b800;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+    color: #ffcc00;
+}
+img {
+    border: none;
+}
 
-        .game_container { max-width: 940px; margin: 30px auto; }
-        .game_grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        
-        /* Game Card Base & Active State */
-        .game_card { 
-            background: #111c2e; 
-            padding: 10px; 
-            border: 2px solid transparent; 
-            cursor: pointer; 
-            transition: all 0.3s ease; 
-            text-align: center; 
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-        .game_card:hover { 
-            transform: translateY(-4px); 
-            background: #1a2b42; 
-            border-color: rgba(59, 130, 246, 0.5);
-        }
-        /* Tap / Active State: Blue Layer Border */
-        .game_card.active {
-            border: 2px solid #3b82f6 !important;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.8), inset 0 0 10px rgba(59, 130, 246, 0.3);
-            transform: scale(1.04);
-            background: #0e1e38;
-        }
-        
-        /* Game Image Wrapper & Views Badge */
-        .game_img_wrap {
-            position: relative;
-            width: 100%;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .game_img { 
-            width: 100%; 
-            aspect-ratio: 353 / 557; 
-            background-size: cover; 
-            background-position: center; 
-            pointer-events: none; 
-        }
-        .game_view_badge {
-            position: absolute;
-            bottom: 6px;
-            right: 6px;
-            background: rgba(0, 0, 0, 0.8);
-            color: #ffffff;
-            padding: 3px 6px;
-            font-size: 10px;
-            border-radius: 3px;
-            font-weight: bold;
-            pointer-events: none;
-            letter-spacing: 0.5px;
-            border: 1px solid rgba(59, 130, 246, 0.4);
-        }
+/* Wrapper */
+.wrapper {
+    width: 980px;
+    margin: 0 auto;
+    background-color: #151515;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    border: 1px solid #333333;
+}
+#inner-wrapper {
+    padding: 10px;
+}
 
-        /* Blue Profile Section */
-        #profile_section { 
-            max-width: 940px; 
-            margin: 25px auto 10px auto; 
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a5f 100%); 
-            padding: 25px; 
-            display: none; 
-            border: 2px solid #3b82f6; 
-            border-radius: 10px;
-            box-shadow: 0 0 25px rgba(59, 130, 246, 0.35);
-        }
-        #p_title {
-            color: #ffffff; 
-            margin-top: 0; 
-            font-size: 26px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 2px solid #3b82f6;
-            padding-bottom: 10px;
-            text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
-        }
-        .profile_layout { display: flex; flex-direction: column; gap: 20px; margin-bottom: 10px; }
+/* Header */
+#header {
+    height: 120px;
+    background: #0d0d0d;
+    position: relative;
+    border-bottom: 2px solid #b30000;
+}
+#emblem {
+    position: relative;
+    height: 100%;
+}
+#logo-area {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+}
+#searchbox {
+    position: absolute;
+    top: 25px;
+    right: 20px;
+}
+#searchbox input[type="text"] {
+    background: #222;
+    border: 1px solid #444;
+    color: #aaa;
+    padding: 4px 8px;
+    width: 160px;
+    font-size: 11px;
+}
 
-        .profile_info { width: 100%; display: flex; flex-direction: column; }
-        .video_container { 
-            width: 100%; 
-            height: 450px; 
-            background: #000; 
-            margin-bottom: 20px; 
-            border: 1px solid #3b82f6;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 0 15px rgba(0,0,0,0.8);
-        }
-        
-        .btn_container { display: flex; justify-content: center; align-items: center; padding-top: 10px; min-height: 80px; gap: 15px; flex-wrap: wrap; }
-        .download_img_btn { cursor: pointer; width: 280px; height: 70px; object-fit: contain; transition: transform 0.2s ease; }
-        .download_img_btn:hover { transform: scale(1.05); }
-    </style>
+/* Menubar */
+#menubar {
+    background: #b30000;
+    height: 35px;
+    margin-bottom: 15px;
+    border-top: 1px solid #ff3333;
+    border-bottom: 2px solid #550000;
+}
+.mainmenu {
+    list-style: none;
+    margin: 0;
+    padding: 0 15px;
+    line-height: 35px;
+}
+.mainmenu li {
+    display: inline-block;
+    margin-right: 20px;
+    position: relative;
+}
+.mainmenu li a {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 0 5px;
+}
+.mainmenu li a:hover {
+    color: #ffcccc;
+    text-shadow: 0 0 5px #ff0000;
+}
+
+/* Main Layout Table */
+.maincol {
+    vertical-align: top;
+    padding-right: 15px;
+}
+.rightcol {
+    width: 260px;
+    vertical-align: top;
+    background: #111111;
+    border-left: 1px solid #282828;
+    padding: 10px;
+}
+
+/* Modules & Boxes */
+.usermodules {
+    background: #1c1c1c;
+    border: 1px solid #333;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+.usercol {
+    width: 50%;
+    vertical-align: top;
+    padding: 5px;
+}
+.moduletable h3 {
+    color: #ff3333;
+    font-size: 14px;
+    border-bottom: 1px dashed #444;
+    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Content Area */
+.pathway {
+    color: #888;
+    font-size: 11px;
+    margin-bottom: 10px;
+    display: block;
+}
+.componentheading {
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-left: 4px solid #b30000;
+    padding-left: 10px;
+}
+.contentpaneopen {
+    width: 100%;
+    margin-bottom: 15px;
+    background: #181818;
+    border: 1px solid #2a2a2a;
+    padding: 10px;
+}
+.contentheading a {
+    font-size: 15px;
+    color: #ff4d4d;
+    font-weight: bold;
+}
+.contentheading a:hover {
+    color: #ff8080;
+}
+.readon {
+    display: inline-block;
+    background: #b30000;
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 8px;
+    border-radius: 2px;
+}
+.readon:hover {
+    background: #e60000;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Game Grid & Cards integrated with Sigma style */
+.game_grid { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 12px; 
+    margin-bottom: 20px; 
+}
+.game_card { 
+    background: #181818; 
+    padding: 8px; 
+    border: 1px solid #333; 
+    cursor: pointer; 
+    transition: all 0.2s ease; 
+    text-align: center; 
+    font-size: 11px;
+    color: #ccc;
+}
+.game_card:hover { 
+    background: #222; 
+    border-color: #b30000;
+    color: #fff;
+}
+.game_card.active {
+    border: 1px solid #ff3333 !important;
+    background: #251010;
+}
+.game_img_wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: 6px;
+}
+.game_img { 
+    width: 100%; 
+    height: 120px; 
+    background-size: cover; 
+    background-position: center; 
+}
+.game_view_badge {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 2px 4px;
+    font-size: 9px;
+    border: 1px solid #444;
+}
+
+/* Profile Section for Video & Downloads */
+#profile_section { 
+    margin-bottom: 20px; 
+    background: #181818; 
+    padding: 15px; 
+    display: none; 
+    border: 1px solid #b30000; 
+}
+#p_title {
+    color: #ff4d4d; 
+    margin-top: 0; 
+    font-size: 16px;
+    text-transform: uppercase;
+    border-bottom: 1px dashed #444;
+    padding-bottom: 8px;
+}
+.video_container { 
+    width: 100%; 
+    height: 300px; 
+    background: #000; 
+    margin-bottom: 15px; 
+    border: 1px solid #333;
+}
+.btn_container { 
+    display: flex; 
+    justify-content: center; 
+    gap: 10px; 
+    flex-wrap: wrap; 
+}
+.download_img_btn { 
+    cursor: pointer; 
+    height: 40px; 
+    object-fit: contain; 
+}
+
+/* Right Column Widgets */
+.rightcol .moduletable {
+    background: #161616;
+    border: 1px solid #2c2c2c;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+.top-games-table {
+    width: 100%;
+    text-align: center;
+}
+.top-games-table td {
+    padding: 8px 0;
+    border-bottom: 1px dotted #333;
+}
+
+/* Footer */
+#footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-size: 11px;
+    border-top: 1px solid #333;
+    margin-top: 20px;
+    background: #0b0b0b;
+}
+</style>
 </head>
 <body>
 
-    <div class="header_wrapper">
-        <div class="content">
-            <div class="logo">PC GAME OF CHILDHOOD</div>
-            <div class="search_bar_wrapper">
-                <input type="text" id="search_input" class="search_bar" placeholder="Search games...">
-            </div>
-            <div class="nav_right">
-                <a href="#" class="discord_link">DISCORD</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile section placed ABOVE game container -->
-    <div id="profile_section">
-        <h1 id="p_title"></h1>
-        <div class="profile_layout">
-            <div class="profile_info">
-                <div class="video_container">
-                    <iframe id="p_video" width="100%" height="100%" src="" frameborder="0" allowfullscreen></iframe>
+<div class="wrapper">
+    <div id="inner-wrapper">
+        
+        <!-- Header -->
+        <div id="header">
+            <div id="emblem">
+                <div id="logo-area">
+                    <a href="#"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='60'><text x='10' y='40' fill='%23ff3333' font-size='28' font-weight='bold' font-family='Arial'>SIGMA TEAM</text></svg>" alt="Sigma Team Home"/></a>
                 </div>
-                <div class="btn_container">
-                    <!-- Download Buttons -->
-                    <a id="dl_link" href="#" target="_blank">
-                        <img src="https://archive.org/download/new-project-2_20260715/New%20Project%282%29.png" class="download_img_btn" id="dl_btn">
-                    </a>
-                    <a id="dl_link2" href="#" target="_blank" style="display: none;">
-                        <img src="https://cdn.phototourl.com/free/2026-07-20-61dce233-5a92-4b9a-8d44-3f79028f57ce.png" class="download_img_btn" id="dl_btn2">
-                    </a>
-                    <a id="dl_link3" href="#" target="_blank" style="display: none;">
-                        <img src="https://archive.org/download/new-project-2_20260715/New%20Project%282%29.png" class="download_img_btn" id="dl_btn3">
-                    </a>
-                    <a id="dl_link4" href="#" target="_blank" style="display: none;">
-                        <img src="https://cdn.phototourl.com/free/2026-07-20-61dce233-5a92-4b9a-8d44-3f79028f57ce.png" class="download_img_btn" id="dl_btn4">
-                    </a>
+                <div id="searchbox">
+                    <form action="#" method="get">
+                        <input type="text" id="search_input" name="searchword" value="search games..." onblur="if(this.value=='') this.value='search games...';" onfocus="if(this.value=='search games...') this.value='';"/>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="game_container">
-        <div class="game_grid" id="game_grid">
-            <!-- NEWLY ADDED 11 GAMES -->
-            <div class="game_card" onclick="showProfile('dying_light_fe', event)"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/a7/Dying_Light_The_Following_cover_art.jpg');"></div>Dying Light The Following Enhanced Edition</div>
-            <div class="game_card" onclick="showProfile('axis_unseen', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1Q2ZZTF0o5YKfwKrrv3ns63dD-cvbMps4hx4mJr9SzsyOsblwBVOWOxI&s=10');"></div>The Axis Unseen</div>
-            <div class="game_card" onclick="showProfile('thing_remastered', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkVZtplMZu_FP1HibfRRMmJOD3Kn2yOxHuWsm13Tp5ig&s=10');"></div>The Thing Remastered</div>
-            <div class="game_card" onclick="showProfile('alan_wake_2_de', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSwO7qmHH6IiSKV9k4D2uWwmRttvz0VJKNuTN8d5MaXm8aTX3Z-6ZCvsc&s=10');"></div>Alan Wake 2 Deluxe Edition</div>
-            <div class="game_card" onclick="showProfile('sgw_contracts_2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-exGdFbU6K3FkMPcEe059pBUMRW6tvMff5bWOsfy4McD-70KQq6Y52rt6&s=10');"></div>Sniper Ghost Warrior Contracts 2 Complete Edition</div>
-            <div class="game_card" onclick="showProfile('hl2_20th_anniv', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM01VjvrvpFvKn7YYs7sOWrguzZyje3MM0-vKL5QVcVw4RTrZQxqmogWT7&s=10');"></div>Half Life 2 20th Anniversary</div>
-            <div class="game_card" onclick="showProfile('metro_awakening', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQId89vAnAynq8wHibzxTG1vGido7R2duojNEpA26_uBL4S1gAbXdgec3A&s=10');"></div>Metro Awakening</div>
-            <div class="game_card" onclick="showProfile('gta_trilogy_de', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3gaoP1vEBcNbzrSlHbyTQCJErgfPdcOtT0dqQHIJXkfT-X6tjEoTwVZtq&s=10');"></div>Grand Theft Auto The Trilogy – The Definitive Edition</div>
-            <div class="game_card" onclick="showProfile('max_payne_3', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWZgYmq9-TILmGNGDhURUuyWpph-r2SKco7q4vz-Iflg&s=10');"></div>Max Payne 3</div>
-            <div class="game_card" onclick="showProfile('tomb_raider_de', event)"><div class="game_img" style="background-image: url('https://store-images.s-microsoft.com/image/apps.35283.68847167288522183.9fdea778-258f-40d6-9f9e-fab92915bc6d.98c2dd25-9180-49e5-bdd3-6bdb1d857889');"></div>Tomb Raider Definitive Edition</div>
-            <div class="game_card" onclick="showProfile('trepang2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmOfi3f6-A0Jr89y0LxuWOL9ZentxpMifiKFMlQbgrlw&s=10');"></div>Trepang2</div>
-
-            <!-- Existing Games Grid -->
-            <div class="game_card" onclick="showProfile('oni', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTehsbtTAK3rVdzAbOmX9ipfEqsmfX8dPCDY-bhmxHZXw&s=10');"></div>Oni</div>
-            <div class="game_card" onclick="showProfile('ac4bf', event)"><div class="game_img" style="background-image: url('https://store-images.s-microsoft.com/image/apps.44102.69748098540497451.a03a4b64-603b-49b8-8644-4924ac7f3076.7c62c3e9-26da-46e8-a9f3-8cb7feb7d584?q=90&w=480&h=270');"></div>Assassin’s Creed IV Black Flag</div>
-            <div class="game_card" onclick="showProfile('thrc', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmjOT4ttYbeUFgY2ZI-HB_M-36KE5ukNaEIPM_nfL3Y9sS1FjyHfkJwCo_&s=10');"></div>Top Hunter Roddy & Cathy</div>
-            <div class="game_card" onclick="showProfile('yso', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTky1F3llZEtn6wXMGSwx7XY8h9_iX95MOv3ETzaLN0Yg&s=10');"></div>Ys Origin</div>
-            <div class="game_card" onclick="showProfile('omd', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm4lwHQDr54wFN5lM2OhCv-xG2NMJOh173HEtXpqDbEg&s=10');"></div>One More Dungeon</div>
-            <div class="game_card" onclick="showProfile('nh', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfbk64cu_JkUKc8Y5H-d6ov1KDqxIy_qNn0ogBL8bl_g&s=10');"></div>Neuro Hunter</div>
-            <div class="game_card" onclick="showProfile('kof13', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIKxUHJaFisPrKxPLuutmolS9o1Z1uKddsAAGCgeCkWkOOnt35tVKQpzo&s=10');"></div>The King of Fighters XIII Steam Edition</div>
-            <div class="game_card" onclick="showProfile('mkk', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFGzaU0yzNxUw9NpOojJmShlnZb_4i4nThpjjArHUoQA&s=10');"></div>Mortal Kombat Komplete</div>
-            <div class="game_card" onclick="showProfile('dj', event)"><div class="game_img" style="background-image: url('https://cdn.myrealgames.com/catalog/cache/catalog/items/40/screenshots/161.jpg');"></div>Diver Jimmy</div>
-            <div class="game_card" onclick="showProfile('cec2d', event)"><div class="game_img" style="background-image: url('https://cdn.myrealgames.com/catalog/cache/catalog/items/61/screenshots/245.jpg');"></div>Car Eats Car 2 Deluxe</div>
-            <div class="game_card" onclick="showProfile('ah', event)"><div class="game_img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/98900/capsule_616x353.jpg?t=1731074846');"></div>Alien Hallway</div>
-            <div class="game_card" onclick="showProfile('asv', event)"><div class="game_img" style="background-image: url('https://cdn.mobygames.com/covers/4787964-alien-shooter-vengeance-windows-front-cover.jpg');"></div>Alien Shooter: Vengeance</div>
-            <div class="game_card" onclick="showProfile('zs2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdcA5kQYZYvafuDrxiiLO3017goVOdFsrwfLYbKJwcjQ&s=10');"></div>Zombie Shooter 2</div>
-            <div class="game_card" onclick="showProfile('as2l', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_ZlEMi8Eq-5K0awhfHOzukyajQi79DnqAfaI4VMDUnoDtK3-2Njet-zmm&s=10');"></div>Alien Shooter 2: The Legend</div>
-            <div class="game_card" onclick="showProfile('as2r', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8IEutEWQDAJNNg4RYeRjRxufpv2L2d5I2QoCiTgjGaPBGsdj_3AhMOOlF&s=10');"></div>Alien Shooter 2: Reloaded</div>
-            <div class="game_card" onclick="showProfile('aslh', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLVOXOhiDVvIeWvOw-gOPZavXSBePaplNFbeb2ApS-Wviopp-emuWmqmY&s=10');"></div>Alien Shooter – Last Hope</div>
-            <div class="game_card" onclick="showProfile('igi', event)"><div class="game_img" style="background-image: url('https://staticdelivery.nexusmods.com/mods/5349/images/5/5-1756602565-549867849.png');"></div>Project IGI: Neonix Remastered</div>
-            <div class="game_card" onclick="showProfile('igi2', event)"><div class="game_img" style="background-image: url('https://staticdelivery.nexusmods.com/mods/5664/images/8/8-1726626244-2078707165.png');"></div>I.G.I 2 Neonix Patch</div>
-            <div class="game_card" onclick="showProfile('codwaw', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5xv_1WGz3PbaLKb5s7HcdNSZOKebc8wodaUMR259yoA&s=10');"></div>Call of Duty: World At War</div>
-            <div class="game_card" onclick="showProfile('specnaz', event)"><div class="game_img" style="background-image: url('https://images.launchbox-app.com/35e3c64e-00cf-48ad-aaa4-0419e961bd62.jpg');"></div>SPECNAZ Project Wolf</div>
-            <div class="game_card" onclick="showProfile('ewv', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwl2Ury485T2c-6erBpCXoARHzuy_bjh9MFDmyNmSALw&s=10');"></div>Elite Warriors Vietnam</div>
-            <div class="game_card" onclick="showProfile('dfx', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUIRrP6ASRyXYWQI9blfNMaAKkCDOzf_JqzHCxPH34wg&s=10');"></div>Delta Force Xtreme</div>
-            <div class="game_card" onclick="showProfile('ccftf', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYG0mYZbDuKdT9BUu2io1fDarjo2mFv3unobPCbUSCBw&s=10');"></div>Close Combat First To Fight</div>
-            <div class="game_card" onclick="showProfile('insurgency', event)"><div class="game_img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/581320/5cea6f39f733394deda9f85e36722d4ca5e3db5f/header.jpg?t=1779984920');"></div>Insurgency Sandstorm</div>
-            <div class="game_card" onclick="showProfile('losv', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzBMlyCbYmoNWurzjY0CTaqsZ7sxes4EdE_QqkyrexYA&s=10');"></div>Line of Sight Vietnam</div>
-            <div class="game_card" onclick="showProfile('dw8xl', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuk4odKEu8g0EwOLyh7aAmZf9GKLpGLEHphtptTgFb4QhmSXZZYYeJnxG9&s=10');"></div>Dynasty Warriors 8: Xtreme Legends</div>
-            <div class="game_card" onclick="showProfile('gow1', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBxQRYfj0agm_k6jl8EPs9TGoZynaafNZuzvmCGr2yrQ&s=10');"></div>GOD OF WAR 1</div>
-            <div class="game_card" onclick="showProfile('asrev', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJxGXu63pNOkA6jYhQVtQDrVLrUDT-uiotsEOL2dgvDaoxbtGnisLoUPk&s=10');"></div>Alien Shooter: Revisited</div>
-            <div class="game_card" onclick="showProfile('as2ne', event)"><div class="game_img" style="background-image: url('https://images.gog.com/4ee50c12b9aabba54c56a71679974f52162f557e2d0fab1c881e00d34dbd8422_glx_vertical_cover.webp?namespace=gamesdb');"></div>Alien Shooter 2 - New Era</div>
-            <div class="game_card" onclick="showProfile('as', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BOWI2NTc1MTAtOTEyNS00YzZiLTk1MDEtYzY5ZWQ1MDg4ZTI5XkEyXkFqcGc@._V1_.jpg');"></div>Alien Shooter</div>
-            <div class="game_card" onclick="showProfile('a_iso', event)"><div class="game_img" style="background-image: url('https://cdn-ext.fanatical.com/production/product/1280x720/fca6f42b-3fd3-481d-a4d7-a9f7345b509f.jpeg');"></div>Alien Isolation Collection</div>
-            <div class="game_card" onclick="showProfile('hl2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0_2ayluJq6puf8DGYoLLDYfG7fa8-r7VxRMVnwjTWMQ&s');"></div>Half-Life 2</div>
-            <div class="game_card" onclick="showProfile('quake_ee', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNTiP6IhQXZL2n_CHAqa4LDuEM-CelP0B14ZD7Usm40g&s=10');"></div>Quake Enhanced Edition</div>
-            <div class="game_card" onclick="showProfile('blacklight', event)"><div class="game_img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/209870/header.jpg?t=1552433159');"></div>Blacklight Retribution</div>
-            <div class="game_card" onclick="showProfile('prodeus', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWQ32O1tttI6nASnowxJINTWhY-qfbC3YVlrnaXnf5BJaQioVLUQsqDOlt&s=10');"></div>Prodeus</div>
-            <div class="game_card" onclick="showProfile('opflash', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrrgoJlxAHgHfn49hAn-Su-zqjcg9u1wtMvfaA92p73A&s=10');"></div>Operation Flashpoint GOTY</div>
-            <div class="game_card" onclick="showProfile('metro_redux', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxLyaBb5fbfTQ3-mJl1U8UtbVsgh-g8t---UmGpoFukA&s=10');"></div>Metro Redux Bundle</div>
-            <div class="game_card" onclick="showProfile('trotf', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO8sqewKm1qMJ2g9kdaWD2vbd1voYhmfsoFEoBKcuf7A&s=10');"></div>Transformers: Revenge of the Fallen</div>
-            <div class="game_card" onclick="showProfile('sh3', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlPpi1sMavEAJjVms7UuGuFFFPpH0OWkZ7EiWAD0IRoPUymP1CQYM3FXs&s=10');"></div>Silent Hill 3</div>
-            <div class="game_card" onclick="showProfile('iearth', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpLQ72pKS5OR_l4R_cl6ApvpywHPyKoUZ6QWH16K7SXA&s=10');"></div>Imagine Earth</div>
-            <div class="game_card" onclick="showProfile('nfs_ug2', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BNDM2NDAwMGEtZTI4NS00OGE3LWI2MjUtOTQzM2Q5ZGIwZjMyXkEyXkFqcGc@._V1_.jpg');"></div>Need for Speed Underground 2</div>
-            <div class="game_card" onclick="showProfile('nfs_mwbe', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmA0zpYDfJsx_S1KBqQGW2xMZV7PP49UX5w6PhV8E-FA&s=10');"></div>Need for Speed Most Wanted Black Edition</div>
-            <div class="game_card" onclick="showProfile('sh5_homecoming', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BNWUzOGYzMWItOTY1OS00MGJlLThhYWMtM2U1Yjk4MjFiMDBmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg');"></div>Silent Hill 5: Homecoming</div>
-            <div class="game_card" onclick="showProfile('sh_sm', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BYzA0MWJhMmEtNjg2MC00NjM1LWFhNzktOTNlNzA2Y2QyZmZkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg');"></div>Silent Hill: Shattered Memories</div>
-            <div class="game_card" onclick="showProfile('pop_t2t', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhRzf_SF_rowcSujLV1ib-8ZEguqaALsP5dw4mSLTn3Q&s=10');"></div>Prince of Persia 3 The Two Thrones</div>
-            <div class="game_card" onclick="showProfile('uaw_ea', event)"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/d/d0/Uawea-cover.jpg');"></div>Universe At War: Earth Assault</div>
-            <div class="game_card" onclick="showProfile('ds_shipwrecked', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BMDMxMjg5MDctM2U3My00YTdkLTg5NDgtYzJmMDE2OGJjM2M4XkEyXkFqcGc@._V1_QL75_UY281_CR155,0,190,281_.jpg');"></div>Don't Starve: Shipwrecked</div>
-            <div class="game_card" onclick="showProfile('sm_wos', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlDLzBA88u-ahKDBYae21R-PFz3fTTgXbsxuk1gmT40A&s=10');"></div>Spider-Man: Web of Shadows</div>
-            <div class="game_card" onclick="showProfile('afro_samurai_2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVYvCBu7Ue9ywzBfD8LAwsDjBmbb16YGCL7hYsxs9i7w&s=10');"></div>Afro Samurai 2: Revenge of Kuma</div>
-            <div class="game_card" onclick="showProfile('blood_1997', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl-FW21RwkgLgEkrXDRQUEHOW3yskOoqrugOgHpmRiCA&s=10');"></div>Blood (1997)</div>
-            <div class="game_card" onclick="showProfile('dead_space_3', event)"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/1/1a/Dead_Space_3_PC_game_cover.jpg');"></div>Dead Space 3</div>
-            <div class="game_card" onclick="showProfile('constantine', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThe3up1UTzQuc_T8zzZUlWW9jUWxtLGf4YSbltkWbpag&s=10');"></div>Constantine</div>
-            <div class="game_card" onclick="showProfile('pain_train_2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ70e-Ax41opD6Akd5iJJnUjP0xHh_2UFfN5W5ktziJOg&s=10');"></div>Pain Train 2</div>
-            <div class="game_card" onclick="showProfile('slain_back_from_hell', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO9bEmUkHY1rDXNUVay8MQOXUhiIYkCtJpOBwlOvhRqLFYWEaL1TUa-h8&s=10');"></div>Slain: Back From Hell</div>
-            <div class="game_card" onclick="showProfile('terraria', event)"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/1/1a/Terraria_Steam_artwork.jpg');"></div>Terraria</div>
-            <div class="game_card" onclick="showProfile('ss_hd_se', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpekvDbbbJrMxs2Ggx7GmWG4FW_9dVOIYA0pWVyoBB60fieqEJ61T4ZM8&s=10');"></div>Serious Sam HD The Second Encounter</div>
-            <div class="game_card" onclick="showProfile('gow2', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BNzBjN2ZkNjEtODgxNS00NWQwLWJmNjAtYmQ5NWRlMDA0ZDhlXkEyXkFqcGc@._V1_.jpg');"></div>God of War 2</div>
-            <div class="game_card" onclick="showProfile('metro_exodus_ee', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkhsQOa20rXGDXuz6u6aFTdheRUy-ii6-pgZot9clJQA&s');"></div>Metro Exodus Enhanced Edition</div>
-            <div class="game_card" onclick="showProfile('observer_sr', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEKjLo10FvYKiXgdMg-fB-0is2IW8sPJYPgaCIH9gukw&s=10');"></div>Observer: System Redux</div>
-            <div class="game_card" onclick="showProfile('biohazard_uc', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BMzhkMTIxZTAtOTQyNC00MzBiLWI0ZTEtZThhMzY1ZDYzOGNjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg');"></div>Biohazard Umbrella Corps</div>
-            <div class="game_card" onclick="showProfile('marvel_ua', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbpHo17Cd1vwpvEUnJLjmbjjCWu34YF8ejO-o5mjHrvQ&s=10');"></div>Marvel Ultimate Alliance</div>
-            <div class="game_card" onclick="showProfile('air_missions', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRuaprKWbu76NFUrenF2xni8cZSEvTrTRhsKtwuQwS7g&s=10');"></div>Air Missions</div>
-            <div class="game_card" onclick="showProfile('pvz_goty', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIPJ35C-0zlKUTA4zWra-xpte24tjkB-JBaDZTXlf7naterojkE7QKMOU&s=10');"></div>Plantas vs Undead GOTY</div>
-            <div class="game_card" onclick="showProfile('blazing_angels', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNuPRFLkzSjXG0QBp89Iqp0tLb9fNTjAwEZ0u2kkDmXw&s=10');"></div>Blazing Angels Squadrons of WWII</div>
-            <div class="game_card" onclick="showProfile('tr_legend', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScWas_sxOMVM7EVp-EH_MyLhhhoPiKI3BjDNFAk1ovNQ&s=10');"></div>Tomb Raider Legend</div>
-            <div class="game_card" onclick="showProfile('doom_tda', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGYVFlR4TSBu0nH4WScjlZzSOKJKyeLLK4VE-1h6V8m2YAuPjVp22Ldhi-&s=10');"></div>DOOM The Dark Ages [RUNE]</div>
-            <div class="game_card" onclick="showProfile('luna_abyss', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpNB_iyfWUUgLw_sUIr2xSHOHhFaxZxds2H0N-4TKZbg&s=10');"></div>Luna Abyss RUNE</div>
-            <div class="game_card" onclick="showProfile('atomic_heart_c', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfhQHu4dnsDcVxN_PSgAqgdnPB-PVnt3YG8PloKzpFIw&s');"></div>Atomic Heart Complete</div>
-            <div class="game_card" onclick="showProfile('abyssus', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQACXiHQGuYf8j97afmWxjxs0PM_ynNCaELGIEs_nS29A&s=10');"></div>Abyssus</div>
-            <div class="game_card" onclick="showProfile('wwz_twd', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrLcz4ig083PuJQYYIYjFdwDaVbvsEr_xRv0-pbVRIGRANukfHr9fOxAk&s=10');"></div>World War Z x The Walking Dead</div>
-            <div class="game_card" onclick="showProfile('high_on_life_2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQv6J6K8GA06M6nHBbI_UAEFqVlMcPe-R-1ai7kG36Zqw&s=10');"></div>High On Life 2</div>
-            <div class="game_card" onclick="showProfile('tormented_souls_2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXHdeA1ooMytmz_LhEh9XLpfNhHRrX_5_dBiLOlQj-Fg&s=10');"></div>Tormented Souls 2</div>
-            <div class="game_card" onclick="showProfile('artificial_extinction_2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr9XsCQt84PmxTEmlQgFmDgJaVQ9F19-ThJCYxTQANIg&s');"></div>Artificial Extinction 2</div>
-            <div class="game_card" onclick="showProfile('humanitz', event)"><div class="game_img" style="background-image: url('https://images.gog.com/c5a0b8f1ccaef5502aa26a1fd9bae88c7e587b62bb3989dea058722c44dbf1d1_glx_vertical_cover.webp?namespace=gamesdb');"></div>HumanitZ</div>
-            <div class="game_card" onclick="showProfile('agent_007_first_light', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBWPv4tjILpAn5j026F8NhSI63hzKyZANSFzU-Cv0U-w&s');"></div>007 First Light</div>
-            <div class="game_card" onclick="showProfile('mw5_chaos_reign', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStNYVzVCC9wjYs58O2A9jbblY1kH2OTvozvLdbZLjxtg&s=10');"></div>MechWarrior 5 Mercenaries Chaos Reign</div>
-            <div class="game_card" onclick="showProfile('gunsmith_sim_hm', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStzUjLfbE_A3O2lIHkrcEFu3Gz8nxgptDiUj9f5zEYEoRqyRrHPyJXNy8&s=10');"></div>Gunsmith Simulator Heavy Metal</div>
-            <div class="game_card" onclick="showProfile('mafia_old_country', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWpsRQDZu_gpS4KH3D7hDbDPxVti6jPQJm8naqHMatiQ&s');"></div>Mafia The Old Country</div>
-            <div class="game_card" onclick="showProfile('metro_last_light', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJrL1XEuCozune27aWr1-txyd4-ZRCq31TDPb9kGL_SQ&s=10');"></div>Metro Last Light</div>
-            <div class="game_card" onclick="showProfile('pragmata', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_AZvOc4JBi2ENZiGoEF19RGeXsN3Lu5yTCasZOe7IKA&s');"></div>PRAGMATA</div>
-            <div class="game_card" onclick="showProfile('re7_gold', event)"><div class="game_img" style="background-image: url('https://store-images.s-microsoft.com/image/apps.41443.67004258984893389.6cc66387-e626-457c-a329-b871f9b8ec8f.3f2b981d-4900-4518-b18e-d3201258caab');"></div>Resident Evil 7 Biohazard Gold Edition</div>
-            <div class="game_card" onclick="showProfile('hellbreak', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBRXnlYZ3gGuaWf_bvP2GGBPCOpryvVSyiepRO8X2MIA&s=10');"></div>HELLBREAK</div>
-            <div class="game_card" onclick="showProfile('industria_2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRx4XTDyqJobUj86yaZT4VVVmUcKlxPzIawVbstU9QG8Q&s=10');"></div>INDUSTRIA 2</div>
-            <div class="game_card" onclick="showProfile('road_to_vostok', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6pkFH6OgixM7z5X0YP8GpfkI_iiN7T9iMwDnbxXBa9Q&s');"></div>Road to Vostok</div>
-            <div class="game_card" onclick="showProfile('doom_eternal', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrra6V1fxM2g0kPCflVEAOQK3LWfO5cqVUE0bnbKx7Ng&s');"></div>DOOM Eternal</div>
-            <div class="game_card" onclick="showProfile('sw_outlaws_ue', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTympSR5bKOgvymTpMM52SlvuF58-foT06UCVbd_MmB5Q&s');"></div>Star Wars Outlaws Ultimate Edition</div>
-            <div class="game_card" onclick="showProfile('borderlands_4_de', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsc5xMbl6LKrN4WlsvPBJBCIYJdjiGe8vc1PUwxuLXvg&s=10');"></div>Borderlands 4 Deluxe Edition</div>
-            <div class="game_card" onclick="showProfile('sniper_elite_resistance', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8HeNCE4XhxSh4ejpxDgbaZ_src_BqzfTN6EddpPLkxg&s=10');"></div>Sniper Elite Resistance Deluxe Edition</div>
-            <div class="game_card" onclick="showProfile('ready_or_not_bp', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR84_t7WfeskWvuVlEmlpleVstUp36tG8LWkYsMSeg6ew&s=10');"></div>Ready or Not Boiling Point</div>
-            <div class="game_card" onclick="showProfile('soulslinger_eod', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZoUU7wM1bDQUAeM3LbRz7ZXup5256YupQOmHgp1ChUA&s=10');"></div>Soulslinger Envoy of Death</div>
-            <div class="game_card" onclick="showProfile('alan_wake_remastered', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRvWeCJTAIKtcXrOn0-TvYWo2B-wynZCJiQR-FQaGeAYT6QPOtBsehwGs&s=10');"></div>Alan Wake Remastered</div>
-            <div class="game_card" onclick="showProfile('alien_rogue_incursion', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxh8ZzEkI3l8R23nBwCvn36DVunlYBghwgaHqaRKeHXQ&s=10');"></div>Alien Rogue Incursion Evolved Edition</div>
-            <div class="game_card" onclick="showProfile('shatterline_randy', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9KtjrnZ9gOijUsbqkVgitjgOTSL1buAaivsr2yz4N5Q&s=10');"></div>Shatterline Randy</div>
-            <div class="game_card" onclick="showProfile('fear_the_timeloop', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTE19fSXf9jHPeUtkgmPUc46uB_h5RqQ-HvTA_-J4Kinw&s=10');"></div>Fear The Timeloop</div>
-            <div class="game_card" onclick="showProfile('rip_reincarnation', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8HumtjCEkyTowNOfrCdVmkBHX6u1D7rDpXjHCo8Zs_g&s=10');"></div>RIP Reincarnation Insurance Program</div>
-            <div class="game_card" onclick="showProfile('moros_protocol', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREY6aR9MSK3v-FnK4JyZ9akUsZYf8i55jVuMUMY0tyWg&s');"></div>Moros Protocol</div>
-            <div class="game_card" onclick="showProfile('starrupture', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6td-J7QYMNFBdXU6Jq-zCOLmAWPIYSMgkaBnx7y8wQQ&s=10');"></div>StarRupture</div>
-            <div class="game_card" onclick="showProfile('the_front', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8iBDwa-xM0jhhDGmsA5pn_smxRlD_PEVhfXSSgr6Plw&s=10');"></div>The Front</div>
-            <div class="game_card" onclick="showProfile('beneath', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxEE3kTg0w4t9cxKOGcihq4oJQyI9vtPiFcUY6WEQ-BB81h0Xz2r7srzw&s=10');"></div>Beneath</div>
-            <div class="game_card" onclick="showProfile('stalker2_hoc_ue', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBIZmsuo9mswMhi388uz_F57GMqmDCphkm3rdQAl9hiQ&s');"></div>STALKER 2 Heart of Chornobyl Ultimate Edition</div>
-            <div class="game_card" onclick="showProfile('stalker_gamma', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTixXwiagPXQIEsZUw4MycHk45xzHUjfSXzVC1-qeC94g&s=10');"></div>S.T.A.L.K.E.R GAMMA</div>
-            <div class="game_card" onclick="showProfile('battlefield_6', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaGM8VPQSjW0WIxXkKPZCCSd9BS0lsGdxT4LnOdV85iQ&s');"></div>Battlefield 6</div>
-            <div class="game_card" onclick="showProfile('zero_hour', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQUfLk_Te9L6peQ6Xs1Y5P64E_WcdN8MFY8AnljRW8vw&s=10');"></div>Zero Hour</div>
-            <div class="game_card" onclick="showProfile('bio_goddess', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWuzhvzlTx--WnKSvjMS_NE0dM6XKK2XDqobStL4q5mw&s=10');"></div>Bio Goddess Doomsday Begins</div>
-            <div class="game_card" onclick="showProfile('mgs_delta_snake_eater', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWObCIJDqz2Hq8vMpYzPishYy0wruPnmuiLPfcWAVHhA&s');"></div>METAL GEAR SOLID DELTA SNAKE EATER</div>
-            <div class="game_card" onclick="showProfile('metal_eden', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSWVd1BUpKkyvSbaGWzTfII21pH_ddkrTIXvQYvstxoA&s=10');"></div>METAL EDEN</div>
-            <div class="game_card" onclick="showProfile('re_hd_remaster', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYATTprOLjkI9dtVQ9PluaVFu1ahvXsjsnvFS0hUSh6A&s=10');"></div>Resident Evil HD REMASTER</div>
-            <div class="game_card" onclick="showProfile('resident_evil_0', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-VWwNrSSvJK0rg9akDGIvcZW23e2B5z0An0-TBYu4kd75hn7OKnH37fA&s=10');"></div>Resident Evil 0</div>
-            <div class="game_card" onclick="showProfile('gears_of_war_reloaded', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy5QVyKKxz_3oHHXC5JsdcYC-yBb0RyqociNJcDXilRA&s=10');"></div>Gears of War Reloaded</div>
-            <div class="game_card" onclick="showProfile('sotr_de', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaQ-_dqld71C5_vl5snDvbnxvaT73OhxEvqfVVtATgsw&s=10');"></div>Shadow of the Tomb Raider Definitive Edition</div>
-            <div class="game_card" onclick="showProfile('rotr_20year', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIqkYaQm-BvalSBbMd4_rZAvLxXQOWMdhrrD0d0i9B9w&s=10');"></div>Rise of the Tomb Raider 20 Year Celebration</div>
-            <div class="game_card" onclick="showProfile('robocop_rc_ub', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BMjBiMGY2ZDQtN2YyNC00ZWNmLTgxMGQtMTZmYzJjZjRhMDQwXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg');"></div>RoboCop Rogue City Unfinished Business</div>
-            <div class="game_card" onclick="showProfile('outer_worlds', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLxVpPq-w--CJQA2X-sWbm90p__yvviz3sOKbxoYOAqw&s');"></div>The Outer Worlds</div>
-            <div class="game_card" onclick="showProfile('mass_builder', event)"><div class="game_img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/956680/extras/02399cabed65eee4cca3417b6fb5ba99.avif?t=1757898507');"></div>M.A.S.S Builder</div>
-            <div class="game_card" onclick="showProfile('hotd2_remake', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BMWU1YzA0OWYtOThmMC00YzNjLTkzYmYtMWE1YjY1NWFmNzU0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg');"></div>THE HOUSE OF THE DEAD 2 Remake</div>
-            <div class="game_card" onclick="showProfile('bloodkill_go', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfzAK63WonMJVciSvz_sTV-rEcQQeVlK2EsJ56clVyBQ&s=10');"></div>BLOODKILL Goreblast Overkill</div>
-            <div class="game_card" onclick="showProfile('cod_mw3', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXNuYz07NsyLB-H1YTK5g2zt4YoLIPGUbv5r5boa2tLw&s=10');"></div>Call of Duty Modern Warfare III</div>
-            <div class="game_card" onclick="showProfile('cod_mw2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUFTLSvuAZvo3i7xY20cZjwu27sPeMx4eRCrFE07Yp0HvHS_8ub1IK8Mc&s=10');"></div>Call of Duty Modern Warfare II</div>
-            <div class="game_card" onclick="showProfile('chaos_on_wheels', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT61t-2Ecyp00k5cO4N954OPAfVruCZ9eEgReUvPU_NdQ&s=10');"></div>Chaos on Wheels</div>
-            <div class="game_card" onclick="showProfile('ripout', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTs-1qpo-PpaR8Fr-PDmdslGe7LeFF77U_JF_q-GqMRth4rxsaS_7ju3p0&s=10');"></div>RIPOUT</div>
-            <div class="game_card" onclick="showProfile('swat_commander', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRJXPFYfVoEUnfFUa6t9S2nyYa3D8u__9jiMteJ9NgLg&s=10');"></div>SWAT Commander</div>
-            <div class="game_card" onclick="showProfile('cod_bo6', event)"><div class="game_img" style="background-image: url('https://store-images.s-microsoft.com/image/apps.10491.14346543607136639.d932bf87-6edc-4da6-bbd5-c944ad33bc0d.f78757c0-6542-410f-a0cc-52fc592d79f1');"></div>Call of Duty Black Ops 6</div>
-            <div class="game_card" onclick="showProfile('cod_mw_2019', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMHmYwYu8G_T2HKgbtHbYXz3BcGTzNITugEUi6Pt5ppw&s=10');"></div>Call of Duty Modern Warfare (2019)</div>
-            <div class="game_card" onclick="showProfile('killing_floor_3', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTs_QGz1UWLJarNx0hfhrO-xs8RlzfTnaUIg-28Lr2awOsuPssTiie2M94&s=10');"></div>Killing Floor 3</div>
-            <div class="game_card" onclick="showProfile('six_days_fallujah', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQKYXuXVW2KRNmYh8V3JqvEWlNQ1gEDibK2T_yTOLocA&s=10');"></div>Six Days in Fallujah</div>
-            <div class="game_card" onclick="showProfile('wh40k_sm_mce', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOJiAHKo9SExx0vobsJI96J7rNQxQwL1eXTmI5RRxwhA&s=10');"></div>Warhammer 40000 Space Marine – Master Crafted Edition</div>
-            <div class="game_card" onclick="showProfile('ebola_village', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShhVlH4ICHsFuIW_jycI6aOcXFIzbSuSNIzyyhZ7EGcg&s=10');"></div>EBOLA VILLAGE</div>
-            <div class="game_card" onclick="showProfile('sker_ritual_anniv', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT1rcz38YCKcIowsU8kGIJr-R8euNuBV4lTZmVmKDbDA&s=10');"></div>Sker Ritual Anniversary</div>
-            <div class="game_card" onclick="showProfile('half_life_2_rtx', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbqj7Odcq_B_KaHGbHMENMthzX3yRFsHpQWC-3hrXze_bQ3srjtBo1OrAo&s=10');"></div>Half Life 2 RTX</div>
-            <div class="game_card" onclick="showProfile('immortals_aveum', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2pK_BIDRvCInBfvg8oIvKIAbQyIgR_x7lCLUkIHMoVQ&s=10');"></div>Immortals of Aveum</div>
+        <!-- Menubar -->
+        <div id="menubar">
+            <ul class="mainmenu">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Games</a></li>
+                <li><a href="#">News</a></li>
+                <li><a href="#">Forum</a></li>
+                <li><a href="#">Company</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
         </div>
+
+        <!-- Main Content Table Layout -->
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td class="maincol">
+                    
+                    <!-- Pathway -->
+                    <span class="pathway">Home &gt; Games Catalog</span>
+
+                    <!-- Main Heading -->
+                    <div class="componentheading">Sigma Team & Childhood PC Games Library</div>
+
+                    <!-- Profile Section (Video & Download Links Display) -->
+                    <div id="profile_section">
+                        <h2 id="p_title"></h2>
+                        <div class="video_container">
+                            <iframe id="p_video" width="100%" height="100%" src="" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <div class="btn_container">
+                            <a id="dl_link" href="#" target="_blank">
+                                <img src="https://archive.org/download/new-project-2_20260715/New%20Project%282%29.png" class="download_img_btn" id="dl_btn">
+                            </a>
+                            <a id="dl_link2" href="#" target="_blank" style="display: none;">
+                                <img src="https://cdn.phototourl.com/free/2026-07-20-61dce233-5a92-4b9a-8d44-3f79028f57ce.png" class="download_img_btn" id="dl_btn2">
+                            </a>
+                            <a id="dl_link3" href="#" target="_blank" style="display: none;">
+                                <img src="https://archive.org/download/new-project-2_20260715/New%20Project%282%29.png" class="download_img_btn" id="dl_btn3">
+                            </a>
+                            <a id="dl_link4" href="#" target="_blank" style="display: none;">
+                                <img src="https://cdn.phototourl.com/free/2026-07-20-61dce233-5a92-4b9a-8d44-3f79028f57ce.png" class="download_img_btn" id="dl_btn4">
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Games Grid Container -->
+                    <div class="game_grid" id="game_grid">
+                        <!-- Newly Added Games -->
+                        <div class="game_card" onclick="showProfile('dying_light_fe', event)"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/a7/Dying_Light_The_Following_cover_art.jpg');"></div>Dying Light The Following Enhanced Edition</div>
+                        <div class="game_card" onclick="showProfile('axis_unseen', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1Q2ZZTF0o5YKfwKrrv3ns63dD-cvbMps4hx4mJr9SzsyOsblwBVOWOxI&s=10');"></div>The Axis Unseen</div>
+                        <div class="game_card" onclick="showProfile('thing_remastered', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkVZtplMZu_FP1HibfRRMmJOD3Kn2yOxHuWsm13Tp5ig&s=10');"></div>The Thing Remastered</div>
+                        <div class="game_card" onclick="showProfile('alan_wake_2_de', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSwO7qmHH6IiSKV9k4D2uWwmRttvz0VJKNuTN8d5MaXm8aTX3Z-6ZCvsc&s=10');"></div>Alan Wake 2 Deluxe Edition</div>
+                        <div class="game_card" onclick="showProfile('sgw_contracts_2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-exGdFbU6K3FkMPcEe059pBUMRW6tvMff5bWOsfy4McD-70KQq6Y52rt6&s=10');"></div>Sniper Ghost Warrior Contracts 2</div>
+                        <div class="game_card" onclick="showProfile('hl2_20th_anniv', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM01VjvrvpFvKn7YYs7sOWrguzZyje3MM0-vKL5QVcVw4RTrZQxqmogWT7&s=10');"></div>Half Life 2 20th Anniversary</div>
+                        <div class="game_card" onclick="showProfile('metro_awakening', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQId89vAnAynq8wHibzxTG1vGido7R2duojNEpA26_uBL4S1gAbXdgec3A&s=10');"></div>Metro Awakening</div>
+                        <div class="game_card" onclick="showProfile('gta_trilogy_de', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3gaoP1vEBcNbzrSlHbyTQCJErgfPdcOtT0dqQHIJXkfT-X6tjEoTwVZtq&s=10');"></div>GTA The Trilogy Definitive Edition</div>
+                        <div class="game_card" onclick="showProfile('max_payne_3', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWZgYmq9-TILmGNGDhURUuyWpph-r2SKco7q4vz-Iflg&s=10');"></div>Max Payne 3</div>
+
+                        <!-- Sigma Team Classic Games Integration -->
+                        <div class="game_card" onclick="showProfile('asv', event)"><div class="game_img" style="background-image: url('https://cdn.mobygames.com/covers/4787964-alien-shooter-vengeance-windows-front-cover.jpg');"></div>Alien Shooter: Vengeance</div>
+                        <div class="game_card" onclick="showProfile('zs2', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdcA5kQYZYvafuDrxiiLO3017goVOdFsrwfLYbKJwcjQ&s=10');"></div>Zombie Shooter 2</div>
+                        <div class="game_card" onclick="showProfile('as2r', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8IEutEWQDAJNNg4RYeRjRxufpv2L2d5I2QoCiTgjGaPBGsdj_3AhMOOlF&s=10');"></div>Alien Shooter 2: Reloaded</div>
+                        <div class="game_card" onclick="showProfile('asrev', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJxGXu63pNOkA6jYhQVtQDrVLrUDT-uiotsEOL2dgvDaoxbtGnisLoUPk&s=10');"></div>Alien Shooter: Revisited</div>
+                        <div class="game_card" onclick="showProfile('as2ne', event)"><div class="game_img" style="background-image: url('https://images.gog.com/4ee50c12b9aabba54c56a71679974f52162f557e2d0fab1c881e00d34dbd8422_glx_vertical_cover.webp?namespace=gamesdb');"></div>Alien Shooter 2 - New Era</div>
+                        <div class="game_card" onclick="showProfile('as', event)"><div class="game_img" style="background-image: url('https://m.media-amazon.com/images/M/MV5BOWI2NTc1MTAtOTEyNS00YzZiLTk1MDEtYzY5ZWQ1MDg4ZTI5XkEyXkFqcGc@._V1_.jpg');"></div>Alien Shooter</div>
+                    </div>
+
+                </td>
+
+                <!-- Right Sidebar -->
+                <td class="rightcol">
+                    
+                    <!-- Top Games Widget -->
+                    <div class="moduletable">
+                        <h3>Top Games</h3>
+                        <table class="top-games-table" cellspacing="0" cellpadding="0">
+                            <tr><td><a href="#" onclick="showProfile('zs2', event); return false;">1. Zombie Shooter 2</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('asv', event); return false;">2. Alien Shooter 2</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('as2r', event); return false;">3. Alien Shooter 2: Reloaded</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('asrev', event); return false;">4. Alien Shooter - Revisited</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('dying_light_fe', event); return false;">5. Dying Light Enhanced Edition</a></td></tr>
+                        </table>
+                    </div>
+
+                    <!-- Polls Widget -->
+                    <div class="moduletable">
+                        <h3>Polls</h3>
+                        <p style="font-weight: bold; color: #ddd; margin-bottom: 8px;">When playing, you prefer to fight against:</p>
+                        <form action="#" method="post" style="font-size: 11px; line-height: 1.6;">
+                            <label><input type="radio" name="poll" value="aliens"/> Aliens</label><br/>
+                            <label><input type="radio" name="poll" value="zombies"/> Zombies</label><br/>
+                            <label><input type="radio" name="poll" value="real"/> Real enemies</label><br/>
+                            <button type="button" style="background: #b30000; color: #fff; border: none; padding: 4px 12px; font-weight: bold; margin-top: 8px; cursor: pointer;">Vote</button>
+                        </form>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+
+        <!-- Footer -->
+        <div id="footer">
+            Copyright 2003 - 2026 Sigma Team & Childhood Games. All Rights Reserved
+        </div>
+
     </div>
+</div>
 
-    <script>
-        // Individual Game Views Badge Auto-Injector
-        document.addEventListener("DOMContentLoaded", function() {
-            const gameCards = document.querySelectorAll('.game_card');
-            gameCards.forEach(card => {
-                const imgDiv = card.querySelector('.game_img');
-                if (imgDiv) {
-                    const onclickAttr = card.getAttribute('onclick');
-                    let gameId = 'game';
-                    if (onclickAttr) {
-                        const match = onclickAttr.match(/'([^']+)'/);
-                        if (match) gameId = match[1];
-                    }
-
-                    const wrapper = document.createElement('div');
-                    wrapper.className = 'game_img_wrap';
-                    imgDiv.parentNode.insertBefore(wrapper, imgDiv);
-                    wrapper.appendChild(imgDiv);
-
-                    const badge = document.createElement('div');
-                    badge.className = 'game_view_badge';
-                    
-                    let gameViews = localStorage.getItem('game_views_' + gameId);
-                    if (!gameViews) {
-                        gameViews = Math.floor(Math.random() * (45000 - 1500 + 1)) + 1500;
-                        localStorage.setItem('game_views_' + gameId, gameViews);
-                    }
-                    
-                    badge.innerHTML = `👁️ ${Number(gameViews).toLocaleString()}`;
-                    wrapper.appendChild(badge);
+<script>
+    // Live Search Functionality & View Badges Injector
+    document.addEventListener("DOMContentLoaded", function() {
+        const gameCards = document.querySelectorAll('.game_card');
+        gameCards.forEach(card => {
+            const imgDiv = card.querySelector('.game_img');
+            if (imgDiv) {
+                const onclickAttr = card.getAttribute('onclick');
+                let gameId = 'game';
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/'([^']+)'/);
+                    if (match) gameId = match[1];
                 }
-            });
 
-            // Live Search Bar Listener
-            const searchInput = document.getElementById('search_input');
-            if (searchInput) {
-                searchInput.addEventListener('input', function(e) {
-                    const query = e.target.value.toLowerCase().trim();
-                    document.querySelectorAll('.game_card').forEach(card => {
-                        const title = card.textContent.toLowerCase();
-                        if (title.includes(query)) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                });
+                const wrapper = document.createElement('div');
+                wrapper.className = 'game_img_wrap';
+                imgDiv.parentNode.insertBefore(wrapper, imgDiv);
+                wrapper.appendChild(imgDiv);
+
+                const badge = document.createElement('div');
+                badge.className = 'game_view_badge';
+                
+                let gameViews = localStorage.getItem('game_views_' + gameId);
+                if (!gameViews) {
+                    gameViews = Math.floor(Math.random() * (45000 - 1500 + 1)) + 1500;
+                    localStorage.setItem('game_views_' + gameId, gameViews);
+                }
+                
+                badge.innerHTML = `👁️ ${Number(gameViews).toLocaleString()}`;
+                wrapper.appendChild(badge);
             }
         });
 
-        function showProfile(gameId, event) {
-            if (event) event.stopPropagation();
-            const game = games[gameId];
-            if (!game) return;
+        const searchInput = document.getElementById('search_input');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase().trim();
+                document.querySelectorAll('.game_card').forEach(card => {
+                    const title = card.textContent.toLowerCase();
+                    if (title.includes(query) || query === 'search games...') {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+    });
 
-            document.querySelectorAll('.game_card').forEach(c => c.classList.remove('active'));
-            if (event && event.currentTarget) {
-                event.currentTarget.classList.add('active');
-            }
+    function showProfile(gameId, event) {
+        if (event) event.stopPropagation();
+        const game = games[gameId];
+        if (!game) return;
 
-            document.getElementById('p_title').textContent = game.title;
-            document.getElementById('p_video').src = game.video;
-
-            const dlLink = document.getElementById('dl_link');
-            const dlLink2 = document.getElementById('dl_link2');
-            const dlLink3 = document.getElementById('dl_link3');
-            const dlLink4 = document.getElementById('dl_link4');
-
-            if (game.dl) {
-                dlLink.href = game.dl;
-                dlLink.style.display = 'inline-block';
-            } else {
-                dlLink.style.display = 'none';
-            }
-
-            if (game.dl2) {
-                dlLink2.href = game.dl2;
-                dlLink2.style.display = 'inline-block';
-            } else {
-                dlLink2.style.display = 'none';
-            }
-
-            if (game.dl3) {
-                dlLink3.href = game.dl3;
-                dlLink3.style.display = 'inline-block';
-            } else {
-                dlLink3.style.display = 'none';
-            }
-
-            if (game.dl4) {
-                dlLink4.href = game.dl4;
-                dlLink4.style.display = 'inline-block';
-            } else {
-                dlLink4.style.display = 'none';
-            }
-
-            const profileSection = document.getElementById('profile_section');
-            profileSection.style.display = 'block';
-            profileSection.scrollIntoView({ behavior: 'smooth' });
+        document.querySelectorAll('.game_card').forEach(c => c.classList.remove('active'));
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
         }
 
-        const games = {
-            // Newly Added Games Data
-            'dying_light_fe': { title: 'Dying Light The Following Enhanced Edition', video: 'https://www.youtube.com/embed/vD1ye7rOgOA', dl: 'https://filecrypt.cc/Container/6F6CE1333F.html', dl2: 'https://filecrypt.cc/Container/1A46A8D81B.html', dl3: 'https://filecrypt.cc/Container/3CB6AC69D9.html' },
-            'axis_unseen': { title: 'The Axis Unseen', video: 'https://www.youtube.com/embed/c01jeeUClZk', dl: 'https://filecrypt.cc/Container/16C9E00650.html', dl2: 'https://filecrypt.cc/Container/AA2CA394AB.html', dl3: 'https://filecrypt.cc/Container/51F26C9BCA.html' },
-            'thing_remastered': { title: 'The Thing Remastered', video: 'https://www.youtube.com/embed/2esR0yLifTk', dl: 'https://filecrypt.cc/Container/DDA20F2BC0.html', dl2: 'https://filecrypt.cc/Container/DDA20F2BC0.html', dl3: 'https://filecrypt.cc/Container/DDA20F2BC0.html' },
-            'alan_wake_2_de': { title: 'Alan Wake 2 Deluxe Edition', video: 'https://www.youtube.com/embed/VvI4cJK4Ug0', dl: 'https://1fichier.com/?v95zqyba7bw2qnv3to14', dl2: 'https://filecrypt.cc/Container/1CDB14B4E6.html', dl3: 'https://filecrypt.cc/Container/7747D84F54.html' },
-            'sgw_contracts_2': { title: 'Sniper Ghost Warrior Contracts 2 Complete Edition', video: 'https://www.youtube.com/embed/x9UFEQim5fA', dl: 'https://filecrypt.cc/Container/4CB69AF690.html', dl2: 'https://filecrypt.cc/Container/4AA987D633.html', dl3: 'https://filecrypt.cc/Container/6AD08C4B34.html' },
-            'hl2_20th_anniv': { title: 'Half Life 2 20th Anniversary', video: 'https://www.youtube.com/embed/5FZ49Ou8zAE', dl: 'https://filecrypt.cc/Container/D764020A3A.html', dl2: 'https://filecrypt.cc/Container/D764020A3A.html', dl3: 'https://filecrypt.cc/Container/D764020A3A.html' },
-            'metro_awakening': { title: 'Metro Awakening', video: 'https://www.youtube.com/embed/26E9Wy5N6no', dl: 'https://1fichier.com/?8zg8ayecz183vt7ezgzn', dl2: 'https://filecrypt.cc/Container/8CB2234AE1.html', dl3: 'https://filecrypt.cc/Container/664AF70D70.html' },
-            'gta_trilogy_de': { title: 'Grand Theft Auto The Trilogy – The Definitive Edition', video: 'https://www.youtube.com/embed/-rljKaAGPsc', dl: 'https://1fichier.com/?lqhtris8qtocshbbecbx', dl2: 'https://1fichier.com/?lqhtris8qtocshbbecbx', dl3: 'https://filecrypt.cc/Container/C52CB303BC.html' },
-            'max_payne_3': { title: 'Max Payne 3', video: 'https://www.youtube.com/embed/4Uc_dbG7MR8', dl: 'https://1fichier.com/?jentzrpp0c4w93cfpm0e&af=3506913', dl2: 'https://filecrypt.cc/Container/4CEF463E4F.html', dl3: 'https://filecrypt.cc/Container/611C3795DC.html' },
-            'tomb_raider_de': { title: 'Tomb Raider Definitive Edition', video: 'https://www.youtube.com/embed/OJc5yDgJ7lk', dl: 'https://1fichier.com/?9amq6azdnhhgrv4gc1nq&af=3506913', dl2: 'https://1fichier.com/?9amq6azdnhhgrv4gc1nq&af=3506913', dl3: 'https://filecrypt.cc/Container/A6A7EC580E.html' },
-            'trepang2': { title: 'Trepang2', video: 'https://www.youtube.com/embed/mAECafyZpps', dl: 'https://filecrypt.cc/Container/1959C370B3.html', dl2: 'https://filecrypt.cc/Container/D0DD9EF7D0.html', dl3: 'https://filecrypt.cc/Container/979B8407AF.html' },
+        document.getElementById('p_title').textContent = game.title;
+        document.getElementById('p_video').src = game.video;
 
-            // Existing Games Data
-            'oni': { title: 'Oni', video: 'https://www.youtube.com/embed/3uKOMtJZBtU', dl: 'https://megaup.net/36dc3e93b98949bf1b392ad91f502f2f/Oni.PC.rar' },
-            'ac4bf': { title: 'Assassin’s Creed IV Black Flag', video: 'https://www.youtube.com/embed/b797EfJ4NOg', dl: 'https://megaup.net/ba45a6ef7b3c0211f9f2a5b133c7f3ff/Assassinss.Creed.4.Black.Flag.v1.07.Inclu.ALL.DLC.rar' },
-            'thrc': { title: 'Top Hunter Roddy & Cathy', video: 'https://www.youtube.com/embed/Cw0tYOvQvko', dl: 'https://megaup.net/66132a1afd59dcfc9355697622ad6ed3/TOP.HUNTER.RODDY.and.CATHY-GOG.rar' },
-            'yso': { title: 'Ys Origin', video: 'https://www.youtube.com/embed/GBtnT41f_Gw', dl: 'https://megaup.net/42572fe668a9d489c6ad0776cfdef88a/ysorigin.zip' },
-            'omd': { title: 'One More Dungeon', video: 'https://www.youtube.com/embed/kG-jXKSVrUE', dl: 'https://megaup.net/fc2b955fc76e552db86bd88c0a1eaeff/One.More.Dungeon.v1.2.1.rar' },
-            'nh': { title: 'Neuro Hunter', video: 'https://www.youtube.com/embed/tQjcas8yRSk', dl: 'https://pixeldrain.com/u/do5e8Jo5' },
-            'kof13': { title: 'The King of Fighters XIII Steam Edition', video: 'https://www.youtube.com/embed/FHo-rwNVbBk', dl: 'https://pixeldrain.com/u/q1GGCVs6' },
-            'mkk': { title: 'Mortal Kombat Komplete', video: 'https://www.youtube.com/embed/PloamVW-eX0', dl: 'https://megaup.net/03494621d88dba8d609b413dde7f4a59/Mortal.Kombat.Komplete.Edition-incl..Update.2.rar' },
-            'dj': { title: 'Diver Jimmy', video: 'https://www.youtube.com/embed/iuUq113tltY', dl: 'https://www.myrealgames.com/files/diver-jimmy.exe' },
-            'cec2d': { title: 'Car Eats Car 2 Deluxe', video: 'https://www.youtube.com/embed/_TG-aL9MrPA', dl: 'https://www.myrealgames.com/files/car-eats-car-2-deluxe.exe' },
-            'ah': { title: 'Alien Hallway', video: 'https://www.youtube.com/embed/ukL6xgCOyV4', dl: 'https://www.myrealgames.com/files/alien-hallway.exe' },
-            'asv': { title: 'Alien Shooter: Vengeance', video: 'https://www.youtube.com/embed/ACVLiM7OmaI', dl: 'https://pixeldrain.com/u/tKndRgP9' },
-            'zs2': { title: 'Zombie Shooter 2', video: 'https://www.youtube.com/embed/YhMCWhnABN8', dl: 'https://pixeldrain.com/u/jAjo27A3' },
-            'as2l': { title: 'Alien Shooter 2: The Legend', video: 'https://www.youtube.com/embed/iiiLRqRVgbA', dl: 'https://www.filecrypt.cc/Container/65B6DDFC2C.html' },
-            'as2r': { title: 'Alien Shooter 2: Reloaded', video: 'https://www.youtube.com/embed/x9o284YDetQ', dl: 'https://megaup.net/d1a512ef48369657acaea7ab17b981bd/AlienShoot2ReloadedGOG.rar' },
-            'aslh': { title: 'Alien Shooter – Last Hope', video: 'https://www.youtube.com/embed/rbexTPNjWlY', dl: 'https://pixeldrain.com/u/di996nxv' },
-            'igi': { title: 'Project IGI: Neonix Remastered', video: 'https://www.youtube.com/embed/tq5N5CmAY0w', dl: 'https://files.nexus-cdn.com/5349/5/IGI%201%20Neonix%20Remastered%201.4-5-1-4-1757006135.zip?md5=2PlnvN9RAf0lIt6nUG66lA&expires=1784202951&user_id=257889931' },
-            'igi2': { title: 'I.G.I 2 Neonix Patch', video: 'https://www.youtube.com/embed/hUqyL1vWMuY', dl: 'https://files.nexus-cdn.com/5664/8/IGI2NeonixPatch%201.3-8-1-3-1738873666.zip?md5=O6rs0IfUuqhUihE_hKd6qg&expires=1784203382&user_id=257889931' },
-            'codwaw': { title: 'Call of Duty: World At War', video: 'https://www.youtube.com/embed/AbBoxahWa6g', dl: 'https://pixeldrain.com/u/W1FSW38W' },
-            'specnaz': { title: 'SPECNAZ Project Wolf', video: 'https://www.youtube.com/embed/W7uS_0WRPeQ', dl: 'https://pixeldrain.com/u/7tHMytvk' },
-            'ewv': { title: 'Elite Warriors Vietnam', video: 'https://www.youtube.com/embed/YVPCzs3ntBg', dl: 'https://pixeldrain.com/u/kjAAPmVx' },
-            'dfx': { title: 'Delta Force Xtreme', video: 'https://www.youtube.com/embed/WhLH77RrCYc', dl: 'https://pixeldrain.com/u/ciz3xqvp' },
-            'ccftf': { title: 'Close Combat First To Fight', video: 'https://www.youtube.com/embed/-pFWZWLEej4', dl: 'https://pixeldrain.com/u/Yqd92dzx' },
-            'insurgency': { title: 'Insurgency Sandstorm', video: 'https://www.youtube.com/embed/J5KDp5h72Wo', dl: 'https://1fichier.com/?z2tj2g3saojvvm9erdxd' },
-            'losv': { title: 'Line of Sight Vietnam', video: 'https://www.youtube.com/embed/4Rfmyc4JEJw', dl: 'https://www.mediafire.com/file/801o3kyrgu4ko2k/lineofsightvietnam.zip/file' },
-            'dw8xl': { title: 'Dynasty Warriors 8: Xtreme Legends', video: 'https://www.youtube.com/embed/59WUommXTus', dl: 'https://megaup.net/folder/4563fcb76b0c63a015df91b8e8594524/Dynasty_Warriors_8' },
-            'gow1': { title: 'GOD OF WAR 1', video: 'https://www.youtube.com/embed/Lbj5C-Sw2_A', dl: 'https://pixeldrain.com/u/B8iAv4aq' },
-            'asrev': { title: 'Alien Shooter: Revisited', video: 'https://www.youtube.com/embed/IMZE9O9b_2c', dl: 'https://gofile.io/d/Jt5uJv', dl2: 'https://vik1ngfile.site/f/oN8sMTPar8' },
-            'as2ne': { title: 'Alien Shooter 2 - New Era', video: 'https://www.youtube.com/embed/bo1z1ZDxNNA', dl: 'https://gofile.io/d/y8ULxo', dl2: 'https://vik1ngfile.site/f/FmQqgevq8w' },
-            'as': { title: 'Alien Shooter', video: 'https://www.youtube.com/embed/hL7Ci3MX82s', dl: 'https://gofile.io/d/Mv1tOQ', dl2: 'https://vik1ngfile.site/f/y5zwdFnQ3O' },
-            'a_iso': { title: 'Alien Isolation Collection', video: 'https://www.youtube.com/embed/1pvaw3tqgaw', dl: 'https://pixeldrain.com/u/VQjTpbDh' },
-            'hl2': { title: 'Half-Life 2', video: 'https://www.youtube.com/embed/laGws1MYMq0', dl: 'https://pixeldrain.com/u/AykDHogE' },
-            'quake_ee': { title: 'Quake Enhanced Edition', video: 'https://www.youtube.com/embed/vi-bdUd9J3E', dl: 'https://pixeldrain.com/u/VMdXEXBD' },
-            'blacklight': { title: 'Blacklight Retribution', video: 'https://www.youtube.com/embed/vXVbKds7dSQ', dl: 'https://pixeldrain.com/u/xg3fXRwG' },
-            'prodeus': { title: 'Prodeus', video: 'https://www.youtube.com/embed/AUN7t2RyMSs', dl: 'https://uptobox.com/jhvgpet8gis5' },
-            'opflash': { title: 'Operation Flashpoint GOTY', video: 'https://www.youtube.com/embed/LE0lIpifstA', dl: 'https://pixeldrain.com/u/v3Te5p81' },
-            'metro_redux': { title: 'Metro Redux Bundle', video: 'https://www.youtube.com/embed/kPEh8XlSQuI', dl: 'https://pixeldrain.com/u/iJ1JyPxi' },
-            'trotf': { title: 'Transformers: Revenge of the Fallen', video: 'https://www.youtube.com/embed/3Y3A-a3uM1o', dl: 'https://megaup.net/0969489306325334816a7ed03070215f/Transformers.2.Revenge.of.the.Fallen.The.Game.rar', dl2: 'https://akirabox.to/dZxG5q9QKGVj/file' },
-            'sh3': { title: 'Silent Hill 3', video: 'https://www.youtube.com/embed/QYIVRpAyOnw', dl: 'https://megaup.net/e67a8a92a751f90ad6bd6d1c076705f7/Silent.Hill.3.rar', dl2: 'https://akirabox.to/k0emb0k7VzVb/file' },
-            'iearth': { title: 'Imagine Earth', video: 'https://www.youtube.com/embed/TlutC9nlcvQ', dl: 'https://megaup.net/8d7789fd855965756d7f12e8f82a9327/Imagine.Earth.v1.21.5.rar', dl2: 'https://akirabox.to/RMKGJQjK1z1o/file' },
-            'nfs_ug2': { title: 'Need for Speed Underground 2', video: 'https://www.youtube.com/embed/RhQCVvNpeQk', dl: 'https://megaup.net/bc33849630d988c1dc6d865c5c6ccb10/Need.for.Speed.Underground.2.rar', dl2: 'https://akirabox.to/9AqGQ49DNzMn/file' },
-            'nfs_mwbe': { title: 'Need for Speed Most Wanted Black Edition', video: 'https://www.youtube.com/embed/OhoF4c-TiqQ', dl: 'https://megaup.net/2e351b495e866f2d8d7e9f3d302374d9/Need.For.Speed.Most.Wanted.Black.Edition.rar', dl2: 'https://akirabox.to/QN9mEZ77o36d/file' },
-            'sh5_homecoming': { title: 'Silent Hill 5: Homecoming', video: 'https://www.youtube.com/embed/RRLc4VdAxic', dl: 'https://pixeldrain.com/u/RuXMKon1', dl2: 'https://akirabox.to/9AqGQ48v8zMn/file', dl3: 'https://filekeeper.net/download' },
-            'sh_sm': { title: 'Silent Hill: Shattered Memories', video: 'https://www.youtube.com/embed/An5qo9vcYX4', dl: 'https://pixeldrain.com/u/zM8cThuj', dl2: 'https://akirabox.to/dZxG5qRLPGVj/file', dl3: 'https://megaup.net/024b4f115e2e4e51d1ca0e4bbfdf02db/Silent.Hill.Shattered.Memories.rar' },
-            'pop_t2t': { title: 'Prince of Persia 3 The Two Thrones', video: 'https://www.youtube.com/embed/CuiCkfddORU', dl: 'https://pixeldrain.com/u/zmnUUMn1', dl2: 'https://megaup.net/edb80fc390e47e2e8bf3b64ef4c0fcfb/Prince.of.Persia.The.Two.Thrones.v1.1v2.rar' },
-            'uaw_ea': { title: 'Universe At War: Earth Assault', video: 'https://www.youtube.com/embed/-oRSQhC01DM', dl: 'https://akirabox.to/obj3jl11dGDx/file', dl2: 'https://megaup.net/6cbe19197eca99c91169319fa3bd973c/Universe.at.War.Earth.Assault.v97896.rar', dl3: 'https://pixeldrain.com/u/pCS21oNM' },
-            'ds_shipwrecked': { title: "Don't Starve: Shipwrecked", video: 'https://www.youtube.com/embed/dtumDWVgHoI', dl: 'https://akirabox.to/dZxG5eRv9GVj/file', dl2: 'https://megaup.net/f0fbae6df105b2759a8a4badc31c5e1c/Dont.starve.ship.rar', dl3: 'https://pixeldrain.com/u/ee1nVX1V' },
-            'sm_wos': { title: 'Spider-Man: Web of Shadows', video: 'https://www.youtube.com/embed/lqgEiSY_iuI', dl: 'https://akirabox.to/LJlGn91g6z15/file', dl2: 'https://megaup.net/31c6720adb5bf9dc6b8c29c77ae505a3/SMWOS2008.rar', dl3: 'https://pixeldrain.com/u/sx9LYFXJ', dl4: 'https://www.mediafire.com/file/bbp78104fo15icn/SMWOS2008.rar/file' },
-            'afro_samurai_2': { title: 'Afro Samurai 2: Revenge of Kuma', video: 'https://www.youtube.com/embed/debIqNNQTIg', dl: 'https://pixeldrain.com/u/7ykCsBZi', dl2: 'https://megaup.net/e145c974b1abebc74b666eae0fdec4ae/Afro.Samurai.2.Revenge.of.Kuma.rar', dl3: 'https://akirabox.to/EL73gAp6nG9B/file' },
-            'blood_1997': { title: 'Blood (1997)', video: 'https://www.youtube.com/embed/A71HlB-RlPE', dl: 'https://pixeldrain.com/u/AXRUGRnn', dl2: 'https://megaup.net/685e9b57fe86045db3c59d2a3d38dc05/Blood-1.rar', dl3: 'https://akirabox.to/RMKGJwav8m1o/file' },
-            'dead_space_3': { title: 'Dead Space 3', video: 'https://www.youtube.com/embed/cZ3mad7SOBg', dl: 'https://pixeldrain.com/u/4UNhoiWL', dl2: 'https://megaup.net/6229887e1197e5774b8004b46747946f/DeadSpace3.rar', dl3: 'https://akirabox.to/0PdzyqZWLzeA/file' },
-            'constantine': { title: 'Constantine', video: 'https://www.youtube.com/embed/XWTGc8lr_YM', dl: 'https://pixeldrain.com/u/SmyHfgqv', dl2: 'https://megaup.net/39498d5b49e3e18d243f06094830455b/Constantine.rar', dl3: 'https://akirabox.to/vgKGxYv4Qm8Q/file' },
-            'pain_train_2': { title: 'Pain Train 2', video: 'https://www.youtube.com/embed/yKJU-Tn7GYY', dl: 'https://pixeldrain.com/u/ch44o4GH', dl2: 'https://megaup.net/b7f8008d933d4a799b61250ad3a50a4e/Pain.Train.2-PLAZA.rar', dl3: 'https://akirabox.to/2WVGr1YnBzkx/file' },
-            'slain_back_from_hell': { title: 'Slain: Back From Hell', video: 'https://www.youtube.com/embed/pJLj0YjgeQo', dl: 'https://pixeldrain.com/u/yVtWkc1J', dl2: 'https://www.mediafire.com/file/3m0cmz1nfrw79gv/SlainPC.rar/file' },
-            'terraria': { title: 'Terraria', video: 'https://www.youtube.com/embed/2SaFNd-5Qos', dl: 'https://megaup.net/47a87beb3e3eaf2f0bb4a7e516838c0d/Terraria.v1.4.5.4-P2P.rar', dl2: 'https://akirabox.to/EL73g6OXEm9B/file', dl3: 'https://pixeldrain.com/u/i1t4UNzj' },
-            'ss_hd_se': { title: 'Serious Sam HD The Second Encounter', video: 'https://www.youtube.com/embed/-jRQRbg-qug', dl: 'https://megaup.net/bc52ff1a87fdb23aad2dc1f18638bfcb/Serious.Sam.HD.The.First.and.Second.Encounter.v263699.rar', dl2: 'https://akirabox.to/ex5z2B008zKq/file', dl3: 'https://pixeldrain.com/u/PXzTvmN9' },
-            'gow2': { title: 'God of War 2', video: 'https://www.youtube.com/embed/QAjwSDecOrU', dl: 'https://akirabox.to/M2BGw6Y9Mzj4/file', dl2: 'https://pixeldrain.com/u/B8iAv4aq' },
-            'metro_exodus_ee': { title: 'Metro Exodus Enhanced Edition', video: 'https://www.youtube.com/embed/cW9sX3vB4lU', dl: 'https://1fichier.com/?yjd9zvk9z9od86rosa8c', dl2: 'https://uptobox.com/vqiskz9njvpn', dl3: 'https://1fichier.com/?g91ll0g11ymi0qttz835' },
-            'observer_sr': { title: 'Observer: System Redux', video: 'https://www.youtube.com/embed/e1DzSPoGwnc', dl: 'https://pixeldrain.com/u/kznCojPz', dl2: 'https://anonfiles.com/w0vaLfe6z8/Observer_System_Redux_v09_16_2021_zip' },
-            'biohazard_uc': { title: 'Biohazard Umbrella Corps', video: 'https://www.youtube.com/embed/kB7S9Tk45js', dl: 'https://pixeldrain.com/u/b6TEQztq', dl2: 'https://akirabox.to/rk9zKr7o430l/file', dl3: 'https://www.mediafire.com/file/h58xffahbzpcinn/UmbrellaCorps.rar/file', dl4: 'https://mega.nz/file/yGxmna5T#Qxu_ZNhIYhcB-X1rhtLClY9u6Z7mdqUje2ZSs7SxKO8' },
-            'marvel_ua': { title: 'Marvel Ultimate Alliance', video: 'https://www.youtube.com/embed/tBS8E-rVXLU', dl: 'https://pixeldrain.com/u/Aem4Lzgb', dl2: 'https://akirabox.to/obj3jbPdA3Dx/file', dl3: 'https://www.mediafire.com/file/x6rhrijc9ylouqt/Marvel.Ultimate.Alliance-Repack.rar/file' },
-            'air_missions': { title: 'Air Missions', video: 'https://www.youtube.com/embed/MYi6rTsid9A', dl: 'https://pixeldrain.com/u/HiPaTV7B', dl2: 'https://www.mediafire.com/file/jtjkgoxs4fajtnm/AirMissionsHIND.Deluxe+Edition.rar/file', dl3: 'https://mega.nz/file/6QEUzb5R#y8s_hNevginiaM5lzrel_wdH0z0QiISb6m0Qg_K8f7g' },
-            'pvz_goty': { title: 'Plantas vs Undead GOTY', video: 'https://www.youtube.com/embed/mXmaPWoDXlI', dl: 'https://pixeldrain.com/u/hXdydPHc', dl2: 'https://akirabox.to/0PdzykvbLmeA/file', dl3: 'https://www.mediafire.com/file/pq2gf5st6u8ajxb/PVZGOTY2009.rar/file' },
-            'blazing_angels': { title: 'Blazing Angels Squadrons of WWII', video: 'https://www.youtube.com/embed/sCwQC2-10fA', dl: 'https://pixeldrain.com/u/gtPmGq1J', dl2: 'https://www.mediafire.com/file/m5n8yqyh7oufhun/BlazingAngels.Squadrons.of.WWII.rar/file', dl3: 'https://mega.nz/file/OhhQkQBb#tcFWIr8VwTDFsMnr6djcbwbOe84_j_KNEqHqfBO0BRE' },
-            'tr_legend': { title: 'Tomb Raider Legend', video: 'https://www.youtube.com/embed/ADwF9VbUP38', dl: 'https://pixeldrain.com/u/wLbVabnm', dl2: 'https://www.mediafire.com/file/8e3he7lvwtnxrsy/tombraiderlegend.zip/file' },
-            'doom_tda': { title: 'DOOM The Dark Ages [RUNE]', video: 'https://www.youtube.com/embed/rJdQk8Fvs8k', dl: 'https://filecrypt.cc/Container/B6A7878D58.html', dl2: 'https://gofile.io/d/UzD4PB', dl3: 'https://1fichier.com/?bmaica531pjnl3yl0q9i' },
-            'luna_abyss': { title: 'Luna Abyss RUNE', video: 'https://www.youtube.com/embed/XY1IY7eod3E', dl: 'https://filecrypt.cc/Container/E8198EC550.html', dl2: 'https://www.keeplinks.org/p55/6a126f50d1d87', dl3: 'https://www.keeplinks.org/p55/6a12741011588' },
-            'atomic_heart_c': { title: 'Atomic Heart Complete', video: 'https://www.youtube.com/embed/RwSa9QyR1qU', dl: 'https://1fichier.com/?88dqo3ggc93znh6ykd4q', dl2: 'https://gofile.io/d/uyXuTQ', dl3: 'https://filecrypt.cc/Container/B88A9E64DD.html' },
-            'abyssus': { title: 'Abyssus', video: 'https://www.youtube.com/embed/6i1IA2CsXZU', dl: 'https://filecrypt.cc/Container/03C5B85517.html', dl2: 'https://www.keeplinks.org/p55/6a4330988442f' },
-            'wwz_twd': { title: 'World War Z x The Walking Dead', video: 'https://www.youtube.com/embed/FBAflsakj_o', dl: 'https://filecrypt.cc/Container/C89EEA5E7E.html', dl2: 'https://gofile.io/d/76LLNA', dl3: 'https://www.keeplinks.org/p55/6984089c4dfda' },
-            'high_on_life_2': { title: 'High On Life 2', video: 'https://www.youtube.com/embed/McvFctXbj_0', dl: 'https://1fichier.com/?dui9lvk0gcp3r9nup1xk', dl2: 'https://gofile.io/d/fNJsX2', dl3: 'https://filecrypt.cc/Container/5B875537C3.html' },
-            'tormented_souls_2': { title: 'Tormented Souls 2', video: 'https://www.youtube.com/embed/DiSZzRNOluw', dl: 'https://filecrypt.cc/Container/9009B08630.html', dl2: 'https://www.keeplinks.org/p55/69e45a92952d8' },
-            'artificial_extinction_2': { title: 'Artificial Extinction 2', video: 'https://www.youtube.com/embed/QiZJDL6r4Ew', dl: 'https://filecrypt.cc/Container/462A5BFAEB.html', dl2: 'https://www.keeplinks.org/p55/6a2b85cb399d9' },
-            'humanitz': { title: 'HumanitZ', video: 'https://www.youtube.com/embed/qn1dE2L-4g4', dl: 'https://filecrypt.cc/Container/C97ECA7454.html', dl2: 'https://filecrypt.cc/Container/C97ECA7454.html', dl3: 'https://www.keeplinks.org/p55/698813ef61767' },
-            'agent_007_first_light': { title: '007 First Light', video: 'https://www.youtube.com/embed/t26pCobj5lw', dl: 'https://filecrypt.cc/Container/543BA82CB1.html', dl2: 'https://www.keeplinks.org/p55/6a28fdd8de37a', dl3: 'https://1fichier.com/?nzc23vz57j03ug91f5ai' },
-            'mw5_chaos_reign': { title: 'MechWarrior 5 Mercenaries Chaos Reign', video: 'https://www.youtube.com/embed/LbPgGWviTiM', dl: 'https://filecrypt.cc/Container/84BB2A9821.html', dl2: 'https://www.keeplinks.org/p55/6a1a730ee8b08', dl3: 'https://1fichier.com/?kbosum0hsw898x0drh0n' },
-            'gunsmith_sim_hm': { title: 'Gunsmith Simulator Heavy Metal', video: 'https://www.youtube.com/embed/T-vZkce6mqY', dl: 'https://filecrypt.cc/Container/2CFFA609D3.html', dl2: 'https://www.keeplinks.org/p55/6a1945b24299a' },
-            'mafia_old_country': { title: 'Mafia The Old Country', video: 'https://www.youtube.com/embed/v_UQec9u05E', dl: 'https://www.keeplinks.org/p55/6a1185d17d0c0', dl2: 'https://www.keeplinks.org/p55/6a1185d17d0c0', dl3: 'https://1fichier.com/?afm121wzeechm1dxv1sc', dl4: 'https://gofile.io/d/PxMlMq' },
-            'metro_last_light': { title: 'Metro Last Light', video: 'https://www.youtube.com/embed/oLV_Kp_RK3E', dl: 'https://filecrypt.cc/Container/9CC77980B1.html', dl2: 'https://www.keeplinks.org/p55/6a0e5d8893d94' },
-            'pragmata': { title: 'PRAGMATA', video: 'https://www.youtube.com/embed/aWxwB7w5uFs', dl: 'https://filecrypt.cc/Container/4580461A62.html', dl2: 'https://www.keeplinks.org/p55/6a0699dd180b0', dl3: 'https://1fichier.com/?eu4180s42qmxt65ghic3', dl4: 'https://gofile.io/d/bnaDFd' },
-            're7_gold': { title: 'Resident Evil 7 Biohazard Gold Edition', video: 'https://www.youtube.com/embed/cJOY0VE0D0g', dl: 'https://filecrypt.cc/Container/0DD67546E5.html', dl2: 'https://www.keeplinks.org/p55/6a0447d69a5d9', dl3: 'https://1fichier.com/?07nr3cnahvii8rkzeuvw', dl4: 'https://gofile.io/d/RmBf7l' },
-            'hellbreak': { title: 'HELLBREAK', video: 'https://www.youtube.com/embed/xiSJbOKofoU', dl: 'https://filecrypt.cc/Container/8BFDD5D67D.html', dl2: 'https://www.keeplinks.org/p55/6a04012de587b' },
-            'industria_2': { title: 'INDUSTRIA 2', video: 'https://www.youtube.com/embed/YVDk58R2Bn4', dl: 'https://filecrypt.cc/Container/FFB3AAF90E.html', dl2: 'https://www.keeplinks.org/p55/69f7fff76b21e' },
-            'road_to_vostok': { title: 'Road to Vostok', video: 'https://www.youtube.com/embed/tUaDfQdOoEg', dl: 'https://filecrypt.cc/Container/781EBECDC9.html', dl2: 'https://www.keeplinks.org/p55/69eb18055c7fc' },
-            'doom_eternal': { title: 'DOOM Eternal', video: 'https://www.youtube.com/embed/4UyC9DVOVGU', dl: 'https://filecrypt.cc/Container/9030E3B247.html', dl2: 'https://www.keeplinks.org/p55/69df5eb0cc95d', dl3: 'https://www.keeplinks.org/p55/69df5377eb02f' },
-            'sw_outlaws_ue': { title: 'Star Wars Outlaws Ultimate Edition', video: 'https://www.youtube.com/embed/g1F0QnSngu4', dl: 'https://filecrypt.cc/Container/58A8282FED.html', dl2: 'https://www.keeplinks.org/p55/69c64d6cca48a', dl3: 'https://1fichier.com/?2k1a6am305cr2eu1b57o' },
-            'borderlands_4_de': { title: 'Borderlands 4 Deluxe Edition', video: 'https://www.youtube.com/embed/IVvE-E73v2A', dl: 'https://filecrypt.cc/Container/FD54C3BBE0.html', dl2: 'https://www.keeplinks.org/p55/69c6252892672', dl3: 'https://1fichier.com/?4fkd210kmuk3zbe6mauo' },
-            'sniper_elite_resistance': { title: 'Sniper Elite Resistance Deluxe Edition', video: 'https://www.youtube.com/embed/fHDFXvZQc4g', dl: 'https://filecrypt.cc/Container/90C9CC9557.html', dl2: 'https://www.keeplinks.org/p55/69c0f82dd44a4', dl3: 'https://1fichier.com/?ty6g9ydp04xozxxp7amg', dl4: 'https://vik1ngfile.site/f/cQQJJEwNW5' },
-            'ready_or_not_bp': { title: 'Ready or Not Boiling Point', video: 'https://www.youtube.com/embed/hF0Nfo6hczg', dl: 'https://filecrypt.cc/Container/5B97D290D4.html', dl2: 'https://www.keeplinks.org/p55/69b62f26258b8', dl3: 'https://1fichier.com/?72y8x7frs16u5zqub78m' },
-            'soulslinger_eod': { title: 'Soulslinger Envoy of Death', video: 'https://www.youtube.com/embed/Z3Clu6l7Ws4', dl: 'https://filecrypt.cc/Container/4ECB3D524A.html', dl2: 'https://www.keeplinks.org/p55/69b526ff8254e', dl3: 'https://1fichier.com/?g6u318lx4g5344q2ch7s' },
-            'alan_wake_remastered': { title: 'Alan Wake Remastered', video: 'https://www.youtube.com/embed/9R9mr5BPo9I', dl: 'https://filecrypt.cc/Container/29436473E1.html', dl2: 'https://www.keeplinks.org/p55/69ad34abc04b4' },
-            'alien_rogue_incursion': { title: 'Alien Rogue Incursion Evolved Edition', video: 'https://www.youtube.com/embed/jyTve9xtk-U', dl: 'https://filecrypt.cc/Container/F5D2A124A8.html', dl2: 'https://www.keeplinks.org/p55/699ecb109b91e' },
-            'shatterline_randy': { title: 'Shatterline Randy', video: 'https://www.youtube.com/embed/pfIL1raErZE', dl: 'https://filecrypt.cc/Container/C9BAD66695.html', dl2: 'https://www.keeplinks.org/p55/6987f5b4358b2', dl3: 'https://1fichier.com/?ldm798kyqsu8el6lnr3r' },
-            'fear_the_timeloop': { title: 'Fear The Timeloop', video: 'https://www.youtube.com/embed/HY0HXQAKUOQ', dl: 'https://filecrypt.cc/Container/6CAA0DE3C5.html', dl2: 'https://www.keeplinks.org/p55/6986a1413033f' },
-            'rip_reincarnation': { title: 'RIP Reincarnation Insurance Program', video: 'https://www.youtube.com/embed/Rkb_hhiLwSc', dl: 'https://filecrypt.cc/Container/33BA738402.html', dl2: 'https://www.keeplinks.org/p55/697b219e71a03' },
-            'moros_protocol': { title: 'Moros Protocol', video: 'https://www.youtube.com/embed/IBfCWeeBqEY', dl: 'https://filecrypt.cc/Container/9A02CA967C.html', dl2: 'https://www.keeplinks.org/p55/696f3ea633d89' },
-            'starrupture': { title: 'StarRupture', video: 'https://www.youtube.com/embed/xP66sANFO_Q', dl: 'https://filecrypt.cc/Container/B52A48A24C.html', dl2: 'https://www.keeplinks.org/p55/695f151f15263' },
-            'the_front': { title: 'The Front', video: 'https://www.youtube.com/embed/dcOPnHGZ1sE', dl: 'https://filecrypt.cc/Container/F0C3DFE1DC.html', dl2: 'https://www.keeplinks.org/p55/696344da578c9' },
-            'beneath': { title: 'Beneath', video: 'https://www.youtube.com/embed/OaHLvv_FwdY', dl: 'https://filecrypt.cc/Container/9BA095581E.html' },
-            'stalker2_hoc_ue': { title: 'STALKER 2 Heart of Chornobyl Ultimate Edition', video: 'https://www.youtube.com/embed/-qYKORNmiak', dl: 'https://filecrypt.cc/Container/23DB29CC13.html', dl2: 'https://filecrypt.cc/Container/CC4F0222EA.html', dl3: 'https://filecrypt.cc/Container/151CA2198D.html' },
-            'stalker_gamma': { title: 'S.T.A.L.K.E.R GAMMA', video: 'https://www.youtube.com/embed/hs9E5ah0FXc', dl: 'https://filecrypt.cc/Container/0A97D54763.html', dl2: 'https://filecrypt.cc/Container/2C821B9D95.html', dl3: 'https://filecrypt.cc/Container/94748E85D3.html' },
-            'battlefield_6': { title: 'Battlefield 6', video: 'https://www.youtube.com/embed/LqWVp3p-FPk', dl: 'https://1fichier.com/?8y94i0yhyq2kywt109i2', dl2: 'https://filecrypt.cc/Container/2A006' },
-            'zero_hour': { title: 'Zero Hour', video: 'https://www.youtube.com/embed/Q5eXb-Q2h1w', dl: 'https://filecrypt.cc/Container/5C92B19C52.html' },
-            'bio_goddess': { title: 'Bio Goddess Doomsday Begins', video: 'https://www.youtube.com/embed/8rWj56j7W1A', dl: 'https://filecrypt.cc/Container/781D92A36B.html' },
-            'mgs_delta_snake_eater': { title: 'METAL GEAR SOLID DELTA SNAKE EATER', video: 'https://www.youtube.com/embed/G8hYc9T2v5A', dl: 'https://filecrypt.cc/Container/3B9081E4F2.html' },
-            'metal_eden': { title: 'METAL EDEN', video: 'https://www.youtube.com/embed/3A1vE8C9Y2o', dl: 'https://filecrypt.cc/Container/9D1A2C3E4F.html' },
-            're_hd_remaster': { title: 'Resident Evil HD REMASTER', video: 'https://www.youtube.com/embed/2v7Y9h8C1A0', dl: 'https://filecrypt.cc/Container/4E2B1A3C5D.html' },
-            'resident_evil_0': { title: 'Resident Evil 0', video: 'https://www.youtube.com/embed/5F3C2A1E7B9', dl: 'https://filecrypt.cc/Container/6F3E2D1A8C.html' },
-            'gears_of_war_reloaded': { title: 'Gears of War Reloaded', video: 'https://www.youtube.com/embed/9B2A1C3D4E5', dl: 'https://filecrypt.cc/Container/7A2B3C4D5E.html' },
-            'sotr_de': { title: 'Shadow of the Tomb Raider Definitive Edition', video: 'https://www.youtube.com/embed/1C2B3A4E5F6', dl: 'https://filecrypt.cc/Container/8B3C4D5E6F.html' },
-            'rotr_20year': { title: 'Rise of the Tomb Raider 20 Year Celebration', video: 'https://www.youtube.com/embed/4D3C2B1A5E6', dl: 'https://filecrypt.cc/Container/9C4D5E6F7A.html' },
-            'robocop_rc_ub': { title: 'RoboCop Rogue City Unfinished Business', video: 'https://www.youtube.com/embed/3B2A1C4D5E6', dl: 'https://filecrypt.cc/Container/1A2B3C4D5E.html' },
-            'outer_worlds': { title: 'The Outer Worlds', video: 'https://www.youtube.com/embed/5E6F7A8B9C0', dl: 'https://filecrypt.cc/Container/2B3C4D5E6F.html' },
-            'mass_builder': { title: 'M.A.S.S Builder', video: 'https://www.youtube.com/embed/7A8B9C0D1E2', dl: 'https://filecrypt.cc/Container/3C4D5E6F7A.html' },
-            'hotd2_remake': { title: 'THE HOUSE OF THE DEAD 2 Remake', video: 'https://www.youtube.com/embed/9C0D1E2F3A4', dl: 'https://filecrypt.cc/Container/4D5E6F7A8B.html' },
-            'bloodkill_go': { title: 'BLOODKILL Goreblast Overkill', video: 'https://www.youtube.com/embed/1E2F3A4B4E5', dl: 'https://filecrypt.cc/Container/4D5E6F7A8B.html' },
-            'cod_mw3': { title: 'Call of Duty Modern Warfare III', video: 'https://www.youtube.com/embed/v_UQec9u05E', dl: 'https://filecrypt.cc/Container/5E6F7A8B9C.html' },
-            'cod_mw2': { title: 'Call of Duty Modern Warfare II', video: 'https://www.youtube.com/embed/oLV_Kp_RK3E', dl: 'https://filecrypt.cc/Container/6F7A8B9C0D.html' },
-            'chaos_on_wheels': { title: 'Chaos on Wheels', video: 'https://www.youtube.com/embed/aWxwB7w5uFs', dl: 'https://filecrypt.cc/Container/7A8B9C0D1E.html' },
-            'ripout': { title: 'RIPOUT', video: 'https://www.youtube.com/embed/cJOY0VE0D0g', dl: 'https://filecrypt.cc/Container/8B9C0D1E2F.html' },
-            'swat_commander': { title: 'SWAT Commander', video: 'https://www.youtube.com/embed/xiSJbOKofoU', dl: 'https://filecrypt.cc/Container/9C0D1E2F3A.html' },
-            'cod_bo6': { title: 'Call of Duty Black Ops 6', video: 'https://www.youtube.com/embed/YVDk58R2Bn4', dl: 'https://filecrypt.cc/Container/0D1E2F3A4B.html' },
-            'cod_mw_2019': { title: 'Call of Duty Modern Warfare (2019)', video: 'https://www.youtube.com/embed/tUaDfQdOoEg', dl: 'https://filecrypt.cc/Container/1E2F3A4B5C.html' },
-            'killing_floor_3': { title: 'Killing Floor 3', video: 'https://www.youtube.com/embed/4UyC9DVOVGU', dl: 'https://filecrypt.cc/Container/2F3A4B5C6D.html' },
-            'six_days_fallujah': { title: 'Six Days in Fallujah', video: 'https://www.youtube.com/embed/g1F0QnSngu4', dl: 'https://filecrypt.cc/Container/3A4B5C6D7E.html' },
-            'wh40k_sm_mce': { title: 'Warhammer 40000 Space Marine – Master Crafted Edition', video: 'https://www.youtube.com/embed/IVvE-E73v2A', dl: 'https://filecrypt.cc/Container/4B5C6D7E8F.html' },
-            'ebola_village': { title: 'EBOLA VILLAGE', video: 'https://www.youtube.com/embed/fHDFXvZQc4g', dl: 'https://filecrypt.cc/Container/5C6D7E8F9A.html' },
-            'sker_ritual_anniv': { title: 'Sker Ritual Anniversary', video: 'https://www.youtube.com/embed/hF0Nfo6hczg', dl: 'https://filecrypt.cc/Container/6D7E8F9A0B.html' },
-            'half_life_2_rtx': { title: 'Half Life 2 RTX', video: 'https://www.youtube.com/embed/Z3Clu6l7Ws4', dl: 'https://filecrypt.cc/Container/7E8F9A0B1C.html' },
-            'immortals_aveum': { title: 'Immortals of Aveum', video: 'https://www.youtube.com/embed/9R9mr5BPo9I', dl: 'https://filecrypt.cc/Container/8F9A0B1C2D.html' }
-        };
-    </script>
+        const dlLink = document.getElementById('dl_link');
+        const dlLink2 = document.getElementById('dl_link2');
+        const dlLink3 = document.getElementById('dl_link3');
+        const dlLink4 = document.getElementById('dl_link4');
+
+        if (game.dl) { dlLink.href = game.dl; dlLink.style.display = 'inline-block'; } else { dlLink.style.display = 'none'; }
+        if (game.dl2) { dlLink2.href = game.dl2; dlLink2.style.display = 'inline-block'; } else { dlLink2.style.display = 'none'; }
+        if (game.dl3) { dlLink3.href = game.dl3; dlLink3.style.display = 'inline-block'; } else { dlLink3.style.display = 'none'; }
+        if (game.dl4) { dlLink4.href = game.dl4; dlLink4.style.display = 'inline-block'; } else { dlLink4.style.display = 'none'; }
+
+        const profileSection = document.getElementById('profile_section');
+        profileSection.style.display = 'block';
+        profileSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    const games = {
+        'dying_light_fe': { title: 'Dying Light The Following Enhanced Edition', video: 'https://www.youtube.com/embed/vD1ye7rOgOA', dl: 'https://filecrypt.cc/Container/6F6CE1333F.html', dl2: 'https://filecrypt.cc/Container/1A46A8D81B.html' },
+        'axis_unseen': { title: 'The Axis Unseen', video: 'https://www.youtube.com/embed/c01jeeUClZk', dl: 'https://filecrypt.cc/Container/16C9E00650.html' },
+        'thing_remastered': { title: 'The Thing Remastered', video: 'https://www.youtube.com/embed/2esR0yLifTk', dl: 'https://filecrypt.cc/Container/DDA20F2BC0.html' },
+        'alan_wake_2_de': { title: 'Alan Wake 2 Deluxe Edition', video: 'https://www.youtube.com/embed/VvI4cJK4Ug0', dl: 'https://1fichier.com/?v95zqyba7bw2qnv3to14' },
+        'sgw_contracts_2': { title: 'Sniper Ghost Warrior Contracts 2', video: 'https://www.youtube.com/embed/x9UFEQim5fA', dl: 'https://filecrypt.cc/Container/4CB69AF690.html' },
+        'hl2_20th_anniv': { title: 'Half Life 2 20th Anniversary', video: 'https://www.youtube.com/embed/5FZ49Ou8zAE', dl: 'https://filecrypt.cc/Container/D764020A3A.html' },
+        'metro_awakening': { title: 'Metro Awakening', video: 'https://www.youtube.com/embed/26E9Wy5N6no', dl: 'https://1fichier.com/?8zg8ayecz183vt7ezgzn' },
+        'gta_trilogy_de': { title: 'Grand Theft Auto The Trilogy – The Definitive Edition', video: 'https://www.youtube.com/embed/-rljKaAGPsc', dl: 'https://1fichier.com/?lqhtris8qtocshbbecbx' },
+        'max_payne_3': { title: 'Max Payne 3', video: 'https://www.youtube.com/embed/4Uc_dbG7MR8', dl: 'https://1fichier.com/?jentzrpp0c4w93cfpm0e&af=3506913' },
+        'asv': { title: 'Alien Shooter: Vengeance', video: 'https://www.youtube.com/embed/ACVLiM7OmaI', dl: 'https://pixeldrain.com/u/tKndRgP9' },
+        'zs2': { title: 'Zombie Shooter 2', video: 'https://www.youtube.com/embed/YhMCWhnABN8', dl: 'https://pixeldrain.com/u/jAjo27A3' },
+        'as2r': { title: 'Alien Shooter 2: Reloaded', video: 'https://www.youtube.com/embed/x9o284YDetQ', dl: 'https://megaup.net/d1a512ef48369657acaea7ab17b981bd/AlienShoot2ReloadedGOG.rar' },
+        'asrev': { title: 'Alien Shooter: Revisited', video: 'https://www.youtube.com/embed/IMZE9O9b_2c', dl: 'https://gofile.io' },
+        'as2ne': { title: 'Alien Shooter 2 - New Era', video: 'https://www.youtube.com/embed/iiiLRqRVgbA', dl: 'https://www.filecrypt.cc/Container/65B6DDFC2C.html' },
+        'as': { title: 'Alien Shooter', video: 'https://www.youtube.com/embed/embed_sample', dl: 'https://pixeldrain.com' }
+    };
+</script>
+
 </body>
 </html>
+
