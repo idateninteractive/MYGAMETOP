@@ -361,6 +361,7 @@ img {
                     <!-- Games Grid Container -->
                     <div class="game_grid" id="game_grid">
                         <!-- Newly Added Games -->
+                        <div class="game_card" onclick="showProfile('as2_legend', event)"><div class="game_img" style="background-image: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1007400/capsule_616x353.jpg?t=1700734144');"></div>Alien Shooter 2 – The Legend</div>
                         <div class="game_card" onclick="showProfile('dying_light_fe', event)"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/a7/Dying_Light_The_Following_cover_art.jpg');"></div>Dying Light The Following Enhanced Edition</div>
                         <div class="game_card" onclick="showProfile('axis_unseen', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1Q2ZZTF0o5YKfwKrrv3ns63dD-cvbMps4hx4mJr9SzsyOsblwBVOWOxI&s=10');"></div>The Axis Unseen</div>
                         <div class="game_card" onclick="showProfile('thing_remastered', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkVZtplMZu_FP1HibfRRMmJOD3Kn2yOxHuWsm13Tp5ig&s=10');"></div>The Thing Remastered</div>
@@ -389,10 +390,10 @@ img {
                     <div class="moduletable">
                         <h3>Top Games</h3>
                         <table class="top-games-table" cellspacing="0" cellpadding="0">
-                            <tr><td><a href="#" onclick="showProfile('zs2', event); return false;">1. Zombie Shooter 2</a></td></tr>
-                            <tr><td><a href="#" onclick="showProfile('asv', event); return false;">2. Alien Shooter 2</a></td></tr>
-                            <tr><td><a href="#" onclick="showProfile('as2r', event); return false;">3. Alien Shooter 2: Reloaded</a></td></tr>
-                            <tr><td><a href="#" onclick="showProfile('asrev', event); return false;">4. Alien Shooter - Revisited</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('as2_legend', event); return false;">1. Alien Shooter 2 – The Legend</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('zs2', event); return false;">2. Zombie Shooter 2</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('asv', event); return false;">3. Alien Shooter 2</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('as2r', event); return false;">4. Alien Shooter 2: Reloaded</a></td></tr>
                             <tr><td><a href="#" onclick="showProfile('dying_light_fe', event); return false;">5. Dying Light Enhanced Edition</a></td></tr>
                         </table>
                     </div>
@@ -499,6 +500,7 @@ img {
     }
 
     const games = {
+        'as2_legend': { title: 'Alien Shooter 2 – The Legend', video: 'https://www.youtube.com/embed/WE-gJupxM1c', dl: 'https://gofile.io/d/VhgRXr', dl2: 'https://vik1ngfile.site/f/l2hY7nfGxV' },
         'dying_light_fe': { title: 'Dying Light The Following Enhanced Edition', video: 'https://www.youtube.com/embed/vD1ye7rOgOA', dl: 'https://filecrypt.cc/Container/6F6CE1333F.html', dl2: 'https://filecrypt.cc/Container/1A46A8D81B.html' },
         'axis_unseen': { title: 'The Axis Unseen', video: 'https://www.youtube.com/embed/c01jeeUClZk', dl: 'https://filecrypt.cc/Container/16C9E00650.html' },
         'thing_remastered': { title: 'The Thing Remastered', video: 'https://www.youtube.com/embed/2esR0yLifTk', dl: 'https://filecrypt.cc/Container/DDA20F2BC0.html' },
