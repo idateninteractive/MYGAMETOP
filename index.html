@@ -360,7 +360,9 @@ img {
 
                     <!-- Games Grid Container -->
                     <div class="game_grid" id="game_grid">
-                        <!-- Newly Added Games -->
+                        <!-- Newly Added Games (Including Conscription & Last Hope) -->
+                        <div class="game_card" onclick="showProfile('as2_conscription', event)"><div class="game_img" style="background-image: url('https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/211010/header.jpg?t=1731075169');"></div>Alien Shooter 2 Conscription</div>
+                        <div class="game_card" onclick="showProfile('as_lasthope', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi1n6pedVp-swSjbEIRBpggI5xQLJXyMYQ68iP6_Gq6ArlQdLY3S0qR20&s=10');"></div>Alien Shooter – Last Hope</div>
                         <div class="game_card" onclick="showProfile('as2_legend', event)"><div class="game_img" style="background-image: url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1007400/capsule_616x353.jpg?t=1700734144');"></div>Alien Shooter 2 – The Legend</div>
                         <div class="game_card" onclick="showProfile('dying_light_fe', event)"><div class="game_img" style="background-image: url('https://upload.wikimedia.org/wikipedia/en/a/a7/Dying_Light_The_Following_cover_art.jpg');"></div>Dying Light The Following Enhanced Edition</div>
                         <div class="game_card" onclick="showProfile('axis_unseen', event)"><div class="game_img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1Q2ZZTF0o5YKfwKrrv3ns63dD-cvbMps4hx4mJr9SzsyOsblwBVOWOxI&s=10');"></div>The Axis Unseen</div>
@@ -390,11 +392,11 @@ img {
                     <div class="moduletable">
                         <h3>Top Games</h3>
                         <table class="top-games-table" cellspacing="0" cellpadding="0">
-                            <tr><td><a href="#" onclick="showProfile('as2_legend', event); return false;">1. Alien Shooter 2 – The Legend</a></td></tr>
-                            <tr><td><a href="#" onclick="showProfile('zs2', event); return false;">2. Zombie Shooter 2</a></td></tr>
-                            <tr><td><a href="#" onclick="showProfile('asv', event); return false;">3. Alien Shooter 2</a></td></tr>
-                            <tr><td><a href="#" onclick="showProfile('as2r', event); return false;">4. Alien Shooter 2: Reloaded</a></td></tr>
-                            <tr><td><a href="#" onclick="showProfile('dying_light_fe', event); return false;">5. Dying Light Enhanced Edition</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('as2_conscription', event); return false;">1. Alien Shooter 2 Conscription</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('as_lasthope', event); return false;">2. Alien Shooter – Last Hope</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('as2_legend', event); return false;">3. Alien Shooter 2 – The Legend</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('zs2', event); return false;">4. Zombie Shooter 2</a></td></tr>
+                            <tr><td><a href="#" onclick="showProfile('as2r', event); return false;">5. Alien Shooter 2: Reloaded</a></td></tr>
                         </table>
                     </div>
 
@@ -500,6 +502,8 @@ img {
     }
 
     const games = {
+        'as2_conscription': { title: 'Alien Shooter 2 Conscription', video: 'https://www.youtube.com/embed/dJOW7iExzFA', dl: 'https://gofile.io/d/w4m77S', dl2: 'https://vik1ngfile.site/f/QJe8oGiXr3' },
+        'as_lasthope': { title: 'Alien Shooter – Last Hope', video: 'https://www.youtube.com/embed/NU-j66QMVvc', dl: 'https://gofile.io/d/5MjTzP', dl2: 'https://vik1ngfile.site/f/ju1jxk9chC' },
         'as2_legend': { title: 'Alien Shooter 2 – The Legend', video: 'https://www.youtube.com/embed/WE-gJupxM1c', dl: 'https://gofile.io/d/VhgRXr', dl2: 'https://vik1ngfile.site/f/l2hY7nfGxV' },
         'dying_light_fe': { title: 'Dying Light The Following Enhanced Edition', video: 'https://www.youtube.com/embed/vD1ye7rOgOA', dl: 'https://filecrypt.cc/Container/6F6CE1333F.html', dl2: 'https://filecrypt.cc/Container/1A46A8D81B.html' },
         'axis_unseen': { title: 'The Axis Unseen', video: 'https://www.youtube.com/embed/c01jeeUClZk', dl: 'https://filecrypt.cc/Container/16C9E00650.html' },
