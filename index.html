@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouLife - 2006 Classic</title>
+    
+    <!-- Supabase JS Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         body { background-color: #FFFFFF; color: #000000; font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; }
         
-        /* Header & Navigation Fixes for Compact Spacing */
+        /* Header & Navigation Compact Spacing */
         #header { background-color: #FFFFFF; border-bottom: 3px solid #003366; padding: 8px 0; }
         .header-inner { width: 950px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
         
@@ -227,6 +231,14 @@
     </footer>
 
     <script>
+        // Supabase Initialization
+        const SUPABASE_URL = 'https://ilkvrwgjkyvbpwghmevc.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_H-95RBQRVJtMvBubg0p7bQ_dwLO6oIG';
+        
+        // Client instance ready to use for database queries or auth
+        const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+        // View Switcher Function
         function switchView(viewName) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-tabs-inner a').forEach(el => el.classList.remove('active'));
