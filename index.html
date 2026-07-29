@@ -1,390 +1,238 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>Official site of Sigma Team company - Home</title>
-<meta name="description" content="Official site of Sigma Team company. Games development, games publishing, online distribution. Alien Shooter, Zombie Shooter, etc."/>
-<style>
-/* Reset & Base Styles */
-* { box-sizing: border-box; }
-body {
-    background-color: #1a1a1a;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1920&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    color: #cccccc;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    margin: 0;
-    padding: 0;
-    background-attachment: fixed;
-}
-a {
-    color: #e6b800;
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: underline;
-    color: #ffcc00;
-}
-img {
-    border: none;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouLife - 2006 Classic</title>
+    <style>
+        body { background-color: #FFFFFF; color: #000000; font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; }
+        #header { background-color: #FFFFFF; border-bottom: 3px solid #003366; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; text-decoration: none; color: #000000; cursor: pointer; }
+        .logo span { background-color: #CC0000; color: #FFFFFF; padding: 2px 5px; margin-left: 2px; letter-spacing: -1px; }
+        .search-box form { display: flex; gap: 4px; }
+        .search-box input { padding: 3px 5px; font-size: 12px; border: 1px solid #7f9db9; width: 250px; }
+        .search-box button { background-color: #EEEEEE; border: 1px solid #999999; font-size: 12px; padding: 2px 8px; cursor: pointer; font-weight: bold; }
+        .top-links { font-size: 11px; text-align: right; }
+        .top-links a { color: #0033CC; text-decoration: none; margin-left: 8px; cursor: pointer; }
+        
+        .nav-tabs { background-color: #E5ECF9; border-bottom: 1px solid #336699; padding: 5px 20px; display: flex; gap: 15px; font-weight: bold; }
+        .nav-tabs a { color: #003366; text-decoration: none; padding: 3px 8px; cursor: pointer; }
+        .nav-tabs a.active, .nav-tabs a:hover { background-color: #336699; color: #FFFFFF; }
+        
+        .container { width: 950px; margin: 15px auto; }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
 
-/* Wrapper */
-.wrapper {
-    width: 980px;
-    margin: 0 auto;
-    background-color: rgba(21, 21, 21, 0.95);
-    box-shadow: 0 0 20px rgba(0,0,0,0.8);
-    border: 1px solid #333333;
-}
-#inner-wrapper {
-    padding: 10px;
-}
+        /* Box & Grids */
+        .box { border: 1px solid #999999; background-color: #FFFFFF; margin-bottom: 15px; }
+        .box-header { background-color: #E5ECF9; border-bottom: 1px solid #999999; padding: 6px 10px; font-weight: bold; color: #003366; display: flex; justify-content: space-between; align-items: center; }
+        .box-content { padding: 10px; }
+        
+        .image-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .image-item { background-color: #F8F8F8; border: 1px solid #CCCCCC; padding: 8px; text-align: left; cursor: pointer; }
+        .image-container { position: relative; width: 100%; aspect-ratio: 4/3; background-color: #000000; border: 1px solid #999999; margin-bottom: 6px; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .image-title { font-weight: bold; color: #0033CC; text-decoration: none; font-size: 12px; display: block; margin-bottom: 4px; cursor: pointer; }
+        .image-title:hover { text-decoration: underline; }
+        .image-desc { font-size: 11px; color: #333333; margin-bottom: 6px; line-height: 1.3; }
+        .image-meta { font-size: 10px; color: #666666; }
+        .ratings { color: #FF9900; font-size: 11px; margin-bottom: 4px; }
 
-/* Header */
-#header {
-    height: 120px;
-    background: url('https://cdn.phototourl.com/free/2026-07-29-96c88ff8-6694-49f8-a8b5-b3050d8e8366.png') no-repeat center center;
-    background-size: cover;
-    position: relative;
-    border-bottom: 2px solid #b30000;
-}
-#emblem {
-    position: relative;
-    height: 100%;
-}
-#logo-area {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-#searchbox {
-    position: absolute;
-    top: 25px;
-    right: 20px;
-}
-#searchbox input[type="text"] {
-    background: #222;
-    border: 1px solid #444;
-    color: #aaa;
-    padding: 4px 8px;
-    width: 160px;
-    font-size: 11px;
-}
+        /* Photo View Layout */
+        .photo-layout { display: flex; gap: 15px; }
+        .left-column { width: 630px; }
+        .right-column { width: 305px; }
+        .main-image-container { background-color: #000000; border: 1px solid #999999; text-align: center; padding: 10px; }
+        .main-image-container img { max-width: 100%; height: auto; border: 1px solid #444444; }
+        .image-title-header { font-size: 16px; font-weight: bold; color: #003366; margin: 10px 0 5px 0; }
+        
+        .uploader-box { background-color: #F8F8F8; border: 1px solid #CCCCCC; padding: 10px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; }
+        .uploader-info { display: flex; align-items: center; gap: 10px; }
+        .uploader-logo { width: 45px; height: 45px; background-color: #CCCCCC; border: 1px solid #999999; object-fit: cover; cursor: pointer; }
+        .uploader-logo:hover { opacity: 0.8; }
+        .uploader-details a { font-weight: bold; color: #0033CC; text-decoration: none; font-size: 13px; cursor: pointer; }
+        .subscribers-count { font-size: 11px; color: #666666; margin-top: 2px; }
+        .subscribe-btn { background-color: #CC0000; color: #FFFFFF; border: 1px solid #990000; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        
+        .image-details-box { background-color: #E5ECF9; border: 1px solid #999999; padding: 10px; margin-top: 10px; font-size: 11px; line-height: 1.4; }
+        .image-details-box p { margin: 4px 0; }
 
-/* Menubar & Uniform Buttons Style */
-#menubar {
-    background: #151515;
-    height: 42px;
-    margin-bottom: 15px;
-    border-top: 1px solid #333;
-    border-bottom: 2px solid #333;
-}
-.mainmenu {
-    list-style: none;
-    margin: 0;
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    height: 100%;
-    overflow-x: auto;
-}
-.mainmenu li {
-    position: relative;
-}
-.mainmenu li a {
-    display: inline-block;
-    width: 72px;
-    text-align: center;
-    background: #1c1c1c;
-    border: 1px solid #333333;
-    color: #cccccc;
-    padding: 5px 2px;
-    font-size: 10px;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 2px;
-}
-.mainmenu li a:hover {
-    background: #b30000;
-    color: #ffffff;
-    border-color: #ff3333;
-    text-decoration: none;
-    text-shadow: 0 0 3px #ff0000;
-}
+        /* Profile View Layout */
+        .profile-banner { background-color: #003366; color: #FFFFFF; padding: 15px 20px; border: 1px solid #999999; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .profile-main-info { display: flex; align-items: center; gap: 15px; }
+        .profile-logo-large { width: 70px; height: 70px; background-color: #FFFFFF; border: 2px solid #FFFFFF; object-fit: cover; }
+        .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; }
+        .profile-title-name p { margin: 0; font-size: 13px; color: #E5ECF9; }
+        .profile-stats { text-align: right; font-size: 12px; background-color: rgba(0,0,0,0.2); padding: 8px 12px; border: 1px solid #336699; }
+        
+        .side-item { display: flex; gap: 8px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted #CCCCCC; }
+        .side-thumb { width: 100px; height: 75px; background-color: #000; border: 1px solid #999999; object-fit: cover; flex-shrink: 0; }
+        .side-info { font-size: 11px; }
+        .side-title { font-weight: bold; color: #0033CC; text-decoration: none; display: block; margin-bottom: 2px; cursor: pointer; }
 
-/* Main Layout Table */
-.maincol {
-    vertical-align: top;
-    padding-right: 15px;
-}
-.rightcol {
-    width: 260px;
-    vertical-align: top;
-    background: #111111;
-    border-left: 1px solid #282828;
-    padding: 10px;
-}
-
-/* Modules & Boxes */
-.moduletable h3 {
-    color: #ff3333;
-    font-size: 14px;
-    border-bottom: 1px dashed #444;
-    padding-bottom: 5px;
-    margin-top: 0;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
-/* Content Area */
-.pathway {
-    color: #888;
-    font-size: 11px;
-    margin-bottom: 10px;
-    display: block;
-}
-.componentheading {
-    font-size: 18px;
-    color: #ffffff;
-    font-weight: bold;
-    margin-bottom: 15px;
-    border-left: 4px solid #b30000;
-    padding-left: 10px;
-}
-.contentpaneopen {
-    width: 100%;
-    margin-bottom: 15px;
-    background: #181818;
-    border: 1px solid #2a2a2a;
-    padding: 10px;
-}
-.contentheading a {
-    font-size: 15px;
-    color: #ff4d4d;
-    font-weight: bold;
-}
-.contentheading a:hover {
-    color: #ff8080;
-}
-.article-img {
-    float: left;
-    margin: 5px 15px 5px 0;
-    border: 1px solid #444;
-    background: #000;
-}
-.readon {
-    display: inline-block;
-    background: #b30000;
-    color: #fff;
-    padding: 3px 8px;
-    font-size: 11px;
-    font-weight: bold;
-    margin-top: 8px;
-    border-radius: 2px;
-}
-.readon:hover {
-    background: #e60000;
-    color: #fff;
-    text-decoration: none;
-}
-
-/* Right Column Widgets */
-.rightcol .moduletable {
-    background: #161616;
-    border: 1px solid #2c2c2c;
-    padding: 10px;
-    margin-bottom: 15px;
-}
-.top-games-table {
-    width: 100%;
-    text-align: center;
-}
-.top-games-table td {
-    padding: 8px 0;
-    border-bottom: 1px dotted #333;
-}
-
-/* Footer */
-#footer {
-    text-align: center;
-    padding: 20px;
-    color: #777;
-    font-size: 11px;
-    border-top: 1px solid #333;
-    margin-top: 20px;
-    background: #0b0b0b;
-}
-</style>
+        /* Footer */
+        footer { text-align: center; font-size: 11px; color: #666666; margin-top: 30px; border-top: 1px solid #CCCCCC; padding-top: 10px; }
+        footer a { color: #0033CC; text-decoration: none; margin: 0 5px; }
+    </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <div id="inner-wrapper">
-        
-        <!-- Header -->
-        <div id="header">
-            <div id="emblem">
-                <div id="logo-area">
-                    <a href="#"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='60'></svg>" alt="Logo"/></a>
+    <div id="header">
+        <div>
+            <a onclick="switchView('home')" class="logo">You<span>Life</span></a>
+            <span style="font-size: 11px; color: #666666; margin-left: 5px;"><i>Share Your Images.®</i></span>
+        </div>
+        <div class="search-box">
+            <form onsubmit="event.preventDefault();">
+                <input type="text" placeholder="Search wallpapers...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="top-links">
+            <a style="font-weight: bold; color: #CC0000;">Upload</a> | 
+            <a onclick="switchView('home')">Home</a> | 
+            <a onclick="switchView('profile')">My Account</a>
+        </div>
+    </div>
+
+    <div class="nav-tabs">
+        <a id="tab-home" class="active" onclick="switchView('home')">Home</a>
+        <a id="tab-images" onclick="switchView('photo')">Images</a>
+        <a id="tab-profile" onclick="switchView('profile')">Profile</a>
+    </div>
+
+    <div class="container">
+
+        <!-- 1. HOME VIEW -->
+        <div id="view-home" class="view-section active">
+            <div class="box">
+                <div class="box-header">
+                    <span>Featured Images</span>
+                    <a style="font-size: 11px; color: #0033CC; text-decoration: none; cursor: pointer;">See More &raquo;</a>
                 </div>
-                <div id="searchbox">
-                    <form action="#" method="get">
-                        <input type="text" name="searchword" value="search..." onblur="if(this.value=='') this.value='search...';" onfocus="if(this.value=='search...') this.value='';"/>
-                    </form>
+                <div class="box-content">
+                    <div class="image-grid">
+                        <div class="image-item" onclick="switchView('photo')">
+                            <div class="image-container">
+                                <img src="https://wallpapercave.com/wp/wp4053989.jpg" alt="Life Wallpaper">
+                            </div>
+                            <span class="image-title">Life</span>
+                            <div class="image-desc">An aesthetic wallpaper representing the true essence and journey of Life.</div>
+                            <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (999 ratings)</div>
+                            <div class="image-meta">Views: 9,999 | By: LifeUser</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Menubar with Uniform Dark Buttons -->
-        <div id="menubar">
-            <ul class="mainmenu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">News</a></li>
-                <li><a href="#">Today</a></li>
-                <li><a href="#">Week</a></li>
-                <li><a href="#">Month</a></li>
-                <li><a href="#">Year</a></li>
-            </ul>
+        <!-- 2. PHOTO / DETAIL VIEW -->
+        <div id="view-photo" class="view-section">
+            <div class="photo-layout">
+                <div class="left-column">
+                    <div class="image-title-header">Life</div>
+                    
+                    <div class="main-image-container">
+                        <img src="https://wallpapercave.com/wp/wp4053989.jpg" alt="Life Wallpaper">
+                    </div>
+
+                    <div class="uploader-box">
+                        <div class="uploader-info">
+                            <img src="https://picsum.photos/50/50?random=42" alt="Random Logo" class="uploader-logo" onclick="switchView('profile')" title="Click to view profile">
+                            <div class="uploader-details">
+                                <a onclick="switchView('profile')">LifeUser</a>
+                                <div class="subscribers-count">LIFE 9999</div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="subscribe-btn">Subscribe</button>
+                        </div>
+                    </div>
+
+                    <div class="image-details-box">
+                        <p><b>Description:</b> An aesthetic wallpaper representing the true essence and journey of Life.</p>
+                        <p><b>Added:</b> 2 days ago | <b>Views:</b> 9,999 | <b>Ratings:</b> <span class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</span> (999 ratings)</p>
+                    </div>
+                </div>
+
+                <div class="right-column">
+                    <div class="box">
+                        <div class="box-header">Related Wallpapers</div>
+                        <div class="box-content">
+                            <div class="side-item">
+                                <img src="https://picsum.photos/100/75?random=2" alt="Thumb" class="side-thumb">
+                                <div class="side-info">
+                                    <span class="side-title" onclick="switchView('photo')">Frozen Grand Central Flashmob</span>
+                                    <div class="side-meta">By: ImprovEverywhere</div>
+                                    <div class="side-meta">Views: 45,210</div>
+                                    <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Main Content Table Layout -->
-        <table style="width: 100%; border-collapse: collapse;">
-            <tr>
-                <td class="maincol">
+        <!-- 3. PROFILE VIEW -->
+        <div id="view-profile" class="view-section">
+            <div class="profile-banner">
+                <div class="profile-main-info">
+                    <img src="https://picsum.photos/70/70?random=42" alt="Profile Logo" class="profile-logo-large">
+                    <div class="profile-title-name">
+                        <h1>LifeUser</h1>
+                        <p><b>Title:</b> Life | Official Wallpaper Channel</p>
+                    </div>
+                </div>
+                <div class="profile-stats">
+                    <div><b>LIFE 1999</b></div>
+                    <div>Subscribers: 9,999</div>
+                    <div>Total Views: 45,200</div>
+                </div>
+            </div>
 
-                    <!-- Pathway -->
-                    <span class="pathway">Home</span>
-
-                    <!-- Main Heading -->
-                    <div class="componentheading">Welcome to the official site of Sigma Team company!</div>
-
-                    <!-- Blog Articles Grid -->
-                    <div class="contentpaneopen">
-                        <div class="contentheading">
-                            <a href="#">Zombie Shooter 2</a>
+            <div class="box">
+                <div class="box-header">Uploads by LifeUser</div>
+                <div class="box-content">
+                    <div class="image-grid">
+                        <div class="image-item" onclick="switchView('photo')">
+                            <div class="image-container">
+                                <img src="https://wallpapercave.com/wp/wp4053989.jpg" alt="Life Wallpaper">
+                            </div>
+                            <span class="image-title">Life</span>
+                            <div class="image-desc">An aesthetic wallpaper representing the true essence and journey of Life.</div>
+                            <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (999 ratings)</div>
                         </div>
-                        <div style="margin-top: 10px; overflow: hidden;">
-                            <div class="article-img" style="width: 120px; height: 90px; background: #222; display: flex; align-items: center; justify-content: center; color: #555; font-weight: bold;">ZS2 120x90</div>
-                            <p>Zombie Shooter 2 is a unique blend of two game genres - Action and RPG. Every player can choose a character to the liking, get experience to develop skills, earn money and spend it at weapons, medications and useful devices. All of this will be used against thousands of enemies.</p>
-                        </div>
-                        <a href="#" class="readon">Read more...</a>
                     </div>
-
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
-                        <tr>
-                            <td style="width: 50%; vertical-align: top; padding-right: 8px;">
-                                <div class="contentpaneopen" style="margin-bottom: 0;">
-                                    <div class="contentheading">
-                                        <a href="#">Alien Shooter 2</a>
-                                    </div>
-                                    <div style="margin-top: 10px; overflow: hidden;">
-                                        <div class="article-img" style="width: 120px; height: 90px; background: #222; display: flex; align-items: center; justify-content: center; color: #555; font-weight: bold;">AS2 120x90</div>
-                                        <p>Alien Shooter 2 (Alien Shooter - Vengeance) - is a large-scale sequel to the first part of Alien Shooter. This is the unique alloy of arcade action and RPG elements...</p>
-                                    </div>
-                                    <a href="#" class="readon">Read more...</a>
-                                </div>
-                            </td>
-                            <td style="width: 50%; vertical-align: top; padding-left: 8px;">
-                                <div class="contentpaneopen" style="margin-bottom: 0;">
-                                    <div class="contentheading">
-                                        <a href="#">Zombie Shooter</a>
-                                    </div>
-                                    <div style="margin-top: 10px; overflow: hidden;">
-                                        <div class="article-img" style="width: 120px; height: 90px; background: #222; display: flex; align-items: center; justify-content: center; color: #555; font-weight: bold;">ZS 120x90</div>
-                                        <p>The human race is in danger again. This time scientists could not cope the imminent threat and became monsters themselves. Crowds of zombie people filled the secret research base...</p>
-                                    </div>
-                                    <a href="#" class="readon">Read more...</a>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-
-                </td>
-
-                <!-- Right Sidebar -->
-                <td class="rightcol">
-                    
-                    <!-- Top Games Widget -->
-                    <div class="moduletable">
-                        <h3>Top Games</h3>
-                        <table class="top-games-table" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td>
-                                    <div style="width: 60px; height: 40px; background: #222; margin: 0 auto 5px auto; display: flex; align-items: center; justify-content: center; color: #666; font-size: 10px;">60x40</div>
-                                    <a href="#">1. Zombie Shooter 2</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div style="width: 60px; height: 40px; background: #222; margin: 0 auto 5px auto; display: flex; align-items: center; justify-content: center; color: #666; font-size: 10px;">60x40</div>
-                                    <a href="#">2. Alien Shooter 2</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div style="width: 60px; height: 40px; background: #222; margin: 0 auto 5px auto; display: flex; align-items: center; justify-content: center; color: #666; font-size: 10px;">60x40</div>
-                                    <a href="#">3. Zombie Shooter</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div style="width: 60px; height: 40px; background: #222; margin: 0 auto 5px auto; display: flex; align-items: center; justify-content: center; color: #666; font-size: 10px;">60x40</div>
-                                    <a href="#">4. Alien Shooter - Revisited</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div style="width: 60px; height: 40px; background: #222; margin: 0 auto 5px auto; display: flex; align-items: center; justify-content: center; color: #666; font-size: 10px;">60x40</div>
-                                    <a href="#">5. Alien Shooter - Fight for Life</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <!-- Polls Widget -->
-                    <div class="moduletable">
-                        <h3>Polls</h3>
-                        <p style="font-weight: bold; color: #ddd; margin-bottom: 8px;">When playing, you prefer to fight against:</p>
-                        <form action="#" method="post" style="font-size: 11px; line-height: 1.6;">
-                            <label><input type="radio" name="poll" value="aliens"/> Aliens</label><br/>
-                            <label><input type="radio" name="poll" value="zombies"/> Zombies</label><br/>
-                            <label><input type="radio" name="poll" value="real"/> Real enemies</label><br/>
-                            <label><input type="radio" name="poll" value="fantasy"/> Fantasy creatures</label><br/>
-                            <label><input type="radio" name="poll" value="rules"/> Robots/cyborgs</label><br/>
-                            <label><input type="radio" name="poll" value="animals"/> Animals/Insects</label><br/>
-                            <label><input type="radio" name="poll" value="other"/> Other</label><br/>
-                            <button type="button" style="background: #b30000; color: #fff; border: none; padding: 4px 12px; font-weight: bold; margin-top: 8px; cursor: pointer;">Vote</button>
-                        </form>
-                    </div>
-
-                    <!-- Newsletter Widget -->
-                    <div class="moduletable">
-                        <h3>Newsletter!</h3>
-                        <p style="font-size: 11px; color: #aaa; margin-bottom: 8px;">Sign up for the Sigma Newsletter to keep up to date on the latest games and our news!</p>
-                        <form action="#" method="post" style="font-size: 11px;">
-                            <input type="text" placeholder="E-mail" style="width: 100%; background: #222; border: 1px solid #444; color: #fff; padding: 4px; margin-bottom: 6px;"/><br/>
-                            <label><input type="radio" name="task" checked="checked"/> Subscribe</label>&nbsp;&nbsp;
-                            <label><input type="radio" name="task"/> Unsubscribe</label><br/>
-                            <button type="submit" style="background: #b30000; color: #fff; border: none; padding: 3px 10px; font-weight: bold; margin-top: 6px; cursor: pointer;">Go!</button>
-                        </form>
-                    </div>
-
-                </td>
-            </tr>
-        </table>
-
-        <!-- Footer -->
-        <div id="footer">
-            Copyright 2003 - 2009 Sigma Team. All Rights Reserved
+                </div>
+            </div>
         </div>
 
     </div>
-</div>
+
+    <footer>
+        <p>&copy; 2006 YouLife, Inc. &bull; <a href="#">About Us</a> &bull; <a href="#">Terms of Use</a> &bull; <a href="#">Privacy Policy</a></p>
+    </footer>
+
+    <script>
+        function switchView(viewName) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-tabs a').forEach(el => el.classList.remove('active'));
+            
+            if(viewName === 'home') {
+                document.getElementById('view-home').classList.add('active');
+                document.getElementById('tab-home').classList.add('active');
+            } else if(viewName === 'photo') {
+                document.getElementById('view-photo').classList.add('active');
+                document.getElementById('tab-images').classList.add('active');
+            } else if(viewName === 'profile') {
+                document.getElementById('view-profile').classList.add('active');
+                document.getElementById('tab-profile').classList.add('active');
+            }
+            window.scrollTo(0, 0);
+        }
+    </script>
 
 </body>
 </html>
