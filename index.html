@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouLife - 2006 Image Sharing Community</title>
+    <title>Life line - 2006 Image Sharing Community</title>
     
     <!-- Firebase App & Firestore CDN (Compat version) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -16,8 +16,10 @@
         #header { background-color: #FFFFFF; border-bottom: 3px solid #003366; padding: 8px 0; }
         .header-inner { width: 950px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
         
-        .logo { font-size: 24px; font-weight: bold; text-decoration: none; color: #000000; cursor: pointer; }
-        .logo span { background-color: #CC0000; color: #FFFFFF; padding: 2px 5px; margin-left: 2px; letter-spacing: -1px; }
+        .logo { text-decoration: none; display: inline-flex; align-items: center; cursor: pointer; font-size: 20px; font-weight: bold; font-family: Arial, sans-serif; }
+        .logo:hover { text-decoration: none; }
+        .logo-life { color: #003366; }
+        .logo-line { background-color: #CC0000; color: #FFFFFF; padding: 1px 5px; margin-left: 2px; font-weight: bold; }
         
         .search-box form { display: flex; gap: 4px; }
         .search-box input { padding: 3px 5px; font-size: 12px; border: 1px solid #7f9db9; width: 220px; }
@@ -125,7 +127,9 @@
     <div id="header">
         <div class="header-inner">
             <div>
-                <a onclick="switchView('home')" class="logo">You<span>Life</span></a>
+                <a onclick="switchView('home')" class="logo">
+                    <span class="logo-life">Life</span><span class="logo-line">line</span>
+                </a>
                 <span style="font-size: 11px; color: #666666; margin-left: 5px;"><i>Share Your Images.®</i></span>
             </div>
             <div class="search-box">
@@ -222,7 +226,7 @@
                                 <img src="https://picsum.photos/100/75?random=5" alt="Thumb" class="side-thumb">
                                 <div class="side-info">
                                     <span class="side-title" onclick="switchView('home')">Explore Community Uploads</span>
-                                    <div class="side-meta">YouLife Archives</div>
+                                    <div class="side-meta">Life line Archives</div>
                                     <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                                 </div>
                             </div>
@@ -235,10 +239,10 @@
         <!-- 3. UPLOAD SYSTEM VIEW -->
         <div id="view-upload" class="view-section">
             <div class="box" style="width: 550px; margin: 20px auto;">
-                <div class="box-header">Upload Your Image - YouLife (2006 Style)</div>
+                <div class="box-header">Upload Your Image - Life line (2006 Style)</div>
                 <div class="box-content" style="padding: 15px;">
                     <p style="margin-top: 0; color: #666666; font-size: 11px;">
-                        Share your favorite photographs, retro wallpapers or childhood memories with the YouLife community!
+                        Share your favorite photographs, retro wallpapers or childhood memories with the Life line community!
                     </p>
                     <form onsubmit="handleUploadImage(event)">
                         <table style="width: 100%; font-size: 11px;" cellpadding="5">
@@ -303,7 +307,7 @@
         <!-- 5. LOGIN / REGISTRATION VIEW -->
         <div id="view-login" class="view-section">
             <div class="box" style="width: 480px; margin: 20px auto;">
-                <div class="box-header">YouLife Member Login / Register</div>
+                <div class="box-header">Life line Member Login / Register</div>
                 <div class="box-content" style="padding: 15px;">
                     <p style="margin-top: 0; color: #666666; font-size: 11px;">
                         Enter your username and password to log in. If the username doesn't exist, a new account will be created automatically!
@@ -343,7 +347,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2006 YouLife, Inc. &bull; <a href="#">About Us</a> &bull; <a href="#">Terms of Use</a> &bull; <a href="#">Privacy Policy</a></p>
+        <p>&copy; 2006 Life line, Inc. &bull; <a href="#">About Us</a> &bull; <a href="#">Terms of Use</a> &bull; <a href="#">Privacy Policy</a></p>
     </footer>
 
     <script>
@@ -510,7 +514,6 @@
             const isMyProfile = (currentUser && currentUser.username === username);
             document.getElementById('profile-status-text').innerText = isMyProfile ? "Online (You)" : "Member";
             
-            // Show or hide clean edit pencils based on whether it's your own profile
             const editNameBtn = document.getElementById('edit-name-btn');
             const logoBadge = document.getElementById('profile-pencil-badge');
             if (editNameBtn) editNameBtn.style.display = isMyProfile ? 'inline-block' : 'none';
@@ -816,7 +819,6 @@
                       `;
                   });
                   
-                  // Update total views dynamically from user uploads
                   document.getElementById('profile-total-views').innerText = totalViews.toLocaleString();
                   grid.innerHTML = html || '<p style="color: #666666; font-size: 11px;">No active uploads found for this user.</p>';
               });
