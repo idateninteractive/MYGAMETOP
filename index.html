@@ -93,17 +93,17 @@
         .profile-banner { background-color: #003366; color: #FFFFFF; padding: 15px 20px; border: 1px solid #999999; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .profile-main-info { display: flex; align-items: center; gap: 15px; }
         
-        /* Profile Logo & Dark Pencil Badge */
+        /* Profile Logo & Clean Dark Pencil Icon (No Background Box) */
         .profile-logo-container { position: relative; display: inline-block; cursor: pointer; }
         .profile-logo-large { width: 70px; height: 70px; background-color: #FFFFFF; border: 2px solid #FFFFFF; object-fit: cover; display: block; }
-        .profile-pencil-badge { position: absolute; bottom: 0; right: 0; background-color: #222222; color: #FFFFFF; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; display: none; align-items: center; justify-content: center; border: 1.5px solid #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .profile-pencil-badge { position: absolute; bottom: -2px; right: -2px; color: #111111; font-size: 16px; font-weight: bold; display: none; text-shadow: 0 1px 2px #FFFFFF, 0 -1px 2px #FFFFFF, 1px 0 2px #FFFFFF, -1px 0 2px #FFFFFF; cursor: pointer; }
         
-        .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .profile-title-name p { margin: 0; font-size: 13px; color: #E5ECF9; }
         
-        /* Dark Pencil Icon for Name Edit */
-        .profile-name-pencil { background-color: #222222; color: #FFFFFF; font-size: 11px; width: 22px; height: 22px; border-radius: 50%; display: none; align-items: center; justify-content: center; border: 1.5px solid #FFFFFF; cursor: pointer; text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.6); }
-        .profile-name-pencil:hover { background-color: #000000; }
+        /* Clean Dark Pencil Icon for Name Edit (No Background Box) */
+        .profile-name-pencil { color: #FFFFFF; font-size: 15px; font-weight: bold; display: none; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; text-shadow: 0 1px 2px #000000; margin-left: 4px; }
+        .profile-name-pencil:hover { color: #FFCC00; }
 
         .profile-stats { text-align: right; font-size: 12px; background-color: rgba(0,0,0,0.2); padding: 8px 12px; border: 1px solid #336699; }
         
@@ -268,15 +268,15 @@
         <div id="view-profile" class="view-section">
             <div class="profile-banner">
                 <div class="profile-main-info">
-                    <!-- Profile Logo with Dark Pencil Badge -->
+                    <!-- Profile Logo with Clean Pencil Icon -->
                     <div class="profile-logo-container" onclick="checkAndEditLogo()" title="Click to edit profile logo">
                         <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=88" alt="Profile Logo" class="profile-logo-large">
-                        <div id="profile-pencil-badge" class="profile-pencil-badge">✏️</div>
+                        <div id="profile-pencil-badge" class="profile-pencil-badge" title="Edit Logo">✎</div>
                     </div>
                     <div class="profile-title-name">
                         <h1>
                             <span id="profile-name-display">Guest User</span>
-                            <span id="edit-name-btn" class="profile-name-pencil" onclick="editProfileDisplayName()" title="Edit Name">✏️</span>
+                            <span id="edit-name-btn" class="profile-name-pencil" onclick="editProfileDisplayName()" title="Edit Name">✎</span>
                         </h1>
                         <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Member</span></p>
                     </div>
@@ -507,11 +507,11 @@
             const isMyProfile = (currentUser && currentUser.username === username);
             document.getElementById('profile-status-text').innerText = isMyProfile ? "Online (You)" : "Member";
             
-            // Show or hide dark pencils depending on whether it's your own profile
+            // Show or hide clean edit pencils based on whether it's your own profile
             const editNameBtn = document.getElementById('edit-name-btn');
             const logoBadge = document.getElementById('profile-pencil-badge');
-            if (editNameBtn) editNameBtn.style.display = isMyProfile ? 'flex' : 'none';
-            if (logoBadge) logoBadge.style.display = isMyProfile ? 'flex' : 'none';
+            if (editNameBtn) editNameBtn.style.display = isMyProfile ? 'inline-block' : 'none';
+            if (logoBadge) logoBadge.style.display = isMyProfile ? 'inline-block' : 'none';
 
             document.getElementById('profile-uploads-header').innerText = `Uploads by ${displayName}`;
 
@@ -520,13 +520,29 @@
         }
 
         function checkAndEditLogo() {
-            if (currentUser && currentUser.username === currentProfileUsername) {
-                editProfileLogo();
+            if (!currentUser) {
+                alert("Please log in first to edit your profile logo!");
+                switchView('login');
+                return;
             }
+            if (currentUser.username !== currentProfileUsername) {
+                alert("Aap sirf apni hi profile ka logo edit kar sakte hain!");
+                return;
+            }
+            editProfileLogo();
         }
 
         async function editProfileDisplayName() {
-            if (!currentUser) return;
+            if (!currentUser) {
+                alert("Please log in first to edit your name!");
+                switchView('login');
+                return;
+            }
+            if (currentUser.username !== currentProfileUsername) {
+                alert("Aap sirf apna hi naam edit kar sakte hain!");
+                return;
+            }
+
             const currentDisplayName = document.getElementById('profile-name-display').innerText;
             const newName = prompt("Enter new Display Name:", currentDisplayName);
             
@@ -556,7 +572,12 @@
         }
 
         async function editProfileLogo() {
-            if (!currentUser) return;
+            if (!currentUser) {
+                alert("Please log in first to edit your logo!");
+                switchView('login');
+                return;
+            }
+
             const currentLogoUrl = document.getElementById('profile-avatar-img').src;
             const newUrl = prompt("Enter new Logo Direct URL:", currentLogoUrl);
             
