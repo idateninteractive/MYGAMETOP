@@ -93,7 +93,7 @@
         .profile-banner { background-color: #003366; color: #FFFFFF; padding: 15px 20px; border: 1px solid #999999; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .profile-main-info { display: flex; align-items: center; gap: 15px; }
         .profile-logo-large { width: 70px; height: 70px; background-color: #FFFFFF; border: 2px solid #FFFFFF; object-fit: cover; }
-        .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; display: flex; align-items: center; gap: 10px; }
+        .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .profile-title-name p { margin: 0; font-size: 13px; color: #E5ECF9; }
         .profile-stats { text-align: right; font-size: 12px; background-color: rgba(0,0,0,0.2); padding: 8px 12px; border: 1px solid #336699; }
         
@@ -263,6 +263,7 @@
                         <h1>
                             <span id="profile-name-display">Guest User</span>
                             <a id="edit-name-btn" onclick="editProfileDisplayName()" style="font-size: 11px; color: #E5ECF9; text-decoration: underline; cursor: pointer; display: none;">[Edit Name]</a>
+                            <a id="edit-logo-btn" onclick="editProfileLogo()" style="font-size: 11px; color: #E5ECF9; text-decoration: underline; cursor: pointer; display: none; margin-left: 6px;">[Edit Logo]</a>
                         </h1>
                         <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Member</span></p>
                     </div>
@@ -380,6 +381,7 @@
                     imageUrl: "https://cdn.phototourl.com/free/2026-07-30-4ffefc1e-3f65-4858-ba46-d037870fccaf.jpg",
                     uploader: "RetroGamer",
                     uploaderDisplayName: "RetroGamer",
+                    uploaderLogoUrl: "https://picsum.photos/50/50?random=88",
                     views: 5420,
                     likes: 420,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -438,8 +440,10 @@
                     
                     const uploaderUsername = data.uploader || "RetroGamer";
                     const uploaderDisplayName = data.uploaderDisplayName || uploaderUsername;
+                    const uploaderLogoUrl = data.uploaderLogoUrl || "https://picsum.photos/50/50?random=88";
 
                     document.getElementById('photo-uploader-name').innerText = uploaderDisplayName;
+                    document.getElementById('uploader-logo-img').src = uploaderLogoUrl;
                     document.getElementById('photo-uploader-name').setAttribute('onclick', `viewUserProfile('${uploaderUsername}')`);
                     document.getElementById('uploader-logo-img').setAttribute('onclick', `viewUserProfile('${uploaderUsername}')`);
 
@@ -477,25 +481,29 @@
 
             let gender = "N/A";
             let displayName = username;
+            let logoUrl = "https://picsum.photos/70/70?random=88";
+
             if (doc.exists) {
                 const data = doc.data();
                 gender = data.gender || "N/A";
                 displayName = data.displayName || username;
+                if (data.logoUrl) logoUrl = data.logoUrl;
             } else {
-                await userRef.set({ life: 0, views: 0, gender: "N/A", displayName: username }, { merge: true });
+                await userRef.set({ life: 0, views: 0, gender: "N/A", displayName: username, logoUrl: logoUrl }, { merge: true });
             }
 
             document.getElementById('profile-name-display').innerText = displayName;
             document.getElementById('profile-gender-display').innerText = gender;
+            document.getElementById('profile-avatar-img').src = logoUrl;
             
             const isMyProfile = (currentUser && currentUser.username === username);
             document.getElementById('profile-status-text').innerText = isMyProfile ? "Online (You)" : "Member";
             
-            // Show edit option only if it's your own profile
+            // Show edit options only if it's your own profile
             const editBtn = document.getElementById('edit-name-btn');
-            if (editBtn) {
-                editBtn.style.display = isMyProfile ? 'inline' : 'none';
-            }
+            const editLogoBtn = document.getElementById('edit-logo-btn');
+            if (editBtn) editBtn.style.display = isMyProfile ? 'inline' : 'none';
+            if (editLogoBtn) editLogoBtn.style.display = isMyProfile ? 'inline' : 'none';
 
             document.getElementById('profile-uploads-header').innerText = `Uploads by ${displayName}`;
 
@@ -512,13 +520,11 @@
             const trimmedName = newName.trim();
 
             try {
-                // Update in user document
                 await db.collection('users').doc(currentUser.username).update({
                     displayName: trimmedName
                 });
                 currentUser.displayName = trimmedName;
 
-                // Update in all wallpapers uploaded by this user so home and photo view reflect immediately
                 const snapshot = await db.collection('wallpapers').where('uploader', '==', currentUser.username).get();
                 const batch = db.batch();
                 snapshot.forEach((doc) => {
@@ -532,6 +538,35 @@
             } catch (e) {
                 console.error("Error updating name:", e);
                 alert("Failed to update name.");
+            }
+        }
+
+        async function editProfileLogo() {
+            if (!currentUser) return;
+            const currentLogoUrl = document.getElementById('profile-avatar-img').src;
+            const newUrl = prompt("Enter new Logo Direct URL:", currentLogoUrl);
+            
+            if (!newUrl || !newUrl.trim()) return;
+            const trimmedUrl = newUrl.trim();
+
+            try {
+                await db.collection('users').doc(currentUser.username).update({
+                    logoUrl: trimmedUrl
+                });
+                currentUser.logoUrl = trimmedUrl;
+
+                const snapshot = await db.collection('wallpapers').where('uploader', '==', currentUser.username).get();
+                const batch = db.batch();
+                snapshot.forEach((doc) => {
+                    batch.update(doc.ref, { uploaderLogoUrl: trimmedUrl });
+                });
+                await batch.commit();
+
+                document.getElementById('profile-avatar-img').src = trimmedUrl;
+                alert("Profile logo updated successfully!");
+            } catch (e) {
+                console.error("Error updating logo:", e);
+                alert("Failed to update logo.");
             }
         }
 
@@ -634,6 +669,7 @@
                     imageUrl: url,
                     uploader: currentUser.username,
                     uploaderDisplayName: currentUser.displayName || currentUser.username,
+                    uploaderLogoUrl: currentUser.logoUrl || "https://picsum.photos/50/50?random=88",
                     views: 1,
                     likes: 0,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -672,21 +708,24 @@
                     const data = doc.data();
                     if (data.password === password) {
                         const displayName = data.displayName || username;
-                        currentUser = { username: username, gender: data.gender || gender, displayName: displayName };
+                        const logoUrl = data.logoUrl || "https://picsum.photos/70/70?random=88";
+                        currentUser = { username: username, gender: data.gender || gender, displayName: displayName, logoUrl: logoUrl };
                         successLoginRoutine();
                     } else {
                         errorDiv.innerText = "Incorrect password! Please try again.";
                     }
                 } else {
+                    const defaultLogo = "https://picsum.photos/70/70?random=88";
                     await userRef.set({
                         password: password,
                         gender: gender,
                         life: 0,
                         views: 0,
                         displayName: username,
+                        logoUrl: defaultLogo,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    currentUser = { username: username, gender: gender, displayName: username };
+                    currentUser = { username: username, gender: gender, displayName: username, logoUrl: defaultLogo };
                     successLoginRoutine();
                 }
             } catch (e) {
