@@ -92,8 +92,19 @@
         /* Profile View Layout */
         .profile-banner { background-color: #003366; color: #FFFFFF; padding: 15px 20px; border: 1px solid #999999; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .profile-main-info { display: flex; align-items: center; gap: 15px; }
-        .profile-logo-large { width: 70px; height: 70px; background-color: #FFFFFF; border: 2px solid #FFFFFF; object-fit: cover; }
-        .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        
+        .profile-logo-wrapper { position: relative; display: inline-block; }
+        .profile-logo-large { width: 70px; height: 70px; background-color: #FFFFFF; border: 2px solid #FFFFFF; object-fit: cover; display: block; }
+        
+        .logo-pencil-overlay {
+            position: absolute; bottom: 0; right: 0; background: rgba(0,0,0,0.75); color: #FFFFFF;
+            width: 22px; height: 22px; font-size: 12px; display: none; align-items: center; justify-content: center;
+            border-top-left-radius: 4px; cursor: pointer;
+        }
+        .profile-logo-wrapper.editable:hover .logo-pencil-overlay { display: flex; }
+        .profile-logo-wrapper.editable { cursor: pointer; }
+
+        .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
         .profile-title-name p { margin: 0; font-size: 13px; color: #E5ECF9; }
         .profile-stats { text-align: right; font-size: 12px; background-color: rgba(0,0,0,0.2); padding: 8px 12px; border: 1px solid #336699; }
         
@@ -258,12 +269,14 @@
         <div id="view-profile" class="view-section">
             <div class="profile-banner">
                 <div class="profile-main-info">
-                    <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=88" alt="Profile Logo" class="profile-logo-large">
+                    <div id="profile-logo-wrapper" class="profile-logo-wrapper" onclick="checkAndEditLogo()" title="Click to change logo">
+                        <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=88" alt="Profile Logo" class="profile-logo-large">
+                        <div id="logo-pencil-overlay" class="logo-pencil-overlay">✏️</div>
+                    </div>
                     <div class="profile-title-name">
                         <h1>
                             <span id="profile-name-display">Guest User</span>
-                            <a id="edit-name-btn" onclick="editProfileDisplayName()" style="font-size: 11px; color: #E5ECF9; text-decoration: underline; cursor: pointer; display: none;">[Edit Name]</a>
-                            <a id="edit-logo-btn" onclick="editProfileLogo()" style="font-size: 11px; color: #E5ECF9; text-decoration: underline; cursor: pointer; display: none; margin-left: 6px;">[Edit Logo]</a>
+                            <span id="edit-name-pencil" onclick="editProfileDisplayName()" style="display: none; cursor: pointer; font-size: 13px;" title="Edit Name">✏️</span>
                         </h1>
                         <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Member</span></p>
                     </div>
@@ -351,6 +364,7 @@
         let activeCommentsListener = null;
         let activeUploaderLifeListener = null;
         let activeProfileListener = null;
+        let viewingProfileUsername = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             seedDefaultWallpaperIfNeeded();
@@ -469,6 +483,7 @@
 
         async function viewUserProfile(username) {
             if (!username) return;
+            viewingProfileUsername = username;
 
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-tabs-inner a').forEach(el => el.classList.remove('active'));
@@ -499,16 +514,31 @@
             const isMyProfile = (currentUser && currentUser.username === username);
             document.getElementById('profile-status-text').innerText = isMyProfile ? "Online (You)" : "Member";
             
-            // Show edit options only if it's your own profile
-            const editBtn = document.getElementById('edit-name-btn');
-            const editLogoBtn = document.getElementById('edit-logo-btn');
-            if (editBtn) editBtn.style.display = isMyProfile ? 'inline' : 'none';
-            if (editLogoBtn) editLogoBtn.style.display = isMyProfile ? 'inline' : 'none';
+            // Toggle edit controls visibility
+            const editNamePencil = document.getElementById('edit-name-pencil');
+            const logoWrapper = document.getElementById('profile-logo-wrapper');
+            const logoPencil = document.getElementById('logo-pencil-overlay');
+
+            if (isMyProfile) {
+                editNamePencil.style.display = 'inline';
+                logoWrapper.classList.add('editable');
+                logoPencil.style.display = 'flex';
+            } else {
+                editNamePencil.style.display = 'none';
+                logoWrapper.classList.remove('editable');
+                logoPencil.style.display = 'none';
+            }
 
             document.getElementById('profile-uploads-header').innerText = `Uploads by ${displayName}`;
 
             setupProfileRealtime(username);
             loadUserUploads(username);
+        }
+
+        function checkAndEditLogo() {
+            if (currentUser && viewingProfileUsername === currentUser.username) {
+                editProfileLogo();
+            }
         }
 
         async function editProfileDisplayName() {
