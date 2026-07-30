@@ -156,7 +156,7 @@
                             <span class="image-title">Alien Shooter ChildHood Memories</span>
                             <div class="image-desc">Reliving the legendary classic top-down shooter game memories from the 2000s era.</div>
                             <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (1,480 ratings)</div>
-                            <div class="image-meta">Views: <span id="home-views-count">0</span> | By: RetroGamer</div>
+                            <div class="image-meta">Views: <span id="home-views-count">0</span> | By: <span id="uploader-name-display">RetroGamer</span></div>
                         </div>
                     </div>
                 </div>
@@ -177,13 +177,13 @@
                         <div class="uploader-info">
                             <img src="https://picsum.photos/50/50?random=88" alt="Uploader Logo" class="uploader-logo" onclick="switchView('profile')" title="Click to view profile">
                             <div class="uploader-details">
-                                <a onclick="switchView('profile')">RetroGamer</a>
-                                <div class="subscribers-count">Life: <span id="uploader-life-count">14250</span></div>
+                                <a onclick="switchView('profile')" id="photo-uploader-name">RetroGamer</a>
+                                <div class="subscribers-count">Lifeline: <span id="uploader-life-count">0</span></div>
                             </div>
                         </div>
                         <div class="action-btns">
                             <button class="like-btn" onclick="incrementLikes()">👍 Like (<span id="likes-count">0</span>)</button>
-                            <button class="subscribe-btn" onclick="toggleLife()">⭐ Lifeline (<span id="life-btn-count">14250</span>)</button>
+                            <button class="subscribe-btn" onclick="toggleLife()">⭐ Lifeline (<span id="life-btn-count">0</span>)</button>
                         </div>
                     </div>
 
@@ -236,18 +236,18 @@
                     <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=88" alt="Profile Logo" class="profile-logo-large">
                     <div class="profile-title-name">
                         <h1 id="profile-name-display">Guest User</h1>
-                        <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> Please Log In</p>
+                        <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Please Log In</span></p>
                     </div>
                 </div>
                 <div class="profile-stats">
-                    <div><b>Life Received: <span id="profile-life-received">0</span></b></div>
+                    <div><b>Lifeline Received: <span id="profile-life-received">0</span></b></div>
                     <div>Total Views: <span id="profile-total-views">0</span></div>
                 </div>
             </div>
 
             <div class="box">
                 <div class="box-header" id="profile-uploads-header">Uploads</div>
-                <div class="box-content">
+                <div class="box-content" id="profile-uploads-content">
                     <p style="color: #666666; font-size: 11px;">Please log in to view and manage your uploads.</p>
                 </div>
             </div>
@@ -314,15 +314,18 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const docId = "alien_shooter_memories";
-        const uploaderUsername = "RetroGamer";
-
+        
         // Current Logged-in User Session State
         let currentUser = null;
+        let uploaderUsername = "RetroGamer"; // Default uploader for sample image
+
+        let activeProfileListener = null;
+        let activeUploaderLifeListener = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             setupRealtimeListener();
             setupCommentsListener();
-            setupUploaderLifeListener();
+            setupUploaderLifeListener(uploaderUsername);
         });
 
         // Realtime Firestore Listener for Wallpaper Views & Likes
@@ -342,18 +345,42 @@
             });
         }
 
-        // Realtime Listener for Uploader's Life (Lifeline) Count
-        function setupUploaderLifeListener() {
-            db.collection('users').doc(uploaderUsername).onSnapshot((doc) => {
-                let lifeVal = 14250;
+        // Realtime Listener for Uploader's Lifeline Count
+        function setupUploaderLifeListener(targetUsername) {
+            if (activeUploaderLifeListener) {
+                activeUploaderLifeListener();
+            }
+
+            document.getElementById('uploader-name-display').innerText = targetUsername;
+            document.getElementById('photo-uploader-name').innerText = targetUsername;
+
+            activeUploaderLifeListener = db.collection('users').doc(targetUsername).onSnapshot((doc) => {
+                let lifeVal = 0;
                 if (doc.exists && doc.data().life !== undefined) {
                     lifeVal = doc.data().life;
                 } else {
-                    db.collection('users').doc(uploaderUsername).set({ life: 14250 }, { merge: true });
+                    db.collection('users').doc(targetUsername).set({ life: 0 }, { merge: true });
                 }
                 document.getElementById('uploader-life-count').innerText = lifeVal.toLocaleString();
                 document.getElementById('life-btn-count').innerText = lifeVal.toLocaleString();
-                document.getElementById('profile-life-received').innerText = lifeVal.toLocaleString();
+            });
+        }
+
+        // Realtime Listener for Logged-in User Profile Data
+        function setupProfileRealtime(username) {
+            if (activeProfileListener) {
+                activeProfileListener();
+            }
+
+            activeProfileListener = db.collection('users').doc(username).onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const lifeVal = data.life !== undefined ? data.life : 0;
+                    const viewsVal = data.views !== undefined ? data.views : 0;
+                    
+                    document.getElementById('profile-life-received').innerText = lifeVal.toLocaleString();
+                    document.getElementById('profile-total-views').innerText = viewsVal.toLocaleString();
+                }
             });
         }
 
@@ -449,6 +476,8 @@
                     await userRef.set({
                         password: password,
                         gender: gender,
+                        life: 0,
+                        views: 0,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     currentUser = { username: username, gender: gender };
@@ -463,8 +492,13 @@
         function successLoginRoutine() {
             document.getElementById('profile-name-display').innerText = currentUser.username;
             document.getElementById('profile-gender-display').innerText = currentUser.gender;
+            document.getElementById('profile-status-text').innerText = "Online";
             document.getElementById('profile-uploads-header').innerText = `Uploads by ${currentUser.username}`;
+            document.getElementById('profile-uploads-content').innerHTML = `<p style="color: #666666; font-size: 11px;">You have no active uploads yet.</p>`;
             document.getElementById('auth-link').innerText = `Hello, ${currentUser.username}`;
+            
+            // Start listening to this user's profile stats (lifeline, views)
+            setupProfileRealtime(currentUser.username);
             
             alert(`Welcome back, ${currentUser.username}! Successfully logged in.`);
             switchView('profile');
@@ -479,7 +513,6 @@
         function updateWallpaperUI(views, likes) {
             document.getElementById('home-views-count').innerText = views.toLocaleString();
             document.getElementById('photo-views-count').innerText = views.toLocaleString();
-            document.getElementById('profile-total-views').innerText = views.toLocaleString();
             document.getElementById('likes-count').innerText = likes.toLocaleString();
             document.getElementById('photo-likes-count').innerText = likes.toLocaleString();
         }
@@ -557,7 +590,7 @@
                     }
 
                     const uploaderDoc = await transaction.get(uploaderRef);
-                    const currentLife = uploaderDoc.exists ? (uploaderDoc.data().life || 14250) : 14250;
+                    const currentLife = uploaderDoc.exists ? (uploaderDoc.data().life || 0) : 0;
 
                     transaction.set(lifeRef, { 
                         username: currentUser.username, 
@@ -589,6 +622,11 @@
                 document.getElementById('tab-images').classList.add('active');
                 incrementViews();
             } else if(viewName === 'profile') {
+                if (!currentUser) {
+                    alert("Please log in to view your profile!");
+                    switchView('login');
+                    return;
+                }
                 document.getElementById('view-profile').classList.add('active');
                 document.getElementById('tab-profile').classList.add('active');
             } else if(viewName === 'login') {
