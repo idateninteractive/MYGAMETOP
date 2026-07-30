@@ -440,7 +440,6 @@
             });
         }
 
-        // Dynamic Profile Viewer for ANY User (Commenter, Uploader, etc.)
         async function viewUserProfile(username) {
             if (!username) return;
 
@@ -458,7 +457,6 @@
                 const data = doc.data();
                 gender = data.gender || "N/A";
             } else {
-                // If user doc doesn't exist yet, create default entry
                 await userRef.set({ life: 0, views: 0, gender: "N/A" }, { merge: true });
             }
 
@@ -779,6 +777,8 @@
             if(viewName === 'home') {
                 document.getElementById('view-home').classList.add('active');
                 document.getElementById('tab-home').classList.add('active');
+            } else if(viewName === 'photo') {
+                document.getElementById('view-photo').classList.add('active');
             } else if(viewName === 'upload') {
                 if (!currentUser) {
                     alert("Please log in first to upload images!");
