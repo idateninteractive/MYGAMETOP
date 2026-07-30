@@ -379,6 +379,7 @@
                     description: "Reliving the legendary classic top-down shooter game memories from the 2000s era.",
                     imageUrl: "https://cdn.phototourl.com/free/2026-07-30-4ffefc1e-3f65-4858-ba46-d037870fccaf.jpg",
                     uploader: "RetroGamer",
+                    uploaderDisplayName: "RetroGamer",
                     views: 5420,
                     likes: 420,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -395,6 +396,9 @@
                   snapshot.forEach((doc) => {
                       const item = doc.data();
                       const id = doc.id;
+                      const uploaderUsername = escapeHTML(item.uploader || 'Anonymous');
+                      const uploaderDisplayName = escapeHTML(item.uploaderDisplayName || item.uploader || 'Anonymous');
+                      
                       html += `
                         <div class="image-item" onclick="openWallpaper('${id}')">
                             <div class="image-container">
@@ -403,7 +407,7 @@
                             <span class="image-title">${escapeHTML(item.title || 'Untitled')}</span>
                             <div class="image-desc">${escapeHTML(item.description || '')}</div>
                             <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (1,480 ratings)</div>
-                            <div class="image-meta">Views: ${(item.views || 0).toLocaleString()} | By: <span onclick="event.stopPropagation(); viewUserProfile('${escapeHTML(item.uploader || 'Anonymous')}');" style="color:#0033CC; cursor:pointer;">${escapeHTML(item.uploader || 'Anonymous')}</span></div>
+                            <div class="image-meta">Views: ${(item.views || 0).toLocaleString()} | By: <span onclick="event.stopPropagation(); viewUserProfile('${uploaderUsername}');" style="color:#0033CC; cursor:pointer;">${uploaderDisplayName}</span></div>
                         </div>
                       `;
                   });
@@ -432,12 +436,14 @@
                     document.getElementById('likes-count').innerText = (data.likes || 0).toLocaleString();
                     document.getElementById('photo-likes-count').innerText = (data.likes || 0).toLocaleString();
                     
-                    const uploader = data.uploader || "RetroGamer";
-                    document.getElementById('photo-uploader-name').innerText = uploader;
-                    document.getElementById('photo-uploader-name').setAttribute('onclick', `viewUserProfile('${uploader}')`);
-                    document.getElementById('uploader-logo-img').setAttribute('onclick', `viewUserProfile('${uploader}')`);
+                    const uploaderUsername = data.uploader || "RetroGamer";
+                    const uploaderDisplayName = data.uploaderDisplayName || uploaderUsername;
 
-                    setupUploaderLifeListener(uploader);
+                    document.getElementById('photo-uploader-name').innerText = uploaderDisplayName;
+                    document.getElementById('photo-uploader-name').setAttribute('onclick', `viewUserProfile('${uploaderUsername}')`);
+                    document.getElementById('uploader-logo-img').setAttribute('onclick', `viewUserProfile('${uploaderUsername}')`);
+
+                    setupUploaderLifeListener(uploaderUsername);
                 }
             });
         }
@@ -506,9 +512,20 @@
             const trimmedName = newName.trim();
 
             try {
+                // Update in user document
                 await db.collection('users').doc(currentUser.username).update({
                     displayName: trimmedName
                 });
+                currentUser.displayName = trimmedName;
+
+                // Update in all wallpapers uploaded by this user so home and photo view reflect immediately
+                const snapshot = await db.collection('wallpapers').where('uploader', '==', currentUser.username).get();
+                const batch = db.batch();
+                snapshot.forEach((doc) => {
+                    batch.update(doc.ref, { uploaderDisplayName: trimmedName });
+                });
+                await batch.commit();
+
                 document.getElementById('profile-name-display').innerText = trimmedName;
                 document.getElementById('profile-uploads-header').innerText = `Uploads by ${trimmedName}`;
                 alert("Display name updated successfully!");
@@ -616,6 +633,7 @@
                     description: desc,
                     imageUrl: url,
                     uploader: currentUser.username,
+                    uploaderDisplayName: currentUser.displayName || currentUser.username,
                     views: 1,
                     likes: 0,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -653,7 +671,8 @@
                 if (doc.exists) {
                     const data = doc.data();
                     if (data.password === password) {
-                        currentUser = { username: username, gender: data.gender || gender };
+                        const displayName = data.displayName || username;
+                        currentUser = { username: username, gender: data.gender || gender, displayName: displayName };
                         successLoginRoutine();
                     } else {
                         errorDiv.innerText = "Incorrect password! Please try again.";
@@ -667,7 +686,7 @@
                         displayName: username,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    currentUser = { username: username, gender: gender };
+                    currentUser = { username: username, gender: gender, displayName: username };
                     successLoginRoutine();
                 }
             } catch (e) {
