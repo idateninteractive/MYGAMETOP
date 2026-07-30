@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouLife - 2006 Classic</title>
     
-    <!-- Supabase JS Client CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Firebase App & Firestore SDK CDN (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
     <style>
         body { background-color: #FFFFFF; color: #000000; font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; }
@@ -184,25 +185,18 @@
 
                     <!-- Classic 2006 Comments Section -->
                     <div class="box comments-section">
-                        <div class="box-header">Comments (1)</div>
+                        <div class="box-header" id="comments-header">Comments (0)</div>
                         <div class="box-content">
                             <!-- Comment Input Form -->
                             <div class="comment-form" style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #CCCCCC;">
-                                <form onsubmit="event.preventDefault(); alert('Comment posted!');">
-                                    <textarea placeholder="Add a comment..."></textarea>
+                                <form onsubmit="postComment(event);">
+                                    <textarea id="commentInput" placeholder="Add a comment..."></textarea>
                                     <button type="submit">Post Comment</button>
                                 </form>
                             </div>
-                            <!-- Comment List Item -->
-                            <div class="comment-item">
-                                <img src="https://picsum.photos/30/30?random=10" alt="Avatar" class="comment-avatar">
-                                <div class="comment-content">
-                                    <div>
-                                        <span class="comment-author" onclick="switchView('profile')">RetroFan06</span>
-                                        <span class="comment-time">2 days ago</span>
-                                    </div>
-                                    <div class="comment-text">Awesome wallpaper! Reminds me of the good old days of the early web. Classic vibe!</div>
-                                </div>
+                            <!-- Dynamic Comment List Container -->
+                            <div id="commentsList">
+                                <!-- Comments will load here dynamically -->
                             </div>
                         </div>
                     </div>
@@ -269,12 +263,98 @@
     </footer>
 
     <script>
-        // Supabase Initialization
-        const SUPABASE_URL = 'https://ilkvrwgjkyvbpwghmevc.supabase.co';
-        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_H-95RBQRVJtMvBubg0p7bQ_dwLO6oIG';
+        // Firebase Initialization
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5X9jtERs5hp0dsIiK2jZFCZxoH0c1ktM",
+            authDomain: "youlife-as.firebaseapp.com",
+            projectId: "youlife-as",
+            storageBucket: "youlife-as.firebasestorage.app",
+            messagingSenderId: "46741314431",
+            appId: "1:46741314431:web:bcb6976c4e13d08bf3584a"
+        };
         
-        // Client instance ready to use for database queries or auth
-        const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Load comments on page load
+        window.onload = function() {
+            loadComments();
+        };
+
+        // Function to Post Comment to Firestore
+        function postComment(event) {
+            event.preventDefault();
+            const input = document.getElementById('commentInput');
+            const commentText = input.value.trim();
+
+            if (!commentText) {
+                alert('Please write something before posting!');
+                return;
+            }
+
+            db.collection('comments').add({
+                text: commentText,
+                author: 'LifeUser',
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                input.value = ''; // Clear textarea
+                loadComments(); // Refresh comments list
+            })
+            .catch((error) => {
+                console.error("Error adding comment: ", error);
+                alert('Error posting comment. Please check Firebase rules.');
+            });
+        }
+
+        // Function to Fetch and Display Comments from Firestore
+        function loadComments() {
+            db.collection('comments').orderBy('timestamp', 'desc').get()
+            .then((querySnapshot) => {
+                const commentsList = document.getElementById('commentsList');
+                commentsList.innerHTML = '';
+                
+                let count = querySnapshot.size;
+                document.getElementById('comments-header').innerText = `Comments (${count})`;
+
+                if (count === 0) {
+                    commentsList.innerHTML = '<div style="font-size: 11px; color: #666; padding: 5px 0;">No comments yet. Be the first to comment!</div>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const commentItem = `
+                        <div class="comment-item">
+                            <img src="https://picsum.photos/30/30?random=${Math.floor(Math.random() * 100)}" alt="Avatar" class="comment-avatar">
+                            <div class="comment-content">
+                                <div>
+                                    <span class="comment-author" onclick="switchView('profile')">${data.author || 'Anonymous'}</span>
+                                    <span class="comment-time">Just now</span>
+                                </div>
+                                <div class="comment-text">${escapeHtml(data.text)}</div>
+                            </div>
+                        </div>
+                    `;
+                    commentsList.innerHTML += commentItem;
+                });
+            })
+            .catch((error) => {
+                console.error("Error getting comments: ", error);
+            });
+        }
+
+        // Security helper to prevent HTML injection
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
 
         // View Switcher Function
         function switchView(viewName) {
