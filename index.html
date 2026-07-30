@@ -92,9 +92,19 @@
         /* Profile View Layout */
         .profile-banner { background-color: #003366; color: #FFFFFF; padding: 15px 20px; border: 1px solid #999999; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .profile-main-info { display: flex; align-items: center; gap: 15px; }
-        .profile-logo-large { width: 70px; height: 70px; background-color: #FFFFFF; border: 2px solid #FFFFFF; object-fit: cover; }
+        
+        /* Profile Logo & Dark Pencil Badge */
+        .profile-logo-container { position: relative; display: inline-block; cursor: pointer; }
+        .profile-logo-large { width: 70px; height: 70px; background-color: #FFFFFF; border: 2px solid #FFFFFF; object-fit: cover; display: block; }
+        .profile-pencil-badge { position: absolute; bottom: 0; right: 0; background-color: #222222; color: #FFFFFF; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; display: none; align-items: center; justify-content: center; border: 1.5px solid #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        
         .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .profile-title-name p { margin: 0; font-size: 13px; color: #E5ECF9; }
+        
+        /* Dark Pencil Icon for Name Edit */
+        .profile-name-pencil { background-color: #222222; color: #FFFFFF; font-size: 11px; width: 22px; height: 22px; border-radius: 50%; display: none; align-items: center; justify-content: center; border: 1.5px solid #FFFFFF; cursor: pointer; text-decoration: none; box-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .profile-name-pencil:hover { background-color: #000000; }
+
         .profile-stats { text-align: right; font-size: 12px; background-color: rgba(0,0,0,0.2); padding: 8px 12px; border: 1px solid #336699; }
         
         .side-item { display: flex; gap: 8px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted #CCCCCC; }
@@ -258,12 +268,15 @@
         <div id="view-profile" class="view-section">
             <div class="profile-banner">
                 <div class="profile-main-info">
-                    <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=88" alt="Profile Logo" class="profile-logo-large">
+                    <!-- Profile Logo with Dark Pencil Badge -->
+                    <div class="profile-logo-container" onclick="checkAndEditLogo()" title="Click to edit profile logo">
+                        <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=88" alt="Profile Logo" class="profile-logo-large">
+                        <div id="profile-pencil-badge" class="profile-pencil-badge">✏️</div>
+                    </div>
                     <div class="profile-title-name">
                         <h1>
                             <span id="profile-name-display">Guest User</span>
-                            <a id="edit-name-btn" onclick="editProfileDisplayName()" style="font-size: 11px; color: #E5ECF9; text-decoration: underline; cursor: pointer; display: none;">[Edit Name]</a>
-                            <a id="edit-logo-btn" onclick="editProfileLogo()" style="font-size: 11px; color: #E5ECF9; text-decoration: underline; cursor: pointer; display: none; margin-left: 6px;">[Edit Logo]</a>
+                            <span id="edit-name-btn" class="profile-name-pencil" onclick="editProfileDisplayName()" title="Edit Name">✏️</span>
                         </h1>
                         <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Member</span></p>
                     </div>
@@ -347,6 +360,7 @@
         
         let currentUser = null;
         let currentWallpaperId = "alien_shooter_memories";
+        let currentProfileUsername = null;
         let activeWallpaperListener = null;
         let activeCommentsListener = null;
         let activeUploaderLifeListener = null;
@@ -357,17 +371,10 @@
             setupHomeFeedListener();
         });
 
-        // YouTube style format helper (e.g., 1.2K, 1M, etc.)
         function formatCount(num) {
-            if (num >= 1000000000) {
-                return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
-            }
-            if (num >= 1000000) {
-                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-            }
-            if (num >= 1000) {
-                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
-            }
+            if (num >= 1000000000) return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+            if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
             return num.toString();
         }
 
@@ -469,6 +476,7 @@
 
         async function viewUserProfile(username) {
             if (!username) return;
+            currentProfileUsername = username;
 
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-tabs-inner a').forEach(el => el.classList.remove('active'));
@@ -499,16 +507,22 @@
             const isMyProfile = (currentUser && currentUser.username === username);
             document.getElementById('profile-status-text').innerText = isMyProfile ? "Online (You)" : "Member";
             
-            // Show edit options only if it's your own profile
-            const editBtn = document.getElementById('edit-name-btn');
-            const editLogoBtn = document.getElementById('edit-logo-btn');
-            if (editBtn) editBtn.style.display = isMyProfile ? 'inline' : 'none';
-            if (editLogoBtn) editLogoBtn.style.display = isMyProfile ? 'inline' : 'none';
+            // Show or hide dark pencils depending on whether it's your own profile
+            const editNameBtn = document.getElementById('edit-name-btn');
+            const logoBadge = document.getElementById('profile-pencil-badge');
+            if (editNameBtn) editNameBtn.style.display = isMyProfile ? 'flex' : 'none';
+            if (logoBadge) logoBadge.style.display = isMyProfile ? 'flex' : 'none';
 
             document.getElementById('profile-uploads-header').innerText = `Uploads by ${displayName}`;
 
             setupProfileRealtime(username);
             loadUserUploads(username);
+        }
+
+        function checkAndEditLogo() {
+            if (currentUser && currentUser.username === currentProfileUsername) {
+                editProfileLogo();
+            }
         }
 
         async function editProfileDisplayName() {
