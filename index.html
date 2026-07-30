@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouLife - Alien Shooter ChildHood Memories</title>
+    <title>YouLife - 2006 Image Sharing Community</title>
     
     <!-- Firebase App & Firestore CDN (Compat version) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -56,7 +56,7 @@
         .left-column { width: 630px; }
         .right-column { width: 305px; }
         .main-image-container { background-color: #000000; border: 1px solid #999999; text-align: center; padding: 10px; }
-        .main-image-container img { max-width: 100%; height: auto; border: 1px solid #444444; }
+        .main-image-container img { max-width: 100%; height: auto; border: 1px solid #444444; max-height: 450px; }
         .image-title-header { font-size: 16px; font-weight: bold; color: #003366; margin: 10px 0 5px 0; }
         
         .uploader-box { background-color: #F8F8F8; border: 1px solid #CCCCCC; padding: 10px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; }
@@ -116,12 +116,12 @@
             </div>
             <div class="search-box">
                 <form onsubmit="event.preventDefault();">
-                    <input type="text" placeholder="Search wallpapers...">
+                    <input type="text" placeholder="Search images...">
                     <button type="submit">Search</button>
                 </form>
             </div>
             <div class="top-links">
-                <a style="font-weight: bold; color: #CC0000;">Upload</a> | 
+                <a onclick="switchView('upload')" style="font-weight: bold; color: #CC0000; cursor: pointer;">Upload</a> | 
                 <a onclick="switchView('home')">Home</a> | 
                 <a onclick="switchView('profile')">My Account</a> | 
                 <a onclick="switchView('login')" id="auth-link" style="color: #CC0000; font-weight: bold;">Log In</a>
@@ -132,7 +132,7 @@
     <div class="nav-tabs">
         <div class="nav-tabs-inner">
             <a id="tab-home" class="active" onclick="switchView('home')">Home</a>
-            <a id="tab-images" onclick="switchView('photo')">Images</a>
+            <a id="tab-upload" onclick="switchView('upload')">Upload Images</a>
             <a id="tab-profile" onclick="switchView('profile')">Profile</a>
             <a id="tab-login" onclick="switchView('login')">Account Login</a>
         </div>
@@ -144,20 +144,12 @@
         <div id="view-home" class="view-section active">
             <div class="box">
                 <div class="box-header">
-                    <span>Featured Images</span>
+                    <span>Featured Community Images</span>
                     <a style="font-size: 11px; color: #0033CC; text-decoration: none; cursor: pointer;">See More &raquo;</a>
                 </div>
                 <div class="box-content">
-                    <div class="image-grid">
-                        <div class="image-item" onclick="switchView('photo')">
-                            <div class="image-container">
-                                <img src="https://cdn.phototourl.com/free/2026-07-30-4ffefc1e-3f65-4858-ba46-d037870fccaf.jpg" alt="Alien Shooter">
-                            </div>
-                            <span class="image-title">Alien Shooter ChildHood Memories</span>
-                            <div class="image-desc">Reliving the legendary classic top-down shooter game memories from the 2000s era.</div>
-                            <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (1,480 ratings)</div>
-                            <div class="image-meta">Views: <span id="home-views-count">0</span> | By: <span id="uploader-name-display">RetroGamer</span></div>
-                        </div>
+                    <div id="home-image-grid" class="image-grid">
+                        <!-- Dynamic Wallpapers loaded from Firestore -->
                     </div>
                 </div>
             </div>
@@ -167,17 +159,17 @@
         <div id="view-photo" class="view-section">
             <div class="photo-layout">
                 <div class="left-column">
-                    <div class="image-title-header">Alien Shooter ChildHood Memories</div>
+                    <div class="image-title-header" id="detail-title">Loading...</div>
                     
                     <div class="main-image-container">
-                        <img src="https://cdn.phototourl.com/free/2026-07-30-4ffefc1e-3f65-4858-ba46-d037870fccaf.jpg" alt="Alien Shooter">
+                        <img id="detail-img" src="" alt="Wallpaper Image">
                     </div>
 
                     <div class="uploader-box">
                         <div class="uploader-info">
                             <img src="https://picsum.photos/50/50?random=88" alt="Uploader Logo" class="uploader-logo" onclick="switchView('profile')" title="Click to view profile">
                             <div class="uploader-details">
-                                <a onclick="switchView('profile')" id="photo-uploader-name">RetroGamer</a>
+                                <a onclick="switchView('profile')" id="photo-uploader-name">Loading...</a>
                                 <div class="subscribers-count">Lifeline: <span id="uploader-life-count">0</span></div>
                             </div>
                         </div>
@@ -188,7 +180,7 @@
                     </div>
 
                     <div class="image-details-box">
-                        <p><b>Description:</b> Reliving the legendary classic top-down shooter game memories from the 2000s era.</p>
+                        <p><b>Description:</b> <span id="detail-desc">Loading...</span></p>
                         <p><b>Added:</b> Today | <b>Views:</b> <span id="photo-views-count">0</span> | <b>Likes:</b> <span id="photo-likes-count">0</span> | <b>Ratings:</b> <span class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</span> (1,480 ratings)</p>
                     </div>
 
@@ -203,7 +195,7 @@
                                     <button type="submit">Post Comment</button>
                                 </form>
                             </div>
-                            <!-- Comment List Container (Dynamic 2006 Style) -->
+                            <!-- Comment List Container -->
                             <div id="comments-container"></div>
                         </div>
                     </div>
@@ -212,14 +204,13 @@
 
                 <div class="right-column">
                     <div class="box">
-                        <div class="box-header">Related Wallpapers</div>
+                        <div class="box-header">Community Spotlight</div>
                         <div class="box-content">
                             <div class="side-item">
                                 <img src="https://picsum.photos/100/75?random=5" alt="Thumb" class="side-thumb">
                                 <div class="side-info">
-                                    <span class="side-title" onclick="switchView('photo')">Classic LAN Gaming Night</span>
-                                    <div class="side-meta">By: OldSchool</div>
-                                    <div class="side-meta">Views: 32,100</div>
+                                    <span class="side-title" onclick="switchView('home')">Explore Community Uploads</span>
+                                    <div class="side-meta">YouLife Archives</div>
                                     <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                                 </div>
                             </div>
@@ -229,7 +220,42 @@
             </div>
         </div>
 
-        <!-- 3. PROFILE VIEW -->
+        <!-- 3. UPLOAD SYSTEM VIEW (2006 YouTube Style) -->
+        <div id="view-upload" class="view-section">
+            <div class="box" style="width: 550px; margin: 20px auto;">
+                <div class="box-header">Upload Your Image - YouLife (2006 Style)</div>
+                <div class="box-content" style="padding: 15px;">
+                    <p style="margin-top: 0; color: #666666; font-size: 11px;">
+                        Share your favorite photographs, retro wallpapers or childhood memories with the YouLife community!
+                    </p>
+                    <form onsubmit="handleUploadImage(event)">
+                        <table style="width: 100%; font-size: 11px;" cellpadding="5">
+                            <tr>
+                                <td style="width: 120px;"><b>Image Title:</b></td>
+                                <td><input type="text" id="upload-title" placeholder="e.g. Classic Gaming Setup 2006" style="width: 350px; border: 1px solid #7f9db9; padding: 3px;" required></td>
+                            </tr>
+                            <tr>
+                                <td><b>Description:</b></td>
+                                <td><textarea id="upload-desc" placeholder="Enter image description..." style="width: 350px; height: 60px; border: 1px solid #7f9db9; padding: 3px; font-family: Arial;" required></textarea></td>
+                            </tr>
+                            <tr>
+                                <td><b>Image Direct URL:</b></td>
+                                <td><input type="url" id="upload-url" placeholder="https://example.com/my-image.jpg" style="width: 350px; border: 1px solid #7f9db9; padding: 3px;" required></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="padding-top: 10px;">
+                                    <button type="submit" style="background-color: #EEEEEE; border: 1px solid #999999; font-weight: bold; padding: 4px 14px; cursor: pointer;">Upload Image</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div id="upload-error-msg" style="margin-top: 10px; color: #CC0000; font-weight: bold;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. PROFILE VIEW -->
         <div id="view-profile" class="view-section">
             <div class="profile-banner">
                 <div class="profile-main-info">
@@ -246,14 +272,16 @@
             </div>
 
             <div class="box">
-                <div class="box-header" id="profile-uploads-header">Uploads</div>
-                <div class="box-content" id="profile-uploads-content">
-                    <p style="color: #666666; font-size: 11px;">Please log in to view and manage your uploads.</p>
+                <div class="box-header" id="profile-uploads-header">My Uploads</div>
+                <div class="box-content">
+                    <div id="profile-uploads-grid" class="image-grid">
+                        <p style="color: #666666; font-size: 11px;">Please log in to view and manage your uploads.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 4. LOGIN / REGISTRATION VIEW (2006 Style) -->
+        <!-- 5. LOGIN / REGISTRATION VIEW -->
         <div id="view-login" class="view-section">
             <div class="box" style="width: 480px; margin: 20px auto;">
                 <div class="box-header">YouLife Member Login / Register</div>
@@ -313,45 +341,95 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const docId = "alien_shooter_memories";
         
-        // Current Logged-in User Session State
         let currentUser = null;
-        let uploaderUsername = "RetroGamer"; // Default uploader for sample image
-
-        let activeProfileListener = null;
+        let currentWallpaperId = "alien_shooter_memories"; // Default fallback
+        let activeWallpaperListener = null;
+        let activeCommentsListener = null;
         let activeUploaderLifeListener = null;
+        let activeProfileListener = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            setupRealtimeListener();
-            setupCommentsListener();
-            setupUploaderLifeListener(uploaderUsername);
+            seedDefaultWallpaperIfNeeded();
+            setupHomeFeedListener();
         });
 
-        // Realtime Firestore Listener for Wallpaper Views & Likes
-        function setupRealtimeListener() {
-            db.collection('wallpapers').doc(docId).onSnapshot((doc) => {
+        // Ensure default 2006 Alien Shooter wallpaper exists in Firestore
+        async function seedDefaultWallpaperIfNeeded() {
+            const defaultRef = db.collection('wallpapers').doc("alien_shooter_memories");
+            const doc = await defaultRef.get();
+            if (!doc.exists) {
+                await defaultRef.set({
+                    title: "Alien Shooter ChildHood Memories",
+                    description: "Reliving the legendary classic top-down shooter game memories from the 2000s era.",
+                    imageUrl: "https://cdn.phototourl.com/free/2026-07-30-4ffefc1e-3f65-4858-ba46-d037870fccaf.jpg",
+                    uploader: "RetroGamer",
+                    views: 5420,
+                    likes: 420,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        }
+
+        // Realtime Listener for Home Feed Grid
+        function setupHomeFeedListener() {
+            db.collection('wallpapers')
+              .orderBy('timestamp', 'desc')
+              .onSnapshot((snapshot) => {
+                  const grid = document.getElementById('home-image-grid');
+                  let html = '';
+                  snapshot.forEach((doc) => {
+                      const item = doc.data();
+                      const id = doc.id;
+                      html += `
+                        <div class="image-item" onclick="openWallpaper('${id}')">
+                            <div class="image-container">
+                                <img src="${escapeHTML(item.imageUrl || '')}" alt="${escapeHTML(item.title || '')}">
+                            </div>
+                            <span class="image-title">${escapeHTML(item.title || 'Untitled')}</span>
+                            <div class="image-desc">${escapeHTML(item.description || '')}</div>
+                            <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (1,480 ratings)</div>
+                            <div class="image-meta">Views: ${(item.views || 0).toLocaleString()} | By: ${escapeHTML(item.uploader || 'Anonymous')}</div>
+                        </div>
+                      `;
+                  });
+                  grid.innerHTML = html || '<p style="font-size:11px; color:#666;">No images uploaded yet.</p>';
+              });
+        }
+
+        // Open specific wallpaper in Detail View
+        function openWallpaper(docId) {
+            currentWallpaperId = docId;
+            switchView('photo');
+            setupWallpaperRealtime(docId);
+            setupCommentsListener(docId);
+            incrementViews(docId);
+        }
+
+        // Realtime Wallpaper Details Listener
+        function setupWallpaperRealtime(docId) {
+            if (activeWallpaperListener) activeWallpaperListener();
+
+            activeWallpaperListener = db.collection('wallpapers').doc(docId).onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    updateWallpaperUI(data.views || 0, data.likes || 0);
-                } else {
-                    db.collection('wallpapers').doc(docId).set({
-                        views: 5420,
-                        likes: 420
-                    });
+                    document.getElementById('detail-title').innerText = data.title || "";
+                    document.getElementById('detail-img').src = data.imageUrl || "";
+                    document.getElementById('detail-desc').innerText = data.description || "";
+                    document.getElementById('photo-views-count').innerText = (data.views || 0).toLocaleString();
+                    document.getElementById('likes-count').innerText = (data.likes || 0).toLocaleString();
+                    document.getElementById('photo-likes-count').innerText = (data.likes || 0).toLocaleString();
+                    
+                    const uploader = data.uploader || "RetroGamer";
+                    setupUploaderLifeListener(uploader);
                 }
-            }, (error) => {
-                console.error("Firebase Realtime Error:", error);
             });
         }
 
-        // Realtime Listener for Uploader's Lifeline Count
+        // Realtime Uploader's Lifeline Listener
         function setupUploaderLifeListener(targetUsername) {
-            if (activeUploaderLifeListener) {
-                activeUploaderLifeListener();
-            }
+            if (activeUploaderLifeListener) activeUploaderLifeListener();
 
-            document.getElementById('uploader-name-display').innerText = targetUsername;
             document.getElementById('photo-uploader-name').innerText = targetUsername;
 
             activeUploaderLifeListener = db.collection('users').doc(targetUsername).onSnapshot((doc) => {
@@ -366,27 +444,11 @@
             });
         }
 
-        // Realtime Listener for Logged-in User Profile Data
-        function setupProfileRealtime(username) {
-            if (activeProfileListener) {
-                activeProfileListener();
-            }
+        // Realtime Comments Listener
+        function setupCommentsListener(docId) {
+            if (activeCommentsListener) activeCommentsListener();
 
-            activeProfileListener = db.collection('users').doc(username).onSnapshot((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    const lifeVal = data.life !== undefined ? data.life : 0;
-                    const viewsVal = data.views !== undefined ? data.views : 0;
-                    
-                    document.getElementById('profile-life-received').innerText = lifeVal.toLocaleString();
-                    document.getElementById('profile-total-views').innerText = viewsVal.toLocaleString();
-                }
-            });
-        }
-
-        // Realtime Comments Listener with 2006 Classic Box Style
-        function setupCommentsListener() {
-            db.collection('wallpapers').doc(docId).collection('comments')
+            activeCommentsListener = db.collection('wallpapers').doc(docId).collection('comments')
               .orderBy('timestamp', 'desc')
               .onSnapshot((snapshot) => {
                   const commentsContainer = document.getElementById('comments-container');
@@ -400,7 +462,7 @@
                       commentsHTML += `
                         <div class="comment-item">
                             <div class="comment-header-row">
-                                <span>From <a class="comment-author" onclick="switchView('profile')" style="color:#0033CC; text-decoration:none;">${escapeHTML(comment.author || "Visitor")}</a></span>
+                                <span>From <a class="comment-author" onclick="switchView('profile')">${escapeHTML(comment.author || "Visitor")}</a></span>
                                 <span>Today</span>
                             </div>
                             <div class="comment-body-row">
@@ -412,11 +474,11 @@
                         </div>
                       `;
                   });
-                  commentsContainer.innerHTML = commentsHTML;
+                  commentsContainer.innerHTML = commentsHTML || '<p style="font-size:11px; color:#666;">No comments yet. Be the first to comment!</p>';
               });
         }
 
-        // Post Comment Functionality (Restricted to Logged-in users)
+        // Post Comment
         async function postComment(event) {
             event.preventDefault();
 
@@ -435,7 +497,7 @@
             }
 
             try {
-                await db.collection('wallpapers').doc(docId).collection('comments').add({
+                await db.collection('wallpapers').doc(currentWallpaperId).collection('comments').add({
                     author: currentUser.username,
                     text: commentText,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -447,7 +509,52 @@
             }
         }
 
-        // Authentication Handler (Login / Register via Firestore)
+        // YouTube Style 2006 Image Upload Handler
+        async function handleUploadImage(event) {
+            event.preventDefault();
+
+            if (!currentUser) {
+                alert("Please log in first to upload images!");
+                switchView('login');
+                return;
+            }
+
+            const title = document.getElementById('upload-title').value.trim();
+            const desc = document.getElementById('upload-desc').value.trim();
+            const url = document.getElementById('upload-url').value.trim();
+            const errorDiv = document.getElementById('upload-error-msg');
+
+            if (!title || !desc || !url) {
+                errorDiv.innerText = "Please fill in all upload fields.";
+                return;
+            }
+
+            try {
+                const newDocRef = await db.collection('wallpapers').add({
+                    title: title,
+                    description: desc,
+                    imageUrl: url,
+                    uploader: currentUser.username,
+                    views: 1,
+                    likes: 0,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Clear form
+                document.getElementById('upload-title').value = '';
+                document.getElementById('upload-desc').value = '';
+                document.getElementById('upload-url').value = '';
+                errorDiv.innerText = '';
+
+                alert("Image uploaded successfully!");
+                openWallpaper(newDocRef.id);
+            } catch (e) {
+                console.error("Upload error:", e);
+                errorDiv.innerText = "Failed to upload image. Please check the URL.";
+            }
+        }
+
+        // Authentication Handler (Login / Register)
         async function handleAuthUser(event) {
             event.preventDefault();
             const username = document.getElementById('auth-username').value.trim();
@@ -494,14 +601,55 @@
             document.getElementById('profile-gender-display').innerText = currentUser.gender;
             document.getElementById('profile-status-text').innerText = "Online";
             document.getElementById('profile-uploads-header').innerText = `Uploads by ${currentUser.username}`;
-            document.getElementById('profile-uploads-content').innerHTML = `<p style="color: #666666; font-size: 11px;">You have no active uploads yet.</p>`;
             document.getElementById('auth-link').innerText = `Hello, ${currentUser.username}`;
             
-            // Start listening to this user's profile stats (lifeline, views)
             setupProfileRealtime(currentUser.username);
+            loadUserUploads(currentUser.username);
             
             alert(`Welcome back, ${currentUser.username}! Successfully logged in.`);
             switchView('profile');
+        }
+
+        // Realtime Listener for Logged-in User Profile Stats
+        function setupProfileRealtime(username) {
+            if (activeProfileListener) activeProfileListener();
+
+            activeProfileListener = db.collection('users').doc(username).onSnapshot((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    const lifeVal = data.life !== undefined ? data.life : 0;
+                    const viewsVal = data.views !== undefined ? data.views : 0;
+                    
+                    document.getElementById('profile-life-received').innerText = lifeVal.toLocaleString();
+                    document.getElementById('profile-total-views').innerText = viewsVal.toLocaleString();
+                }
+            });
+        }
+
+        // Load User Uploads on Profile Page
+        function loadUserUploads(username) {
+            db.collection('wallpapers')
+              .where('uploader', '==', username)
+              .onSnapshot((snapshot) => {
+                  const grid = document.getElementById('profile-uploads-grid');
+                  let html = '';
+                  snapshot.forEach((doc) => {
+                      const item = doc.data();
+                      const id = doc.id;
+                      html += `
+                        <div class="image-item" onclick="openWallpaper('${id}')">
+                            <div class="image-container">
+                                <img src="${escapeHTML(item.imageUrl || '')}" alt="${escapeHTML(item.title || '')}">
+                            </div>
+                            <span class="image-title">${escapeHTML(item.title || 'Untitled')}</span>
+                            <div class="image-desc">${escapeHTML(item.description || '')}</div>
+                            <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                            <div class="image-meta">Views: ${(item.views || 0).toLocaleString()}</div>
+                        </div>
+                      `;
+                  });
+                  grid.innerHTML = html || '<p style="color: #666666; font-size: 11px;">You have no active uploads yet. Click Upload to share!</p>';
+              });
         }
 
         function escapeHTML(str) {
@@ -510,14 +658,7 @@
             );
         }
 
-        function updateWallpaperUI(views, likes) {
-            document.getElementById('home-views-count').innerText = views.toLocaleString();
-            document.getElementById('photo-views-count').innerText = views.toLocaleString();
-            document.getElementById('likes-count').innerText = likes.toLocaleString();
-            document.getElementById('photo-likes-count').innerText = likes.toLocaleString();
-        }
-
-        async function incrementViews() {
+        async function incrementViews(docId) {
             const docRef = db.collection('wallpapers').doc(docId);
             try {
                 await db.runTransaction(async (transaction) => {
@@ -532,15 +673,15 @@
             }
         }
 
-        // Increment Likes (Restricted to Logged-in users + Single Like per account)
+        // Increment Likes (Single Like per account enforcement)
         async function incrementLikes() {
             if (!currentUser) {
-                alert("Please log in first to like wallpapers!");
+                alert("Please log in first to like images!");
                 switchView('login');
                 return;
             }
 
-            const wallpaperRef = db.collection('wallpapers').doc(docId);
+            const wallpaperRef = db.collection('wallpapers').doc(currentWallpaperId);
             const likeRef = wallpaperRef.collection('likes').doc(currentUser.username);
 
             try {
@@ -560,10 +701,10 @@
                     
                     transaction.update(wallpaperRef, { likes: currentLikes + 1 });
                 });
-                alert("You liked this wallpaper successfully!");
+                alert("You liked this image successfully!");
             } catch (e) {
                 if (e.message === "ALREADY_LIKED") {
-                    alert("Aap is wallpaper ko pehle hi like kar chuke hain! Ek account se sirf ek hi like ho sakti hai.");
+                    alert("Aap is image ko pehle hi like kar chuke hain! Ek account se sirf ek hi like ho sakti hai.");
                 } else {
                     console.error("Error updating likes:", e);
                     alert("Failed to process like.");
@@ -571,7 +712,7 @@
             }
         }
 
-        // Toggle Lifeline (Restricted to Logged-in users + Single Lifeline per account enforcement)
+        // Toggle Lifeline (Single Lifeline per account enforcement)
         async function toggleLife() {
             if (!currentUser) {
                 alert("Please log in first to give a Lifeline!");
@@ -579,7 +720,8 @@
                 return;
             }
 
-            const uploaderRef = db.collection('users').doc(uploaderUsername);
+            const uploaderName = document.getElementById('photo-uploader-name').innerText;
+            const uploaderRef = db.collection('users').doc(uploaderName);
             const lifeRef = uploaderRef.collection('lifes').doc(currentUser.username);
 
             try {
@@ -619,8 +761,14 @@
                 document.getElementById('tab-home').classList.add('active');
             } else if(viewName === 'photo') {
                 document.getElementById('view-photo').classList.add('active');
-                document.getElementById('tab-images').classList.add('active');
-                incrementViews();
+            } else if(viewName === 'upload') {
+                if (!currentUser) {
+                    alert("Please log in first to upload images!");
+                    switchView('login');
+                    return;
+                }
+                document.getElementById('view-upload').classList.add('active');
+                document.getElementById('tab-upload').classList.add('active');
             } else if(viewName === 'profile') {
                 if (!currentUser) {
                     alert("Please log in to view your profile!");
