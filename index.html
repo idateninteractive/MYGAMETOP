@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouLife - 2006 Classic</title>
+    <title>YouLife - Alien Shooter ChildHood Memories</title>
     
     <!-- Firebase App & Firestore CDN (Compat version) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -68,6 +68,7 @@
         
         .action-btns { display: flex; gap: 5px; }
         .subscribe-btn { background-color: #CC0000; color: #FFFFFF; border: 1px solid #990000; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        .subscribe-btn:hover { background-color: #990000; }
         .like-btn { background-color: #EEEEEE; color: #000000; border: 1px solid #999999; padding: 5px 10px; font-weight: bold; font-size: 11px; cursor: pointer; }
         .like-btn:hover { background-color: #E5ECF9; }
 
@@ -78,12 +79,13 @@
         .comments-section { margin-top: 10px; }
         .comment-form textarea { width: 100%; height: 50px; border: 1px solid #7f9db9; padding: 4px; font-size: 11px; font-family: Arial, sans-serif; resize: vertical; margin-bottom: 5px; box-sizing: border-box; }
         .comment-form button { background-color: #EEEEEE; border: 1px solid #999999; font-size: 11px; padding: 3px 10px; cursor: pointer; font-weight: bold; }
-        .comment-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px dotted #CCCCCC; font-size: 11px; }
-        .comment-item:last-child { border-bottom: none; }
-        .comment-avatar { width: 30px; height: 30px; background-color: #CCCCCC; border: 1px solid #999999; object-fit: cover; flex-shrink: 0; }
+        
+        .comment-item { background-color: #F8F8F8; border: 1px solid #CCCCCC; padding: 8px; margin-bottom: 8px; font-size: 11px; }
+        .comment-header-row { display: flex; justify-content: space-between; border-bottom: 1px dotted #999999; padding-bottom: 3px; margin-bottom: 5px; color: #666666; font-size: 10px; }
+        .comment-body-row { display: flex; gap: 10px; align-items: flex-start; }
+        .comment-avatar { width: 40px; height: 40px; background-color: #CCCCCC; border: 1px solid #999999; object-fit: cover; flex-shrink: 0; }
         .comment-content { flex-grow: 1; }
-        .comment-author { font-weight: bold; color: #0033CC; text-decoration: none; cursor: pointer; }
-        .comment-time { color: #666666; font-size: 10px; margin-left: 5px; }
+        .comment-author { font-weight: bold; color: #0033CC; text-decoration: none; cursor: pointer; font-size: 12px; }
         .comment-text { margin-top: 3px; color: #333333; line-height: 1.3; }
 
         /* Profile View Layout */
@@ -149,12 +151,12 @@
                     <div class="image-grid">
                         <div class="image-item" onclick="switchView('photo')">
                             <div class="image-container">
-                                <img src="https://wallpapercave.com/wp/wp4053989.jpg" alt="Life Wallpaper">
+                                <img src="https://cdn.phototourl.com/free/2026-07-30-4ffefc1e-3f65-4858-ba46-d037870fccaf.jpg" alt="Alien Shooter">
                             </div>
-                            <span class="image-title">Life</span>
-                            <div class="image-desc">An aesthetic wallpaper representing the true essence and journey of Life.</div>
-                            <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (999 ratings)</div>
-                            <div class="image-meta">Views: <span id="home-views-count">0</span> | By: LifeUser</div>
+                            <span class="image-title">Alien Shooter ChildHood Memories</span>
+                            <div class="image-desc">Reliving the legendary classic top-down shooter game memories from the 2000s era.</div>
+                            <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (1,480 ratings)</div>
+                            <div class="image-meta">Views: <span id="home-views-count">0</span> | By: RetroGamer</div>
                         </div>
                     </div>
                 </div>
@@ -165,29 +167,29 @@
         <div id="view-photo" class="view-section">
             <div class="photo-layout">
                 <div class="left-column">
-                    <div class="image-title-header">Life</div>
+                    <div class="image-title-header">Alien Shooter ChildHood Memories</div>
                     
                     <div class="main-image-container">
-                        <img src="https://wallpapercave.com/wp/wp4053989.jpg" alt="Life Wallpaper">
+                        <img src="https://cdn.phototourl.com/free/2026-07-30-4ffefc1e-3f65-4858-ba46-d037870fccaf.jpg" alt="Alien Shooter">
                     </div>
 
                     <div class="uploader-box">
                         <div class="uploader-info">
-                            <img src="https://picsum.photos/50/50?random=42" alt="Random Logo" class="uploader-logo" onclick="switchView('profile')" title="Click to view profile">
+                            <img src="https://picsum.photos/50/50?random=88" alt="Uploader Logo" class="uploader-logo" onclick="switchView('profile')" title="Click to view profile">
                             <div class="uploader-details">
-                                <a onclick="switchView('profile')">LifeUser</a>
-                                <div class="subscribers-count">LIFE 9999</div>
+                                <a onclick="switchView('profile')">RetroGamer</a>
+                                <div class="subscribers-count">Life: <span id="uploader-life-count">14250</span></div>
                             </div>
                         </div>
                         <div class="action-btns">
                             <button class="like-btn" onclick="incrementLikes()">👍 Like (<span id="likes-count">0</span>)</button>
-                            <button class="subscribe-btn">Subscribe</button>
+                            <button class="subscribe-btn" onclick="toggleLife()">⭐ Lifeline (<span id="life-btn-count">14250</span>)</button>
                         </div>
                     </div>
 
                     <div class="image-details-box">
-                        <p><b>Description:</b> An aesthetic wallpaper representing the true essence and journey of Life.</p>
-                        <p><b>Added:</b> 2 days ago | <b>Views:</b> <span id="photo-views-count">0</span> | <b>Likes:</b> <span id="photo-likes-count">0</span> | <b>Ratings:</b> <span class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</span> (999 ratings)</p>
+                        <p><b>Description:</b> Reliving the legendary classic top-down shooter game memories from the 2000s era.</p>
+                        <p><b>Added:</b> Today | <b>Views:</b> <span id="photo-views-count">0</span> | <b>Likes:</b> <span id="photo-likes-count">0</span> | <b>Ratings:</b> <span class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</span> (1,480 ratings)</p>
                     </div>
 
                     <!-- Classic 2006 Comments Section -->
@@ -201,7 +203,7 @@
                                     <button type="submit">Post Comment</button>
                                 </form>
                             </div>
-                            <!-- Comment List Container (Dynamic) -->
+                            <!-- Comment List Container (Dynamic 2006 Style) -->
                             <div id="comments-container"></div>
                         </div>
                     </div>
@@ -213,11 +215,11 @@
                         <div class="box-header">Related Wallpapers</div>
                         <div class="box-content">
                             <div class="side-item">
-                                <img src="https://picsum.photos/100/75?random=2" alt="Thumb" class="side-thumb">
+                                <img src="https://picsum.photos/100/75?random=5" alt="Thumb" class="side-thumb">
                                 <div class="side-info">
-                                    <span class="side-title" onclick="switchView('photo')">Frozen Grand Central Flashmob</span>
-                                    <div class="side-meta">By: ImprovEverywhere</div>
-                                    <div class="side-meta">Views: 45,210</div>
+                                    <span class="side-title" onclick="switchView('photo')">Classic LAN Gaming Night</span>
+                                    <div class="side-meta">By: OldSchool</div>
+                                    <div class="side-meta">Views: 32,100</div>
                                     <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                                 </div>
                             </div>
@@ -231,15 +233,14 @@
         <div id="view-profile" class="view-section">
             <div class="profile-banner">
                 <div class="profile-main-info">
-                    <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=42" alt="Profile Logo" class="profile-logo-large">
+                    <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=88" alt="Profile Logo" class="profile-logo-large">
                     <div class="profile-title-name">
                         <h1 id="profile-name-display">Guest User</h1>
                         <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> Please Log In</p>
                     </div>
                 </div>
                 <div class="profile-stats">
-                    <div><b>LIFE 0</b></div>
-                    <div>Subscribers: 0</div>
+                    <div><b>Life Received: <span id="profile-life-received">0</span></b></div>
                     <div>Total Views: <span id="profile-total-views">0</span></div>
                 </div>
             </div>
@@ -312,26 +313,28 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const docId = "life_wallpaper";
+        const docId = "alien_shooter_memories";
+        const uploaderUsername = "RetroGamer";
 
-        // Current Logged-in User Session State (Initially null -> Not logged in)
+        // Current Logged-in User Session State
         let currentUser = null;
 
         window.addEventListener('DOMContentLoaded', () => {
             setupRealtimeListener();
             setupCommentsListener();
+            setupUploaderLifeListener();
         });
 
-        // Realtime Firestore Listener for Views & Likes
+        // Realtime Firestore Listener for Wallpaper Views & Likes
         function setupRealtimeListener() {
             db.collection('wallpapers').doc(docId).onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    updateUI(data.views || 0, data.likes || 0);
+                    updateWallpaperUI(data.views || 0, data.likes || 0);
                 } else {
                     db.collection('wallpapers').doc(docId).set({
-                        views: 9999,
-                        likes: 999
+                        views: 5420,
+                        likes: 420
                     });
                 }
             }, (error) => {
@@ -339,7 +342,22 @@
             });
         }
 
-        // Realtime Comments Listener
+        // Realtime Listener for Uploader's Life (Lifeline) Count
+        function setupUploaderLifeListener() {
+            db.collection('users').doc(uploaderUsername).onSnapshot((doc) => {
+                let lifeVal = 14250;
+                if (doc.exists && doc.data().life !== undefined) {
+                    lifeVal = doc.data().life;
+                } else {
+                    db.collection('users').doc(uploaderUsername).set({ life: 14250 }, { merge: true });
+                }
+                document.getElementById('uploader-life-count').innerText = lifeVal.toLocaleString();
+                document.getElementById('life-btn-count').innerText = lifeVal.toLocaleString();
+                document.getElementById('profile-life-received').innerText = lifeVal.toLocaleString();
+            });
+        }
+
+        // Realtime Comments Listener with 2006 Classic Box Style
         function setupCommentsListener() {
             db.collection('wallpapers').doc(docId).collection('comments')
               .orderBy('timestamp', 'desc')
@@ -354,13 +372,15 @@
                       const comment = doc.data();
                       commentsHTML += `
                         <div class="comment-item">
-                            <img src="https://picsum.photos/30/30?random=${Math.floor(Math.random() * 100)}" alt="Avatar" class="comment-avatar">
-                            <div class="comment-content">
-                                <div>
-                                    <span class="comment-author" onclick="switchView('profile')">${escapeHTML(comment.author || "Visitor")}</span>
-                                    <span class="comment-time">Recently</span>
+                            <div class="comment-header-row">
+                                <span>From <a class="comment-author" onclick="switchView('profile')" style="color:#0033CC; text-decoration:none;">${escapeHTML(comment.author || "Visitor")}</a></span>
+                                <span>Today</span>
+                            </div>
+                            <div class="comment-body-row">
+                                <img src="https://picsum.photos/40/40?random=${Math.floor(Math.random() * 100)}" alt="Avatar" class="comment-avatar">
+                                <div class="comment-content">
+                                    <div class="comment-text">${escapeHTML(comment.text)}</div>
                                 </div>
-                                <div class="comment-text">${escapeHTML(comment.text)}</div>
                             </div>
                         </div>
                       `;
@@ -456,7 +476,7 @@
             );
         }
 
-        function updateUI(views, likes) {
+        function updateWallpaperUI(views, likes) {
             document.getElementById('home-views-count').innerText = views.toLocaleString();
             document.getElementById('photo-views-count').innerText = views.toLocaleString();
             document.getElementById('profile-total-views').innerText = views.toLocaleString();
@@ -479,7 +499,7 @@
             }
         }
 
-        // Increment Likes (Restricted to Logged-in users + Single Like per account enforcement)
+        // Increment Likes (Restricted to Logged-in users + Single Like per account)
         async function incrementLikes() {
             if (!currentUser) {
                 alert("Please log in first to like wallpapers!");
@@ -500,13 +520,11 @@
                     const wallpaperDoc = await transaction.get(wallpaperRef);
                     const currentLikes = wallpaperDoc.exists ? (wallpaperDoc.data().likes || 0) : 0;
 
-                    // Save user like record
                     transaction.set(likeRef, { 
                         username: currentUser.username, 
                         timestamp: firebase.firestore.FieldValue.serverTimestamp() 
                     });
                     
-                    // Increment count
                     transaction.update(wallpaperRef, { likes: currentLikes + 1 });
                 });
                 alert("You liked this wallpaper successfully!");
@@ -516,6 +534,45 @@
                 } else {
                     console.error("Error updating likes:", e);
                     alert("Failed to process like.");
+                }
+            }
+        }
+
+        // Toggle Lifeline (Restricted to Logged-in users + Single Lifeline per account enforcement)
+        async function toggleLife() {
+            if (!currentUser) {
+                alert("Please log in first to give a Lifeline!");
+                switchView('login');
+                return;
+            }
+
+            const uploaderRef = db.collection('users').doc(uploaderUsername);
+            const lifeRef = uploaderRef.collection('lifes').doc(currentUser.username);
+
+            try {
+                await db.runTransaction(async (transaction) => {
+                    const lifeDoc = await transaction.get(lifeRef);
+                    if (lifeDoc.exists) {
+                        throw new Error("ALREADY_GIVEN_LIFE");
+                    }
+
+                    const uploaderDoc = await transaction.get(uploaderRef);
+                    const currentLife = uploaderDoc.exists ? (uploaderDoc.data().life || 14250) : 14250;
+
+                    transaction.set(lifeRef, { 
+                        username: currentUser.username, 
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+                    });
+                    
+                    transaction.set(uploaderRef, { life: currentLife + 1 }, { merge: true });
+                });
+                alert("Aapne successfully Lifeline de di hai!");
+            } catch (e) {
+                if (e.message === "ALREADY_GIVEN_LIFE") {
+                    alert("Aap is account ko pehle hi Lifeline de chuke hain! Ek account se sirf ek hi Lifeline di ja sakti hai.");
+                } else {
+                    console.error("Error giving Lifeline:", e);
+                    alert("Failed to process Lifeline.");
                 }
             }
         }
