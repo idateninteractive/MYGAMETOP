@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouLife - 2006 Classic</title>
     
-    <!-- Firebase App, Firestore & Auth SDK CDN (Compat Version) -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <!-- Firebase App & Firestore CDN (Compat version) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <style>
         body { background-color: #FFFFFF; color: #000000; font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; }
@@ -67,11 +66,11 @@
         .uploader-details a { font-weight: bold; color: #0033CC; text-decoration: none; font-size: 13px; cursor: pointer; }
         .subscribers-count { font-size: 11px; color: #666666; margin-top: 2px; }
         
-        .action-buttons { display: flex; gap: 5px; align-items: center; }
+        .action-btns { display: flex; gap: 5px; }
         .subscribe-btn { background-color: #CC0000; color: #FFFFFF; border: 1px solid #990000; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; }
         .like-btn { background-color: #EEEEEE; color: #000000; border: 1px solid #999999; padding: 5px 10px; font-weight: bold; font-size: 11px; cursor: pointer; }
         .like-btn:hover { background-color: #E5ECF9; }
-        
+
         .image-details-box { background-color: #E5ECF9; border: 1px solid #999999; padding: 10px; margin-top: 10px; font-size: 11px; line-height: 1.4; }
         .image-details-box p { margin: 4px 0; }
 
@@ -119,11 +118,10 @@
                     <button type="submit">Search</button>
                 </form>
             </div>
-            <div class="top-links" id="topLinks">
+            <div class="top-links">
                 <a style="font-weight: bold; color: #CC0000;">Upload</a> | 
                 <a onclick="switchView('home')">Home</a> | 
-                <a onclick="switchView('profile')">My Account</a> | 
-                <a id="authActionBtn" onclick="toggleAuth()" style="color: #0033CC; cursor: pointer;">Sign In</a>
+                <a onclick="switchView('profile')">My Account</a>
             </div>
         </div>
     </div>
@@ -154,7 +152,7 @@
                             <span class="image-title">Life</span>
                             <div class="image-desc">An aesthetic wallpaper representing the true essence and journey of Life.</div>
                             <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (999 ratings)</div>
-                            <div class="image-meta">Views: 9,999 | By: LifeUser</div>
+                            <div class="image-meta">Views: <span id="home-views-count">0</span> | By: LifeUser</div>
                         </div>
                     </div>
                 </div>
@@ -175,35 +173,35 @@
                         <div class="uploader-info">
                             <img src="https://picsum.photos/50/50?random=42" alt="Random Logo" class="uploader-logo" onclick="switchView('profile')" title="Click to view profile">
                             <div class="uploader-details">
-                                <a onclick="switchView('profile')" id="uploaderName">LifeUser</a>
+                                <a onclick="switchView('profile')">LifeUser</a>
                                 <div class="subscribers-count">LIFE 9999</div>
                             </div>
                         </div>
-                        <div class="action-buttons">
+                        <div class="action-btns">
+                            <button class="like-btn" onclick="incrementLikes()">👍 Like (<span id="likes-count">0</span>)</button>
                             <button class="subscribe-btn">Subscribe</button>
-                            <button class="like-btn" onclick="handleLike()">👍 Like (<span id="likeCount">0</span>)</button>
                         </div>
                     </div>
 
                     <div class="image-details-box">
                         <p><b>Description:</b> An aesthetic wallpaper representing the true essence and journey of Life.</p>
-                        <p><b>Added:</b> 2 days ago | <b>Views:</b> 9,999 | <b>Ratings:</b> <span class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</span> (999 ratings)</p>
+                        <p><b>Added:</b> 2 days ago | <b>Views:</b> <span id="photo-views-count">0</span> | <b>Likes:</b> <span id="photo-likes-count">0</span> | <b>Ratings:</b> <span class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</span> (999 ratings)</p>
                     </div>
 
                     <!-- Classic 2006 Comments Section -->
                     <div class="box comments-section">
-                        <div class="box-header" id="comments-header">Comments (0)</div>
+                        <div class="box-header" id="comments-header-title">Comments (0)</div>
                         <div class="box-content">
                             <!-- Comment Input Form -->
                             <div class="comment-form" style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #CCCCCC;">
-                                <form onsubmit="postComment(event);">
-                                    <textarea id="commentInput" placeholder="Add a comment... (Must be signed in)"></textarea>
+                                <form onsubmit="postComment(event)">
+                                    <textarea id="comment-input" placeholder="Add a comment..."></textarea>
                                     <button type="submit">Post Comment</button>
                                 </form>
                             </div>
-                            <!-- Dynamic Comment List Container -->
-                            <div id="commentsList">
-                                <!-- Comments will load here dynamically -->
+                            <!-- Comment List Container (Dynamic) -->
+                            <div id="comments-container">
+                                <!-- Comments will be loaded here dynamically -->
                             </div>
                         </div>
                     </div>
@@ -235,19 +233,19 @@
                 <div class="profile-main-info">
                     <img src="https://picsum.photos/70/70?random=42" alt="Profile Logo" class="profile-logo-large">
                     <div class="profile-title-name">
-                        <h1 id="profileName">LifeUser</h1>
+                        <h1>LifeUser</h1>
                         <p><b>Title:</b> Life | Official Wallpaper Channel</p>
                     </div>
                 </div>
                 <div class="profile-stats">
                     <div><b>LIFE 1999</b></div>
                     <div>Subscribers: 9,999</div>
-                    <div>Total Views: 45,200</div>
+                    <div>Total Views: <span id="profile-total-views">0</span></div>
                 </div>
             </div>
 
             <div class="box">
-                <div class="box-header">Uploads by User</div>
+                <div class="box-header">Uploads by LifeUser</div>
                 <div class="box-content">
                     <div class="image-grid">
                         <div class="image-item" onclick="switchView('photo')">
@@ -270,7 +268,7 @@
     </footer>
 
     <script>
-        // Firebase Initialization
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyA5X9jtERs5hp0dsIiK2jZFCZxoH0c1ktM",
             authDomain: "youlife-as.firebaseapp.com",
@@ -279,184 +277,136 @@
             messagingSenderId: "46741314431",
             appId: "1:46741314431:web:bcb6976c4e13d08bf3584a"
         };
-        
+
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
-        const auth = firebase.auth();
+        const docId = "life_wallpaper";
 
-        let currentUser = null;
-        const currentPhotoId = "default_wallpaper_life"; // Sample ID for like tracking
-
-        // Track Auth State changes
-        auth.onAuthStateChanged((user) => {
-            currentUser = user;
-            const authActionBtn = document.getElementById('authActionBtn');
-            if (user) {
-                authActionBtn.innerText = "Sign Out (" + (user.displayName || user.email) + ")";
-                document.getElementById('profileName').innerText = user.displayName || "YouLife Member";
-                document.getElementById('uploaderName').innerText = user.displayName || "YouLife Member";
-            } else {
-                authActionBtn.innerText = "Sign In";
-                document.getElementById('profileName').innerText = "LifeUser";
-                document.getElementById('uploaderName').innerText = "LifeUser";
-            }
-            loadLikesCount();
+        // Real-time listener on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            setupRealtimeListener();
+            setupCommentsListener();
         });
 
-        // Google Sign In / Sign Out toggle function
-        function toggleAuth() {
-            if (currentUser) {
-                auth.signOut().then(() => {
-                    alert('Signed out successfully!');
-                }).catch((error) => {
-                    console.error("Sign out error", error);
-                });
-            } else {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                auth.signInWithPopup(provider).then((result) => {
-                    alert('Welcome, ' + result.user.displayName + '!');
-                }).catch((error) => {
-                    console.error("Authentication error: ", error);
-                    alert('Login failed: ' + error.message);
-                });
-            }
-        }
-
-        // Load comments and likes on page load
-        window.onload = function() {
-            loadComments();
-            loadLikesCount();
-        };
-
-        // Handle Like Click (Restricted to Logged-in users)
-        function handleLike() {
-            if (!currentUser) {
-                alert('Please sign in to your account first to like this image!');
-                toggleAuth(); // Automatically trigger Google Sign-In popup
-                return;
-            }
-
-            const likeRef = db.collection('likes').doc(currentPhotoId + "_" + currentUser.uid);
-
-            likeRef.get().then((doc) => {
+        // Realtime Firestore Listener for Views & Likes
+        function setupRealtimeListener() {
+            db.collection('wallpapers').doc(docId).onSnapshot((doc) => {
                 if (doc.exists) {
-                    // Already liked, so unlike it
-                    likeRef.delete().then(() => {
-                        updateLikeCountUI(-1);
-                    });
-                } else {
-                    // Add like
-                    likeRef.set({
-                        userId: currentUser.uid,
-                        photoId: currentPhotoId,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                    }).then(() => {
-                        updateLikeCountUI(1);
-                    });
-                }
-            }).catch((error) => {
-                console.error("Error processing like:", error);
-            });
-        }
-
-        // Fetch likes count from Firestore
-        function loadLikesCount() {
-            db.collection('likes').where('photoId', '==', currentPhotoId).get()
-            .then((querySnapshot) => {
-                document.getElementById('likeCount').innerText = querySnapshot.size;
-            })
-            .catch((error) => {
-                console.error("Error loading likes:", error);
-            });
-        }
-
-        // Helper to update UI count instantly
-        function updateLikeCountUI(change) {
-            const countSpan = document.getElementById('likeCount');
-            let currentCount = parseInt(countSpan.innerText) || 0;
-            countSpan.innerText = Math.max(0, currentCount + change);
-        }
-
-        // Function to Post Comment to Firestore (Requires Login)
-        function postComment(event) {
-            event.preventDefault();
-            
-            if (!currentUser) {
-                alert('Please sign in to post a comment!');
-                toggleAuth();
-                return;
-            }
-
-            const input = document.getElementById('commentInput');
-            const commentText = input.value.trim();
-
-            if (!commentText) {
-                alert('Please write something before posting!');
-                return;
-            }
-
-            db.collection('comments').add({
-                text: commentText,
-                author: currentUser.displayName || 'YouLife Member',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                input.value = ''; // Clear textarea
-                loadComments(); // Refresh comments list
-            })
-            .catch((error) => {
-                console.error("Error adding comment: ", error);
-                alert('Error posting comment. Please check Firebase rules.');
-            });
-        }
-
-        // Function to Fetch and Display Comments from Firestore
-        function loadComments() {
-            db.collection('comments').orderBy('timestamp', 'desc').get()
-            .then((querySnapshot) => {
-                const commentsList = document.getElementById('commentsList');
-                commentsList.innerHTML = '';
-                
-                let count = querySnapshot.size;
-                document.getElementById('comments-header').innerText = `Comments (${count})`;
-
-                if (count === 0) {
-                    commentsList.innerHTML = '<div style="font-size: 11px; color: #666; padding: 5px 0;">No comments yet. Be the first to comment!</div>';
-                    return;
-                }
-
-                querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    const commentItem = `
+                    updateUI(data.views || 0, data.likes || 0);
+                } else {
+                    db.collection('wallpapers').doc(docId).set({
+                        views: 9999,
+                        likes: 999
+                    });
+                }
+            }, (error) => {
+                console.error("Firebase Realtime Error:", error);
+            });
+        }
+
+        // Realtime Comments Listener
+        function setupCommentsListener() {
+            db.collection('wallpapers').doc(docId).collection('comments')
+              .orderBy('timestamp', 'desc')
+              .onSnapshot((snapshot) => {
+                  const commentsContainer = document.getElementById('comments-container');
+                  const commentsHeader = document.getElementById('comments-header-title');
+                  
+                  commentsHeader.innerText = `Comments (${snapshot.size})`;
+                  
+                  let commentsHTML = '';
+                  snapshot.forEach((doc) => {
+                      const comment = doc.data();
+                      const timeStr = comment.timestamp ? "Just now" : "Recently";
+                      commentsHTML += `
                         <div class="comment-item">
                             <img src="https://picsum.photos/30/30?random=${Math.floor(Math.random() * 100)}" alt="Avatar" class="comment-avatar">
                             <div class="comment-content">
                                 <div>
-                                    <span class="comment-author" onclick="switchView('profile')">${data.author || 'Anonymous'}</span>
-                                    <span class="comment-time">Just now</span>
+                                    <span class="comment-author" onclick="switchView('profile')">${escapeHTML(comment.author || "Visitor")}</span>
+                                    <span class="comment-time">${timeStr}</span>
                                 </div>
-                                <div class="comment-text">${escapeHtml(data.text)}</div>
+                                <div class="comment-text">${escapeHTML(comment.text)}</div>
                             </div>
                         </div>
-                    `;
-                    commentsList.innerHTML += commentItem;
-                });
-            })
-            .catch((error) => {
-                console.error("Error getting comments: ", error);
-            });
+                      `;
+                  });
+                  commentsContainer.innerHTML = commentsHTML;
+              });
         }
 
-        // Security helper to prevent HTML injection
-        function escapeHtml(text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        // Post Comment Functionality
+        async function postComment(event) {
+            event.preventDefault();
+            const textarea = document.getElementById('comment-input');
+            const commentText = textarea.value.trim();
+
+            if (!commentText) {
+                alert("Please enter a comment before posting.");
+                return;
+            }
+
+            try {
+                await db.collection('wallpapers').doc(docId).collection('comments').add({
+                    author: "RetroFan06",
+                    text: commentText,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                textarea.value = ''; // Clear textarea after successful post
+            } catch (e) {
+                console.error("Error adding comment: ", e);
+                alert("Failed to post comment. Check console for details.");
+            }
+        }
+
+        // Helper function for security (HTML escaping)
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Update UI elements
+        function updateUI(views, likes) {
+            document.getElementById('home-views-count').innerText = views.toLocaleString();
+            document.getElementById('photo-views-count').innerText = views.toLocaleString();
+            document.getElementById('profile-total-views').innerText = views.toLocaleString();
+            document.getElementById('likes-count').innerText = likes.toLocaleString();
+            document.getElementById('photo-likes-count').innerText = likes.toLocaleString();
+        }
+
+        // Increment Views
+        async function incrementViews() {
+            const docRef = db.collection('wallpapers').doc(docId);
+            try {
+                await db.runTransaction(async (transaction) => {
+                    const doc = await transaction.get(docRef);
+                    if (doc.exists) {
+                        const newViews = (doc.data().views || 0) + 1;
+                        transaction.update(docRef, { views: newViews });
+                    }
+                });
+            } catch (e) {
+                console.error("Error updating views:", e);
+            }
+        }
+
+        // Increment Likes
+        async function incrementLikes() {
+            const docRef = db.collection('wallpapers').doc(docId);
+            try {
+                await db.runTransaction(async (transaction) => {
+                    const doc = await transaction.get(docRef);
+                    if (doc.exists) {
+                        const newLikes = (doc.data().likes || 0) + 1;
+                        transaction.update(docRef, { likes: newLikes });
+                    }
+                });
+            } catch (e) {
+                console.error("Error updating likes:", e);
+            }
         }
 
         // View Switcher Function
@@ -470,6 +420,7 @@
             } else if(viewName === 'photo') {
                 document.getElementById('view-photo').classList.add('active');
                 document.getElementById('tab-images').classList.add('active');
+                incrementViews();
             } else if(viewName === 'profile') {
                 document.getElementById('view-profile').classList.add('active');
                 document.getElementById('tab-profile').classList.add('active');
