@@ -105,7 +105,10 @@
         .profile-name-pencil { color: #FFFFFF; font-size: 15px; font-weight: bold; display: none; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; text-shadow: 0 1px 2px #000000; margin-left: 4px; }
         .profile-name-pencil:hover { color: #FFCC00; }
 
-        .profile-stats { text-align: right; font-size: 12px; background-color: rgba(0,0,0,0.2); padding: 8px 12px; border: 1px solid #336699; }
+        /* Improved Profile Stats Box */
+        .profile-stats { text-align: right; font-size: 13px; background-color: rgba(0,0,0,0.25); padding: 10px 14px; border: 1px solid #336699; line-height: 1.6; }
+        .profile-stats .stat-row { margin-bottom: 3px; }
+        .profile-stats .stat-value { font-size: 14px; font-weight: bold; color: #FFCC00; }
         
         .side-item { display: flex; gap: 8px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted #CCCCCC; }
         .side-thumb { width: 100px; height: 75px; background-color: #000; border: 1px solid #999999; object-fit: cover; flex-shrink: 0; }
@@ -282,8 +285,8 @@
                     </div>
                 </div>
                 <div class="profile-stats">
-                    <div><b>Lifeline Received: <span id="profile-life-received">0</span></b></div>
-                    <div>Total Views: <span id="profile-total-views">0</span></div>
+                    <div class="stat-row">Lifeline Received: <span id="profile-life-received" class="stat-value">0</span></div>
+                    <div class="stat-row">Total Views: <span id="profile-total-views" class="stat-value">0</span></div>
                 </div>
             </div>
 
@@ -497,7 +500,7 @@
                 displayName = data.displayName || username;
                 if (data.logoUrl) logoUrl = data.logoUrl;
             } else {
-                await userRef.set({ life: 0, views: 0, gender: "N/A", displayName: username, logoUrl: logoUrl }, { merge: true });
+                await userRef.set({ life: 0, gender: "N/A", displayName: username, logoUrl: logoUrl }, { merge: true });
             }
 
             document.getElementById('profile-name-display').innerText = displayName;
@@ -755,7 +758,6 @@
                         password: password,
                         gender: gender,
                         life: 0,
-                        views: 0,
                         displayName: username,
                         logoUrl: defaultLogo,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -782,10 +784,7 @@
                 if (doc.exists) {
                     const data = doc.data();
                     const lifeVal = data.life !== undefined ? data.life : 0;
-                    const viewsVal = data.views !== undefined ? data.views : 0;
-                    
                     document.getElementById('profile-life-received').innerText = formatCount(lifeVal);
-                    document.getElementById('profile-total-views').innerText = viewsVal.toLocaleString();
                 }
             });
         }
@@ -796,9 +795,14 @@
               .onSnapshot((snapshot) => {
                   const grid = document.getElementById('profile-uploads-grid');
                   let html = '';
+                  let totalViews = 0;
+                  
                   snapshot.forEach((doc) => {
                       const item = doc.data();
                       const id = doc.id;
+                      const views = item.views || 0;
+                      totalViews += views;
+
                       html += `
                         <div class="image-item" onclick="openWallpaper('${id}')">
                             <div class="image-container">
@@ -807,10 +811,13 @@
                             <span class="image-title">${escapeHTML(item.title || 'Untitled')}</span>
                             <div class="image-desc">${escapeHTML(item.description || '')}</div>
                             <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                            <div class="image-meta">Views: ${(item.views || 0).toLocaleString()}</div>
+                            <div class="image-meta">Views: ${views.toLocaleString()}</div>
                         </div>
                       `;
                   });
+                  
+                  // Update total views dynamically from user uploads
+                  document.getElementById('profile-total-views').innerText = totalViews.toLocaleString();
                   grid.innerHTML = html || '<p style="color: #666666; font-size: 11px;">No active uploads found for this user.</p>';
               });
         }
