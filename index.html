@@ -479,7 +479,7 @@
             }
         }
 
-        // Increment Likes (Restricted to Logged-in users)
+        // Increment Likes (Restricted to Logged-in users + Single Like per account enforcement)
         async function incrementLikes() {
             if (!currentUser) {
                 alert("Please log in first to like wallpapers!");
@@ -487,17 +487,36 @@
                 return;
             }
 
-            const docRef = db.collection('wallpapers').doc(docId);
+            const wallpaperRef = db.collection('wallpapers').doc(docId);
+            const likeRef = wallpaperRef.collection('likes').doc(currentUser.username);
+
             try {
                 await db.runTransaction(async (transaction) => {
-                    const doc = await transaction.get(docRef);
-                    if (doc.exists) {
-                        const newLikes = (doc.data().likes || 0) + 1;
-                        transaction.update(docRef, { likes: newLikes });
+                    const likeDoc = await transaction.get(likeRef);
+                    if (likeDoc.exists) {
+                        throw new Error("ALREADY_LIKED");
                     }
+
+                    const wallpaperDoc = await transaction.get(wallpaperRef);
+                    const currentLikes = wallpaperDoc.exists ? (wallpaperDoc.data().likes || 0) : 0;
+
+                    // Save user like record
+                    transaction.set(likeRef, { 
+                        username: currentUser.username, 
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+                    });
+                    
+                    // Increment count
+                    transaction.update(wallpaperRef, { likes: currentLikes + 1 });
                 });
+                alert("You liked this wallpaper successfully!");
             } catch (e) {
-                console.error("Error updating likes:", e);
+                if (e.message === "ALREADY_LIKED") {
+                    alert("Aap is wallpaper ko pehle hi like kar chuke hain! Ek account se sirf ek hi like ho sakti hai.");
+                } else {
+                    console.error("Error updating likes:", e);
+                    alert("Failed to process like.");
+                }
             }
         }
 
