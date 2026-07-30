@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouLife - 2006 Classic</title>
     
-    <!-- Firebase App & Firestore SDK CDN (Compat Version) -->
+    <!-- Firebase App, Firestore & Auth SDK CDN (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 
     <style>
         body { background-color: #FFFFFF; color: #000000; font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; }
@@ -65,7 +66,11 @@
         .uploader-logo:hover { opacity: 0.8; }
         .uploader-details a { font-weight: bold; color: #0033CC; text-decoration: none; font-size: 13px; cursor: pointer; }
         .subscribers-count { font-size: 11px; color: #666666; margin-top: 2px; }
+        
+        .action-buttons { display: flex; gap: 5px; align-items: center; }
         .subscribe-btn { background-color: #CC0000; color: #FFFFFF; border: 1px solid #990000; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        .like-btn { background-color: #EEEEEE; color: #000000; border: 1px solid #999999; padding: 5px 10px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        .like-btn:hover { background-color: #E5ECF9; }
         
         .image-details-box { background-color: #E5ECF9; border: 1px solid #999999; padding: 10px; margin-top: 10px; font-size: 11px; line-height: 1.4; }
         .image-details-box p { margin: 4px 0; }
@@ -114,10 +119,11 @@
                     <button type="submit">Search</button>
                 </form>
             </div>
-            <div class="top-links">
+            <div class="top-links" id="topLinks">
                 <a style="font-weight: bold; color: #CC0000;">Upload</a> | 
                 <a onclick="switchView('home')">Home</a> | 
-                <a onclick="switchView('profile')">My Account</a>
+                <a onclick="switchView('profile')">My Account</a> | 
+                <a id="authActionBtn" onclick="toggleAuth()" style="color: #0033CC; cursor: pointer;">Sign In</a>
             </div>
         </div>
     </div>
@@ -169,12 +175,13 @@
                         <div class="uploader-info">
                             <img src="https://picsum.photos/50/50?random=42" alt="Random Logo" class="uploader-logo" onclick="switchView('profile')" title="Click to view profile">
                             <div class="uploader-details">
-                                <a onclick="switchView('profile')">LifeUser</a>
+                                <a onclick="switchView('profile')" id="uploaderName">LifeUser</a>
                                 <div class="subscribers-count">LIFE 9999</div>
                             </div>
                         </div>
-                        <div>
+                        <div class="action-buttons">
                             <button class="subscribe-btn">Subscribe</button>
+                            <button class="like-btn" onclick="handleLike()">👍 Like (<span id="likeCount">0</span>)</button>
                         </div>
                     </div>
 
@@ -190,7 +197,7 @@
                             <!-- Comment Input Form -->
                             <div class="comment-form" style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid #CCCCCC;">
                                 <form onsubmit="postComment(event);">
-                                    <textarea id="commentInput" placeholder="Add a comment..."></textarea>
+                                    <textarea id="commentInput" placeholder="Add a comment... (Must be signed in)"></textarea>
                                     <button type="submit">Post Comment</button>
                                 </form>
                             </div>
@@ -228,7 +235,7 @@
                 <div class="profile-main-info">
                     <img src="https://picsum.photos/70/70?random=42" alt="Profile Logo" class="profile-logo-large">
                     <div class="profile-title-name">
-                        <h1>LifeUser</h1>
+                        <h1 id="profileName">LifeUser</h1>
                         <p><b>Title:</b> Life | Official Wallpaper Channel</p>
                     </div>
                 </div>
@@ -240,7 +247,7 @@
             </div>
 
             <div class="box">
-                <div class="box-header">Uploads by LifeUser</div>
+                <div class="box-header">Uploads by User</div>
                 <div class="box-content">
                     <div class="image-grid">
                         <div class="image-item" onclick="switchView('photo')">
@@ -275,15 +282,111 @@
         
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
-        // Load comments on page load
+        let currentUser = null;
+        const currentPhotoId = "default_wallpaper_life"; // Sample ID for like tracking
+
+        // Track Auth State changes
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            const authActionBtn = document.getElementById('authActionBtn');
+            if (user) {
+                authActionBtn.innerText = "Sign Out (" + (user.displayName || user.email) + ")";
+                document.getElementById('profileName').innerText = user.displayName || "YouLife Member";
+                document.getElementById('uploaderName').innerText = user.displayName || "YouLife Member";
+            } else {
+                authActionBtn.innerText = "Sign In";
+                document.getElementById('profileName').innerText = "LifeUser";
+                document.getElementById('uploaderName').innerText = "LifeUser";
+            }
+            loadLikesCount();
+        });
+
+        // Google Sign In / Sign Out toggle function
+        function toggleAuth() {
+            if (currentUser) {
+                auth.signOut().then(() => {
+                    alert('Signed out successfully!');
+                }).catch((error) => {
+                    console.error("Sign out error", error);
+                });
+            } else {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                auth.signInWithPopup(provider).then((result) => {
+                    alert('Welcome, ' + result.user.displayName + '!');
+                }).catch((error) => {
+                    console.error("Authentication error: ", error);
+                    alert('Login failed: ' + error.message);
+                });
+            }
+        }
+
+        // Load comments and likes on page load
         window.onload = function() {
             loadComments();
+            loadLikesCount();
         };
 
-        // Function to Post Comment to Firestore
+        // Handle Like Click (Restricted to Logged-in users)
+        function handleLike() {
+            if (!currentUser) {
+                alert('Please sign in to your account first to like this image!');
+                toggleAuth(); // Automatically trigger Google Sign-In popup
+                return;
+            }
+
+            const likeRef = db.collection('likes').doc(currentPhotoId + "_" + currentUser.uid);
+
+            likeRef.get().then((doc) => {
+                if (doc.exists) {
+                    // Already liked, so unlike it
+                    likeRef.delete().then(() => {
+                        updateLikeCountUI(-1);
+                    });
+                } else {
+                    // Add like
+                    likeRef.set({
+                        userId: currentUser.uid,
+                        photoId: currentPhotoId,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(() => {
+                        updateLikeCountUI(1);
+                    });
+                }
+            }).catch((error) => {
+                console.error("Error processing like:", error);
+            });
+        }
+
+        // Fetch likes count from Firestore
+        function loadLikesCount() {
+            db.collection('likes').where('photoId', '==', currentPhotoId).get()
+            .then((querySnapshot) => {
+                document.getElementById('likeCount').innerText = querySnapshot.size;
+            })
+            .catch((error) => {
+                console.error("Error loading likes:", error);
+            });
+        }
+
+        // Helper to update UI count instantly
+        function updateLikeCountUI(change) {
+            const countSpan = document.getElementById('likeCount');
+            let currentCount = parseInt(countSpan.innerText) || 0;
+            countSpan.innerText = Math.max(0, currentCount + change);
+        }
+
+        // Function to Post Comment to Firestore (Requires Login)
         function postComment(event) {
             event.preventDefault();
+            
+            if (!currentUser) {
+                alert('Please sign in to post a comment!');
+                toggleAuth();
+                return;
+            }
+
             const input = document.getElementById('commentInput');
             const commentText = input.value.trim();
 
@@ -294,7 +397,7 @@
 
             db.collection('comments').add({
                 text: commentText,
-                author: 'LifeUser',
+                author: currentUser.displayName || 'YouLife Member',
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .then(() => {
