@@ -83,9 +83,10 @@
         .comment-item { background-color: #F8F8F8; border: 1px solid #CCCCCC; padding: 8px; margin-bottom: 8px; font-size: 11px; }
         .comment-header-row { display: flex; justify-content: space-between; border-bottom: 1px dotted #999999; padding-bottom: 3px; margin-bottom: 5px; color: #666666; font-size: 10px; }
         .comment-body-row { display: flex; gap: 10px; align-items: flex-start; }
-        .comment-avatar { width: 40px; height: 40px; background-color: #CCCCCC; border: 1px solid #999999; object-fit: cover; flex-shrink: 0; }
+        .comment-avatar { width: 40px; height: 40px; background-color: #CCCCCC; border: 1px solid #999999; object-fit: cover; flex-shrink: 0; cursor: pointer; }
         .comment-content { flex-grow: 1; }
         .comment-author { font-weight: bold; color: #0033CC; text-decoration: none; cursor: pointer; font-size: 12px; }
+        .comment-author:hover { text-decoration: underline; }
         .comment-text { margin-top: 3px; color: #333333; line-height: 1.3; }
 
         /* Profile View Layout */
@@ -123,7 +124,7 @@
             <div class="top-links">
                 <a onclick="switchView('upload')" style="font-weight: bold; color: #CC0000; cursor: pointer;">Upload</a> | 
                 <a onclick="switchView('home')">Home</a> | 
-                <a onclick="switchView('profile')">My Account</a> | 
+                <a onclick="openMyProfile()">My Account</a> | 
                 <a onclick="switchView('login')" id="auth-link" style="color: #CC0000; font-weight: bold;">Log In</a>
             </div>
         </div>
@@ -133,7 +134,7 @@
         <div class="nav-tabs-inner">
             <a id="tab-home" class="active" onclick="switchView('home')">Home</a>
             <a id="tab-upload" onclick="switchView('upload')">Upload Images</a>
-            <a id="tab-profile" onclick="switchView('profile')">Profile</a>
+            <a id="tab-profile" onclick="openMyProfile()">Profile</a>
             <a id="tab-login" onclick="switchView('login')">Account Login</a>
         </div>
     </div>
@@ -148,9 +149,7 @@
                     <a style="font-size: 11px; color: #0033CC; text-decoration: none; cursor: pointer;">See More &raquo;</a>
                 </div>
                 <div class="box-content">
-                    <div id="home-image-grid" class="image-grid">
-                        <!-- Dynamic Wallpapers loaded from Firestore -->
-                    </div>
+                    <div id="home-image-grid" class="image-grid"></div>
                 </div>
             </div>
         </div>
@@ -167,9 +166,9 @@
 
                     <div class="uploader-box">
                         <div class="uploader-info">
-                            <img src="https://picsum.photos/50/50?random=88" alt="Uploader Logo" class="uploader-logo" onclick="switchView('profile')" title="Click to view profile">
+                            <img src="https://picsum.photos/50/50?random=88" alt="Uploader Logo" class="uploader-logo" id="uploader-logo-img" title="Click to view profile">
                             <div class="uploader-details">
-                                <a onclick="switchView('profile')" id="photo-uploader-name">Loading...</a>
+                                <a id="photo-uploader-name">Loading...</a>
                                 <div class="subscribers-count">Lifeline: <span id="uploader-life-count">0</span></div>
                             </div>
                         </div>
@@ -220,7 +219,7 @@
             </div>
         </div>
 
-        <!-- 3. UPLOAD SYSTEM VIEW (2006 YouTube Style) -->
+        <!-- 3. UPLOAD SYSTEM VIEW -->
         <div id="view-upload" class="view-section">
             <div class="box" style="width: 550px; margin: 20px auto;">
                 <div class="box-header">Upload Your Image - YouLife (2006 Style)</div>
@@ -262,7 +261,7 @@
                     <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=88" alt="Profile Logo" class="profile-logo-large">
                     <div class="profile-title-name">
                         <h1 id="profile-name-display">Guest User</h1>
-                        <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Please Log In</span></p>
+                        <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Member</span></p>
                     </div>
                 </div>
                 <div class="profile-stats">
@@ -272,10 +271,10 @@
             </div>
 
             <div class="box">
-                <div class="box-header" id="profile-uploads-header">My Uploads</div>
+                <div class="box-header" id="profile-uploads-header">User Uploads</div>
                 <div class="box-content">
                     <div id="profile-uploads-grid" class="image-grid">
-                        <p style="color: #666666; font-size: 11px;">Please log in to view and manage your uploads.</p>
+                        <p style="color: #666666; font-size: 11px;">No uploads found.</p>
                     </div>
                 </div>
             </div>
@@ -343,7 +342,7 @@
         const db = firebase.firestore();
         
         let currentUser = null;
-        let currentWallpaperId = "alien_shooter_memories"; // Default fallback
+        let currentWallpaperId = "alien_shooter_memories";
         let activeWallpaperListener = null;
         let activeCommentsListener = null;
         let activeUploaderLifeListener = null;
@@ -354,7 +353,6 @@
             setupHomeFeedListener();
         });
 
-        // Ensure default 2006 Alien Shooter wallpaper exists in Firestore
         async function seedDefaultWallpaperIfNeeded() {
             const defaultRef = db.collection('wallpapers').doc("alien_shooter_memories");
             const doc = await defaultRef.get();
@@ -371,7 +369,6 @@
             }
         }
 
-        // Realtime Listener for Home Feed Grid
         function setupHomeFeedListener() {
             db.collection('wallpapers')
               .orderBy('timestamp', 'desc')
@@ -389,7 +386,7 @@
                             <span class="image-title">${escapeHTML(item.title || 'Untitled')}</span>
                             <div class="image-desc">${escapeHTML(item.description || '')}</div>
                             <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733; (1,480 ratings)</div>
-                            <div class="image-meta">Views: ${(item.views || 0).toLocaleString()} | By: ${escapeHTML(item.uploader || 'Anonymous')}</div>
+                            <div class="image-meta">Views: ${(item.views || 0).toLocaleString()} | By: <span onclick="event.stopPropagation(); viewUserProfile('${escapeHTML(item.uploader || 'Anonymous')}');" style="color:#0033CC; cursor:pointer;">${escapeHTML(item.uploader || 'Anonymous')}</span></div>
                         </div>
                       `;
                   });
@@ -397,7 +394,6 @@
               });
         }
 
-        // Open specific wallpaper in Detail View
         function openWallpaper(docId) {
             currentWallpaperId = docId;
             switchView('photo');
@@ -406,7 +402,6 @@
             incrementViews(docId);
         }
 
-        // Realtime Wallpaper Details Listener
         function setupWallpaperRealtime(docId) {
             if (activeWallpaperListener) activeWallpaperListener();
 
@@ -421,16 +416,17 @@
                     document.getElementById('photo-likes-count').innerText = (data.likes || 0).toLocaleString();
                     
                     const uploader = data.uploader || "RetroGamer";
+                    document.getElementById('photo-uploader-name').innerText = uploader;
+                    document.getElementById('photo-uploader-name').setAttribute('onclick', `viewUserProfile('${uploader}')`);
+                    document.getElementById('uploader-logo-img').setAttribute('onclick', `viewUserProfile('${uploader}')`);
+
                     setupUploaderLifeListener(uploader);
                 }
             });
         }
 
-        // Realtime Uploader's Lifeline Listener
         function setupUploaderLifeListener(targetUsername) {
             if (activeUploaderLifeListener) activeUploaderLifeListener();
-
-            document.getElementById('photo-uploader-name').innerText = targetUsername;
 
             activeUploaderLifeListener = db.collection('users').doc(targetUsername).onSnapshot((doc) => {
                 let lifeVal = 0;
@@ -444,7 +440,46 @@
             });
         }
 
-        // Realtime Comments Listener
+        // Dynamic Profile Viewer for ANY User (Commenter, Uploader, etc.)
+        async function viewUserProfile(username) {
+            if (!username) return;
+
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-tabs-inner a').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-profile').classList.add('active');
+            document.getElementById('tab-profile').classList.add('active');
+            window.scrollTo(0, 0);
+
+            const userRef = db.collection('users').doc(username);
+            const doc = await userRef.get();
+
+            let gender = "N/A";
+            if (doc.exists) {
+                const data = doc.data();
+                gender = data.gender || "N/A";
+            } else {
+                // If user doc doesn't exist yet, create default entry
+                await userRef.set({ life: 0, views: 0, gender: "N/A" }, { merge: true });
+            }
+
+            document.getElementById('profile-name-display').innerText = username;
+            document.getElementById('profile-gender-display').innerText = gender;
+            document.getElementById('profile-status-text').innerText = (currentUser && currentUser.username === username) ? "Online (You)" : "Member";
+            document.getElementById('profile-uploads-header').innerText = `Uploads by ${username}`;
+
+            setupProfileRealtime(username);
+            loadUserUploads(username);
+        }
+
+        function openMyProfile() {
+            if (!currentUser) {
+                alert("Please log in to view your profile!");
+                switchView('login');
+                return;
+            }
+            viewUserProfile(currentUser.username);
+        }
+
         function setupCommentsListener(docId) {
             if (activeCommentsListener) activeCommentsListener();
 
@@ -459,14 +494,15 @@
                   let commentsHTML = '';
                   snapshot.forEach((doc) => {
                       const comment = doc.data();
+                      const authorName = escapeHTML(comment.author || "Visitor");
                       commentsHTML += `
                         <div class="comment-item">
                             <div class="comment-header-row">
-                                <span>From <a class="comment-author" onclick="switchView('profile')">${escapeHTML(comment.author || "Visitor")}</a></span>
+                                <span>From <a class="comment-author" onclick="viewUserProfile('${authorName}')">${authorName}</a></span>
                                 <span>Today</span>
                             </div>
                             <div class="comment-body-row">
-                                <img src="https://picsum.photos/40/40?random=${Math.floor(Math.random() * 100)}" alt="Avatar" class="comment-avatar">
+                                <img src="https://picsum.photos/40/40?random=${Math.floor(Math.random() * 100)}" alt="Avatar" class="comment-avatar" onclick="viewUserProfile('${authorName}')" title="View profile">
                                 <div class="comment-content">
                                     <div class="comment-text">${escapeHTML(comment.text)}</div>
                                 </div>
@@ -478,7 +514,6 @@
               });
         }
 
-        // Post Comment
         async function postComment(event) {
             event.preventDefault();
 
@@ -509,7 +544,6 @@
             }
         }
 
-        // YouTube Style 2006 Image Upload Handler
         async function handleUploadImage(event) {
             event.preventDefault();
 
@@ -540,7 +574,6 @@
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                // Clear form
                 document.getElementById('upload-title').value = '';
                 document.getElementById('upload-desc').value = '';
                 document.getElementById('upload-url').value = '';
@@ -554,7 +587,6 @@
             }
         }
 
-        // Authentication Handler (Login / Register)
         async function handleAuthUser(event) {
             event.preventDefault();
             const username = document.getElementById('auth-username').value.trim();
@@ -597,20 +629,11 @@
         }
 
         function successLoginRoutine() {
-            document.getElementById('profile-name-display').innerText = currentUser.username;
-            document.getElementById('profile-gender-display').innerText = currentUser.gender;
-            document.getElementById('profile-status-text').innerText = "Online";
-            document.getElementById('profile-uploads-header').innerText = `Uploads by ${currentUser.username}`;
             document.getElementById('auth-link').innerText = `Hello, ${currentUser.username}`;
-            
-            setupProfileRealtime(currentUser.username);
-            loadUserUploads(currentUser.username);
-            
             alert(`Welcome back, ${currentUser.username}! Successfully logged in.`);
-            switchView('profile');
+            viewUserProfile(currentUser.username);
         }
 
-        // Realtime Listener for Logged-in User Profile Stats
         function setupProfileRealtime(username) {
             if (activeProfileListener) activeProfileListener();
 
@@ -626,7 +649,6 @@
             });
         }
 
-        // Load User Uploads on Profile Page
         function loadUserUploads(username) {
             db.collection('wallpapers')
               .where('uploader', '==', username)
@@ -648,7 +670,7 @@
                         </div>
                       `;
                   });
-                  grid.innerHTML = html || '<p style="color: #666666; font-size: 11px;">You have no active uploads yet. Click Upload to share!</p>';
+                  grid.innerHTML = html || '<p style="color: #666666; font-size: 11px;">No active uploads found for this user.</p>';
               });
         }
 
@@ -673,7 +695,6 @@
             }
         }
 
-        // Increment Likes (Single Like per account enforcement)
         async function incrementLikes() {
             if (!currentUser) {
                 alert("Please log in first to like images!");
@@ -712,7 +733,6 @@
             }
         }
 
-        // Toggle Lifeline (Single Lifeline per account enforcement)
         async function toggleLife() {
             if (!currentUser) {
                 alert("Please log in first to give a Lifeline!");
@@ -759,8 +779,6 @@
             if(viewName === 'home') {
                 document.getElementById('view-home').classList.add('active');
                 document.getElementById('tab-home').classList.add('active');
-            } else if(viewName === 'photo') {
-                document.getElementById('view-photo').classList.add('active');
             } else if(viewName === 'upload') {
                 if (!currentUser) {
                     alert("Please log in first to upload images!");
@@ -769,14 +787,6 @@
                 }
                 document.getElementById('view-upload').classList.add('active');
                 document.getElementById('tab-upload').classList.add('active');
-            } else if(viewName === 'profile') {
-                if (!currentUser) {
-                    alert("Please log in to view your profile!");
-                    switchView('login');
-                    return;
-                }
-                document.getElementById('view-profile').classList.add('active');
-                document.getElementById('tab-profile').classList.add('active');
             } else if(viewName === 'login') {
                 document.getElementById('view-login').classList.add('active');
                 document.getElementById('tab-login').classList.add('active');
