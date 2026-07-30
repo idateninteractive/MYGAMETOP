@@ -93,7 +93,7 @@
         .profile-banner { background-color: #003366; color: #FFFFFF; padding: 15px 20px; border: 1px solid #999999; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .profile-main-info { display: flex; align-items: center; gap: 15px; }
         .profile-logo-large { width: 70px; height: 70px; background-color: #FFFFFF; border: 2px solid #FFFFFF; object-fit: cover; }
-        .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; }
+        .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; display: flex; align-items: center; gap: 10px; }
         .profile-title-name p { margin: 0; font-size: 13px; color: #E5ECF9; }
         .profile-stats { text-align: right; font-size: 12px; background-color: rgba(0,0,0,0.2); padding: 8px 12px; border: 1px solid #336699; }
         
@@ -260,7 +260,10 @@
                 <div class="profile-main-info">
                     <img id="profile-avatar-img" src="https://picsum.photos/70/70?random=88" alt="Profile Logo" class="profile-logo-large">
                     <div class="profile-title-name">
-                        <h1 id="profile-name-display">Guest User</h1>
+                        <h1>
+                            <span id="profile-name-display">Guest User</span>
+                            <a id="edit-name-btn" onclick="editProfileDisplayName()" style="font-size: 11px; color: #E5ECF9; text-decoration: underline; cursor: pointer; display: none;">[Edit Name]</a>
+                        </h1>
                         <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Member</span></p>
                     </div>
                 </div>
@@ -353,6 +356,20 @@
             setupHomeFeedListener();
         });
 
+        // YouTube style format helper (e.g., 1.2K, 1M, etc.)
+        function formatCount(num) {
+            if (num >= 1000000000) {
+                return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+            }
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+            }
+            return num.toString();
+        }
+
         async function seedDefaultWallpaperIfNeeded() {
             const defaultRef = db.collection('wallpapers').doc("alien_shooter_memories");
             const doc = await defaultRef.get();
@@ -435,8 +452,8 @@
                 } else {
                     db.collection('users').doc(targetUsername).set({ life: 0 }, { merge: true });
                 }
-                document.getElementById('uploader-life-count').innerText = lifeVal.toLocaleString();
-                document.getElementById('life-btn-count').innerText = lifeVal.toLocaleString();
+                document.getElementById('uploader-life-count').innerText = formatCount(lifeVal);
+                document.getElementById('life-btn-count').innerText = formatCount(lifeVal);
             });
         }
 
@@ -453,20 +470,52 @@
             const doc = await userRef.get();
 
             let gender = "N/A";
+            let displayName = username;
             if (doc.exists) {
                 const data = doc.data();
                 gender = data.gender || "N/A";
+                displayName = data.displayName || username;
             } else {
-                await userRef.set({ life: 0, views: 0, gender: "N/A" }, { merge: true });
+                await userRef.set({ life: 0, views: 0, gender: "N/A", displayName: username }, { merge: true });
             }
 
-            document.getElementById('profile-name-display').innerText = username;
+            document.getElementById('profile-name-display').innerText = displayName;
             document.getElementById('profile-gender-display').innerText = gender;
-            document.getElementById('profile-status-text').innerText = (currentUser && currentUser.username === username) ? "Online (You)" : "Member";
-            document.getElementById('profile-uploads-header').innerText = `Uploads by ${username}`;
+            
+            const isMyProfile = (currentUser && currentUser.username === username);
+            document.getElementById('profile-status-text').innerText = isMyProfile ? "Online (You)" : "Member";
+            
+            // Show edit option only if it's your own profile
+            const editBtn = document.getElementById('edit-name-btn');
+            if (editBtn) {
+                editBtn.style.display = isMyProfile ? 'inline' : 'none';
+            }
+
+            document.getElementById('profile-uploads-header').innerText = `Uploads by ${displayName}`;
 
             setupProfileRealtime(username);
             loadUserUploads(username);
+        }
+
+        async function editProfileDisplayName() {
+            if (!currentUser) return;
+            const currentDisplayName = document.getElementById('profile-name-display').innerText;
+            const newName = prompt("Enter new Display Name:", currentDisplayName);
+            
+            if (!newName || !newName.trim()) return;
+            const trimmedName = newName.trim();
+
+            try {
+                await db.collection('users').doc(currentUser.username).update({
+                    displayName: trimmedName
+                });
+                document.getElementById('profile-name-display').innerText = trimmedName;
+                document.getElementById('profile-uploads-header').innerText = `Uploads by ${trimmedName}`;
+                alert("Display name updated successfully!");
+            } catch (e) {
+                console.error("Error updating name:", e);
+                alert("Failed to update name.");
+            }
         }
 
         function openMyProfile() {
@@ -615,6 +664,7 @@
                         gender: gender,
                         life: 0,
                         views: 0,
+                        displayName: username,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     currentUser = { username: username, gender: gender };
@@ -641,7 +691,7 @@
                     const lifeVal = data.life !== undefined ? data.life : 0;
                     const viewsVal = data.views !== undefined ? data.views : 0;
                     
-                    document.getElementById('profile-life-received').innerText = lifeVal.toLocaleString();
+                    document.getElementById('profile-life-received').innerText = formatCount(lifeVal);
                     document.getElementById('profile-total-views').innerText = viewsVal.toLocaleString();
                 }
             });
