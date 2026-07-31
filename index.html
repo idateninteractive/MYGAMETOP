@@ -701,6 +701,7 @@
             }
 
             try {
+                // Video URL is saved directly in the database under the 'videos' collection
                 const newDocRef = await db.collection('videos').add({
                     title: title,
                     description: desc,
@@ -718,7 +719,7 @@
                 document.getElementById('upload-url').value = '';
                 errorDiv.innerText = '';
 
-                alert("Video uploaded successfully!");
+                alert("Video uploaded and URL saved to database successfully!");
                 openVideo(newDocRef.id);
             } catch (e) {
                 console.error("Upload error:", e);
