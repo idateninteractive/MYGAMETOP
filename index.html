@@ -529,7 +529,7 @@
                 return;
             }
             if (currentUser.username !== currentProfileUsername) {
-                alert("Aap sirf apni hi profile ka logo edit kar sakte hain!");
+                alert("You can only edit your own profile logo!");
                 return;
             }
             editProfileLogo();
@@ -542,7 +542,7 @@
                 return;
             }
             if (currentUser.username !== currentProfileUsername) {
-                alert("Aap sirf apna hi naam edit kar sakte hain!");
+                alert("You can only edit your own name!");
                 return;
             }
 
@@ -701,7 +701,6 @@
             }
 
             try {
-                // Video URL is saved directly in the database under the 'videos' collection
                 const newDocRef = await db.collection('videos').add({
                     title: title,
                     description: desc,
@@ -727,7 +726,6 @@
             }
         }
 
-        // SIGN IN FUNCTION (With Age Verification)
         async function handleSignIn() {
             const username = document.getElementById('auth-username').value.trim();
             const password = document.getElementById('auth-password').value.trim();
@@ -773,7 +771,6 @@
             }
         }
 
-        // SIGN UP FUNCTION
         async function handleSignUp() {
             const username = document.getElementById('auth-username').value.trim();
             const password = document.getElementById('auth-password').value.trim();
@@ -919,7 +916,7 @@
                 alert("You liked this video successfully!");
             } catch (e) {
                 if (e.message === "ALREADY_LIKED") {
-                    alert("Aap is video ko pehle hi like kar chuke hain! Ek account se sirf ek hi like ho sakti hai.");
+                    alert("You have already liked this video! Only one like is allowed per account.");
                 } else {
                     console.error("Error updating likes:", e);
                     alert("Failed to process like.");
@@ -955,10 +952,10 @@
                     
                     transaction.set(uploaderRef, { life: currentLife + 1 }, { merge: true });
                 });
-                alert("Aapne successfully Lifeline de di hai!");
+                alert("You have successfully given a Lifeline!");
             } catch (e) {
                 if (e.message === "ALREADY_GIVEN_LIFE") {
-                    alert("Aap is account ko pehle hi Lifeline de chuke hain! Ek account se sirf ek hi Lifeline di ja sakti hai.");
+                    alert("You have already given a Lifeline to this account! Only one Lifeline is allowed per account.");
                 } else {
                     console.error("Error giving Lifeline:", e);
                     alert("Failed to process Lifeline.");
