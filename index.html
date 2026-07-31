@@ -72,7 +72,7 @@
         .subscribe-btn { background-color: #FFFFFF; color: #000000; border: 1px solid #999999; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .subscribe-btn:hover { background-color: #E5ECF9; }
         
-        /* Updated Like Button Style */
+        /* Like Button Style */
         .like-btn { background-color: #FFFFFF; color: #000000; border: 1px solid #999999; padding: 5px 10px; font-weight: bold; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .like-btn:hover { background-color: #E5ECF9; }
 
@@ -141,7 +141,7 @@
                 <a onclick="switchView('upload')" style="font-weight: bold; color: #CC0000; cursor: pointer;">Upload</a> | 
                 <a onclick="switchView('home')">Home</a> | 
                 <a onclick="openMyProfile()">My Account</a> | 
-                <a onclick="switchView('login')" id="auth-link" style="color: #CC0000; font-weight: bold;">Log In</a>
+                <a onclick="handleAuthClick()" id="auth-link" style="color: #CC0000; font-weight: bold;">Log In</a>
             </div>
         </div>
     </div>
@@ -189,7 +189,6 @@
                             </div>
                         </div>
                         <div class="action-btns">
-                            <!-- Updated Like Button with White Background & Red SVG Icon -->
                             <button class="like-btn" onclick="incrementLikes()">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#CC0000">
                                     <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
@@ -389,9 +388,34 @@
         let activeProfileListener = null;
 
         window.addEventListener('DOMContentLoaded', () => {
+            // Restore login session from localStorage on page load/refresh
+            const savedUser = localStorage.getItem('lifeline_current_user');
+            if (savedUser) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    document.getElementById('auth-link').innerText = `Hello, ${currentUser.username}`;
+                } catch (e) {
+                    localStorage.removeItem('lifeline_current_user');
+                }
+            }
+
             setupHomeFeedListener();
             populateAgeDropdown();
         });
+
+        function handleAuthClick() {
+            if (currentUser) {
+                if (confirm(`Logged in as ${currentUser.username}. Do you want to Log Out?`)) {
+                    currentUser = null;
+                    localStorage.removeItem('lifeline_current_user');
+                    document.getElementById('auth-link').innerText = "Log In";
+                    alert("You have been logged out successfully.");
+                    switchView('home');
+                }
+            } else {
+                switchView('login');
+            }
+        }
 
         function populateAgeDropdown() {
             const ageSelect = document.getElementById('auth-age');
@@ -565,6 +589,7 @@
                     displayName: trimmedName
                 });
                 currentUser.displayName = trimmedName;
+                localStorage.setItem('lifeline_current_user', JSON.stringify(currentUser));
 
                 const snapshot = await db.collection('videos').where('uploader', '==', currentUser.username).get();
                 const batch = db.batch();
@@ -600,6 +625,7 @@
                     logoUrl: trimmedUrl
                 });
                 currentUser.logoUrl = trimmedUrl;
+                localStorage.setItem('lifeline_current_user', JSON.stringify(currentUser));
 
                 const snapshot = await db.collection('videos').where('uploader', '==', currentUser.username).get();
                 const batch = db.batch();
@@ -766,6 +792,10 @@
                             displayName: displayName, 
                             logoUrl: logoUrl 
                         };
+                        
+                        // Save to localStorage so it persists across refreshes
+                        localStorage.setItem('lifeline_current_user', JSON.stringify(currentUser));
+                        
                         successLoginRoutine();
                     } else {
                         errorDiv.innerText = "Incorrect password! Please try again.";
@@ -815,6 +845,10 @@
                         displayName: username, 
                         logoUrl: defaultLogo 
                     };
+                    
+                    // Save to localStorage so it persists across refreshes
+                    localStorage.setItem('lifeline_current_user', JSON.stringify(currentUser));
+                    
                     successLoginRoutine();
                 }
             } catch (e) {
