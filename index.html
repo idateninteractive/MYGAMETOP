@@ -289,6 +289,7 @@
                             <span id="edit-name-btn" class="profile-name-pencil" onclick="editProfileDisplayName()" title="Edit Name">✎</span>
                         </h1>
                         <p><b>Status:</b> <span id="profile-status-text">Member</span></p>
+                        <p style="margin-top: 3px; font-size: 11px; color: #E5ECF9;"><b>Joined:</b> <span id="profile-joined-text">-</span></p>
                     </div>
                 </div>
                 <div class="profile-stats">
@@ -541,7 +542,7 @@
                 displayName = data.displayName || username;
                 if (data.logoUrl) logoUrl = data.logoUrl;
             } else {
-                await userRef.set({ life: 0, age: "18", gender: "Male", displayName: username, logoUrl: logoUrl }, { merge: true });
+                await userRef.set({ life: 0, age: "18", gender: "Male", displayName: username, logoUrl: logoUrl, createdAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
             }
 
             document.getElementById('profile-name-display').innerText = displayName;
@@ -847,6 +848,11 @@
                             return;
                         }
 
+                        // If existing user doesn't have createdAt, assign it
+                        if (!data.createdAt) {
+                            await userRef.set({ createdAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+                        }
+
                         const displayName = data.displayName || username;
                         const logoUrl = data.logoUrl || "https://picsum.photos/70/70?random=88";
                         currentUser = { 
@@ -931,6 +937,13 @@
                     const data = doc.data();
                     const lifeVal = data.life !== undefined ? data.life : 0;
                     document.getElementById('profile-life-received').innerText = formatCount(lifeVal);
+                    
+                    if (data.createdAt && typeof data.createdAt.toDate === 'function') {
+                        const d = data.createdAt.toDate();
+                        document.getElementById('profile-joined-text').innerText = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    } else {
+                        document.getElementById('profile-joined-text').innerText = "Today";
+                    }
                 }
             });
         }
