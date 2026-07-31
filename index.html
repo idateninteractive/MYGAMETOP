@@ -85,7 +85,7 @@
         .comment-form button { background-color: #EEEEEE; border: 1px solid #999999; font-size: 11px; padding: 3px 10px; cursor: pointer; font-weight: bold; }
         
         .comment-item { background-color: #F8F8F8; border: 1px solid #CCCCCC; padding: 8px; margin-bottom: 8px; font-size: 11px; }
-        .comment-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dotted #999999; padding-bottom: 3px; margin-bottom: 5px; color: #666666; font-size: 10px; }
+        .comment-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dotted #999999; padding-bottom: 3px; margin-bottom: 5px; color: #666666; font-size: 10px; position: relative; }
         .comment-body-row { display: flex; gap: 10px; align-items: flex-start; }
         .comment-avatar { width: 40px; height: 40px; background-color: #CCCCCC; border: 1px solid #999999; object-fit: cover; flex-shrink: 0; cursor: pointer; }
         .comment-content { flex-grow: 1; }
@@ -401,6 +401,13 @@
 
             setupHomeFeedListener();
             populateAgeDropdown();
+
+            // Close comment menus when clicking anywhere outside
+            window.addEventListener('click', () => {
+                document.querySelectorAll('[id^="comment-menu-"]').forEach(el => {
+                    el.style.display = 'none';
+                });
+            });
         });
 
         function handleAuthClick() {
@@ -669,18 +676,17 @@
                       const authorName = escapeHTML(comment.author || "Visitor");
                       const isMyComment = currentUser && currentUser.username === comment.author;
 
-                      // Small Dark Video Play Icon along with Top Right Actions (Edit/Delete or Date)
-                      const smallDarkPlayIcon = `<span style="width: 16px; height: 16px; background-color: rgba(0,0,0,0.75); color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.3);">&#9658;</span>`;
-
-                      let topRigthAction = `<span style="display: inline-flex; align-items: center; gap: 5px;">${smallDarkPlayIcon} <span>Today</span></span>`;
+                      let topRigthAction = `<span>Today</span>`;
                       if (isMyComment) {
-                          topRigthAction = `<span style="display: inline-flex; align-items: center; gap: 5px;">
-                              ${smallDarkPlayIcon}
-                              <span>
-                                  <a onclick="editComment('${docId}', '${commentId}', '${encodeURIComponent(comment.text)}')" style="color: #0033CC; cursor: pointer; text-decoration: underline; margin-right: 4px;">Edit</a> | 
-                                  <a onclick="deleteComment('${docId}', '${commentId}')" style="color: #CC0000; cursor: pointer; text-decoration: underline; margin-left: 4px;">Delete</a>
-                              </span>
-                          </span>`;
+                          topRigthAction = `
+                            <div style="position: relative; display: inline-block;">
+                                <span onclick="toggleCommentMenu(event, '${commentId}')" style="cursor: pointer; font-weight: bold; font-size: 14px; padding: 0 4px;" title="Options">&#8942;</span>
+                                <div id="comment-menu-${commentId}" style="display: none; position: absolute; right: 0; top: 16px; background: #FFFFFF; border: 1px solid #999999; padding: 4px 8px; z-index: 10; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); font-size: 10px; width: 50px; text-align: left;">
+                                    <a onclick="editComment('${docId}', '${commentId}', '${encodeURIComponent(comment.text)}')" style="color: #0033CC; cursor: pointer; display: block; margin-bottom: 3px; text-decoration: underline;">Edit</a>
+                                    <a onclick="deleteComment('${docId}', '${commentId}')" style="color: #CC0000; cursor: pointer; display: block; text-decoration: underline;">Delete</a>
+                                </div>
+                            </div>
+                          `;
                       }
 
                       commentsHTML += `
@@ -700,6 +706,17 @@
                   });
                   commentsContainer.innerHTML = commentsHTML || '<p style="font-size:11px; color:#666;">No comments yet. Be the first to comment!</p>';
               });
+        }
+
+        function toggleCommentMenu(event, commentId) {
+            event.stopPropagation();
+            document.querySelectorAll('[id^="comment-menu-"]').forEach(el => {
+                if (el.id !== `comment-menu-${commentId}`) el.style.display = 'none';
+            });
+            const menu = document.getElementById(`comment-menu-${commentId}`);
+            if (menu) {
+                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            }
         }
 
         async function editComment(videoDocId, commentId, encodedOldText) {
