@@ -285,7 +285,7 @@
                             <span id="profile-name-display">Guest User</span>
                             <span id="edit-name-btn" class="profile-name-pencil" onclick="editProfileDisplayName()" title="Edit Name">✎</span>
                         </h1>
-                        <p><b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Member</span></p>
+                        <p><b>Age:</b> <span id="profile-age-display">N/A</span> | <b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Member</span></p>
                     </div>
                 </div>
                 <div class="profile-stats">
@@ -304,15 +304,15 @@
             </div>
         </div>
 
-        <!-- 5. LOGIN / REGISTRATION VIEW -->
+        <!-- 5. LOGIN / SIGN UP VIEW -->
         <div id="view-login" class="view-section">
             <div class="box" style="width: 480px; margin: 20px auto;">
-                <div class="box-header">Life line Member Login / Register</div>
+                <div class="box-header">Life line Member Sign In / Sign Up</div>
                 <div class="box-content" style="padding: 15px;">
                     <p style="margin-top: 0; color: #666666; font-size: 11px;">
-                        Enter your username and password to log in. If the username doesn't exist, a new account will be created automatically!
+                        Enter your username and password to <b>Sign In</b>. To create a new account, fill in all fields (including Age & Gender) and click <b>Sign Up</b>!
                     </p>
-                    <form onsubmit="handleAuthUser(event)">
+                    <form onsubmit="event.preventDefault();">
                         <table style="width: 100%; font-size: 11px;" cellpadding="5">
                             <tr>
                                 <td style="width: 100px;"><b>Username:</b></td>
@@ -323,9 +323,17 @@
                                 <td><input type="password" id="auth-password" style="width: 220px; border: 1px solid #7f9db9; padding: 3px;" required></td>
                             </tr>
                             <tr>
+                                <td><b>Age:</b></td>
+                                <td>
+                                    <select id="auth-age" style="width: 228px; border: 1px solid #7f9db9; padding: 3px; background-color: #FFFFFF; color: #000000; font-size: 12px;" required>
+                                        <option value="" disabled selected>Select Age (18 - 99)</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><b>Gender:</b></td>
                                 <td>
-                                    <select id="auth-gender" style="width: 228px; border: 1px solid #7f9db9; padding: 3px;">
+                                    <select id="auth-gender" style="width: 228px; border: 1px solid #7f9db9; padding: 3px; background-color: #FFFFFF; color: #000000; font-size: 12px;">
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                     </select>
@@ -334,7 +342,10 @@
                             <tr>
                                 <td></td>
                                 <td style="padding-top: 10px;">
-                                    <button type="submit" style="background-color: #EEEEEE; border: 1px solid #999999; font-weight: bold; padding: 4px 14px; cursor: pointer;">Sign In / Register</button>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button type="button" onclick="handleSignIn()" style="background-color: #EEEEEE; border: 1px solid #999999; font-weight: bold; padding: 4px 14px; cursor: pointer;">Sign In</button>
+                                        <button type="button" onclick="handleSignUp()" style="background-color: #EEEEEE; border: 1px solid #999999; font-weight: bold; padding: 4px 14px; cursor: pointer;">Sign Up</button>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -376,7 +387,19 @@
         window.addEventListener('DOMContentLoaded', () => {
             seedDefaultWallpaperIfNeeded();
             setupHomeFeedListener();
+            populateAgeDropdown();
         });
+
+        function populateAgeDropdown() {
+            const ageSelect = document.getElementById('auth-age');
+            if (ageSelect) {
+                let options = '<option value="" disabled selected>Select Age (18 - 99)</option>';
+                for (let i = 18; i <= 99; i++) {
+                    options += `<option value="${i}">${i}</option>`;
+                }
+                ageSelect.innerHTML = options;
+            }
+        }
 
         function formatCount(num) {
             if (num >= 1000000000) return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
@@ -494,20 +517,23 @@
             const userRef = db.collection('users').doc(username);
             const doc = await userRef.get();
 
+            let age = "N/A";
             let gender = "N/A";
             let displayName = username;
             let logoUrl = "https://picsum.photos/70/70?random=88";
 
             if (doc.exists) {
                 const data = doc.data();
+                age = data.age || "N/A";
                 gender = data.gender || "N/A";
                 displayName = data.displayName || username;
                 if (data.logoUrl) logoUrl = data.logoUrl;
             } else {
-                await userRef.set({ life: 0, gender: "N/A", displayName: username, logoUrl: logoUrl }, { merge: true });
+                await userRef.set({ life: 0, age: "N/A", gender: "N/A", displayName: username, logoUrl: logoUrl }, { merge: true });
             }
 
             document.getElementById('profile-name-display').innerText = displayName;
+            document.getElementById('profile-age-display').innerText = age;
             document.getElementById('profile-gender-display').innerText = gender;
             document.getElementById('profile-avatar-img').src = logoUrl;
             
@@ -729,15 +755,14 @@
             }
         }
 
-        async function handleAuthUser(event) {
-            event.preventDefault();
+        // SIGN IN FUNCTION
+        async function handleSignIn() {
             const username = document.getElementById('auth-username').value.trim();
             const password = document.getElementById('auth-password').value.trim();
-            const gender = document.getElementById('auth-gender').value;
             const errorDiv = document.getElementById('auth-error-msg');
 
             if (!username || !password) {
-                errorDiv.innerText = "Please fill in all fields.";
+                errorDiv.innerText = "Please enter both Username and Password to Sign In.";
                 return;
             }
 
@@ -750,33 +775,74 @@
                     if (data.password === password) {
                         const displayName = data.displayName || username;
                         const logoUrl = data.logoUrl || "https://picsum.photos/70/70?random=88";
-                        currentUser = { username: username, gender: data.gender || gender, displayName: displayName, logoUrl: logoUrl };
+                        currentUser = { 
+                            username: username, 
+                            age: data.age || "N/A", 
+                            gender: data.gender || "N/A", 
+                            displayName: displayName, 
+                            logoUrl: logoUrl 
+                        };
                         successLoginRoutine();
                     } else {
                         errorDiv.innerText = "Incorrect password! Please try again.";
                     }
                 } else {
+                    errorDiv.innerText = "Account does not exist! Please use 'Sign Up' to create a new account.";
+                }
+            } catch (e) {
+                console.error("Sign In error:", e);
+                errorDiv.innerText = "Database error occurred during Sign In.";
+            }
+        }
+
+        // SIGN UP FUNCTION
+        async function handleSignUp() {
+            const username = document.getElementById('auth-username').value.trim();
+            const password = document.getElementById('auth-password').value.trim();
+            const age = document.getElementById('auth-age').value;
+            const gender = document.getElementById('auth-gender').value;
+            const errorDiv = document.getElementById('auth-error-msg');
+
+            if (!username || !password || !age) {
+                errorDiv.innerText = "Please fill in all fields (Username, Password, and Age) to Sign Up.";
+                return;
+            }
+
+            const userRef = db.collection('users').doc(username);
+
+            try {
+                const doc = await userRef.get();
+                if (doc.exists) {
+                    errorDiv.innerText = "Username already exists! Please use 'Sign Up' with a different name or 'Sign In'.";
+                } else {
                     const defaultLogo = "https://picsum.photos/70/70?random=88";
                     await userRef.set({
                         password: password,
+                        age: age,
                         gender: gender,
                         life: 0,
                         displayName: username,
                         logoUrl: defaultLogo,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    currentUser = { username: username, gender: gender, displayName: username, logoUrl: defaultLogo };
+                    currentUser = { 
+                        username: username, 
+                        age: age, 
+                        gender: gender, 
+                        displayName: username, 
+                        logoUrl: defaultLogo 
+                    };
                     successLoginRoutine();
                 }
             } catch (e) {
-                console.error("Auth error:", e);
-                errorDiv.innerText = "Database error occurred during login.";
+                console.error("Sign Up error:", e);
+                errorDiv.innerText = "Database error occurred during Sign Up.";
             }
         }
 
         function successLoginRoutine() {
             document.getElementById('auth-link').innerText = `Hello, ${currentUser.username}`;
-            alert(`Welcome back, ${currentUser.username}! Successfully logged in.`);
+            alert(`Welcome, ${currentUser.username}! Successfully logged in.`);
             viewUserProfile(currentUser.username);
         }
 
