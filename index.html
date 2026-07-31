@@ -47,6 +47,25 @@
         .video-container { position: relative; width: 100%; aspect-ratio: 16/9; background-color: #000000; border: 1px solid #999999; margin-bottom: 6px; }
         .video-container video { width: 100%; height: 100%; object-fit: cover; }
         
+        /* Small Dark Video Play Icon Overlay */
+        .video-play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 13px;
+            pointer-events: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
         .video-title { font-weight: bold; color: #0033CC; text-decoration: none; font-size: 12px; display: block; margin-bottom: 4px; cursor: pointer; }
         .video-title:hover { text-decoration: underline; }
         .video-desc { font-size: 11px; color: #333333; margin-bottom: 6px; line-height: 1.3; }
@@ -388,7 +407,7 @@
         let activeProfileListener = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Restore login session from localStorage on page load/refresh
+            // Restore login session from localStorage
             const savedUser = localStorage.getItem('lifeline_current_user');
             if (savedUser) {
                 try {
@@ -451,6 +470,7 @@
                         <div class="video-item" onclick="openVideo('${id}')">
                             <div class="video-container">
                                 <video src="${escapeHTML(item.videoUrl || '')}" preload="metadata"></video>
+                                <div class="video-play-overlay">&#9658;</div>
                             </div>
                             <span class="video-title">${escapeHTML(item.title || 'Untitled')}</span>
                             <div class="video-desc">${escapeHTML(item.description || '')}</div>
@@ -665,12 +685,23 @@
                   let commentsHTML = '';
                   snapshot.forEach((doc) => {
                       const comment = doc.data();
+                      const commentId = doc.id;
                       const authorName = escapeHTML(comment.author || "Visitor");
+                      const isMyComment = currentUser && currentUser.username === comment.author;
+
+                      let topRigthAction = '<span>Today</span>';
+                      if (isMyComment) {
+                          topRigthAction = `<span>
+                              <a onclick="editComment('${docId}', '${commentId}', '${encodeURIComponent(comment.text)}')" style="color: #0033CC; cursor: pointer; text-decoration: underline; margin-right: 4px;">Edit</a> | 
+                              <a onclick="deleteComment('${docId}', '${commentId}')" style="color: #CC0000; cursor: pointer; text-decoration: underline; margin-left: 4px;">Delete</a>
+                          </span>`;
+                      }
+
                       commentsHTML += `
                         <div class="comment-item">
                             <div class="comment-header-row">
                                 <span>From <a class="comment-author" onclick="viewUserProfile('${authorName}')">${authorName}</a></span>
-                                <span>Today</span>
+                                ${topRigthAction}
                             </div>
                             <div class="comment-body-row">
                                 <img src="https://picsum.photos/40/40?random=${Math.floor(Math.random() * 100)}" alt="Avatar" class="comment-avatar" onclick="viewUserProfile('${authorName}')" title="View profile">
@@ -683,6 +714,36 @@
                   });
                   commentsContainer.innerHTML = commentsHTML || '<p style="font-size:11px; color:#666;">No comments yet. Be the first to comment!</p>';
               });
+        }
+
+        async function editComment(videoDocId, commentId, encodedOldText) {
+            if (!currentUser) return;
+            const oldText = decodeURIComponent(encodedOldText);
+            const newText = prompt("Edit your comment:", oldText);
+            if (newText === null || !newText.trim()) return;
+
+            try {
+                await db.collection('videos').doc(videoDocId).collection('comments').doc(commentId).update({
+                    text: newText.trim()
+                });
+                alert("Comment updated successfully!");
+            } catch (e) {
+                console.error("Error updating comment:", e);
+                alert("Failed to update comment.");
+            }
+        }
+
+        async function deleteComment(videoDocId, commentId) {
+            if (!currentUser) return;
+            if (!confirm("Are you sure you want to delete this comment?")) return;
+
+            try {
+                await db.collection('videos').doc(videoDocId).collection('comments').doc(commentId).delete();
+                alert("Comment deleted successfully!");
+            } catch (e) {
+                console.error("Error deleting comment:", e);
+                alert("Failed to delete comment.");
+            }
         }
 
         async function postComment(event) {
@@ -793,9 +854,7 @@
                             logoUrl: logoUrl 
                         };
                         
-                        // Save to localStorage so it persists across refreshes
                         localStorage.setItem('lifeline_current_user', JSON.stringify(currentUser));
-                        
                         successLoginRoutine();
                     } else {
                         errorDiv.innerText = "Incorrect password! Please try again.";
@@ -846,9 +905,7 @@
                         logoUrl: defaultLogo 
                     };
                     
-                    // Save to localStorage so it persists across refreshes
                     localStorage.setItem('lifeline_current_user', JSON.stringify(currentUser));
-                    
                     successLoginRoutine();
                 }
             } catch (e) {
@@ -893,6 +950,7 @@
                         <div class="video-item" onclick="openVideo('${id}')">
                             <div class="video-container">
                                 <video src="${escapeHTML(item.videoUrl || '')}" preload="metadata"></video>
+                                <div class="video-play-overlay">&#9658;</div>
                             </div>
                             <span class="video-title">${escapeHTML(item.title || 'Untitled')}</span>
                             <div class="video-desc">${escapeHTML(item.description || '')}</div>
