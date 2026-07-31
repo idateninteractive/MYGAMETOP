@@ -271,7 +271,7 @@
             </div>
         </div>
 
-        <!-- 4. PROFILE VIEW -->
+        <!-- 4. PROFILE VIEW (Age & Gender Hidden/Invisible) -->
         <div id="view-profile" class="view-section">
             <div class="profile-banner">
                 <div class="profile-main-info">
@@ -285,7 +285,7 @@
                             <span id="profile-name-display">Guest User</span>
                             <span id="edit-name-btn" class="profile-name-pencil" onclick="editProfileDisplayName()" title="Edit Name">✎</span>
                         </h1>
-                        <p><b>Age:</b> <span id="profile-age-display">N/A</span> | <b>Gender:</b> <span id="profile-gender-display">N/A</span> | <b>Status:</b> <span id="profile-status-text">Member</span></p>
+                        <p><b>Status:</b> <span id="profile-status-text">Member</span></p>
                     </div>
                 </div>
                 <div class="profile-stats">
@@ -310,7 +310,7 @@
                 <div class="box-header">Life line Member Sign In / Sign Up</div>
                 <div class="box-content" style="padding: 15px;">
                     <p style="margin-top: 0; color: #666666; font-size: 11px;">
-                        Enter your username and password to <b>Sign In</b>. To create a new account, fill in all fields (including Age & Gender) and click <b>Sign Up</b>!
+                        Enter your username, password & age to <b>Sign In</b>. To create a new account, fill in all fields and click <b>Sign Up</b>!
                     </p>
                     <form onsubmit="event.preventDefault();">
                         <table style="width: 100%; font-size: 11px;" cellpadding="5">
@@ -517,24 +517,18 @@
             const userRef = db.collection('users').doc(username);
             const doc = await userRef.get();
 
-            let age = "N/A";
-            let gender = "N/A";
             let displayName = username;
             let logoUrl = "https://picsum.photos/70/70?random=88";
 
             if (doc.exists) {
                 const data = doc.data();
-                age = data.age || "N/A";
-                gender = data.gender || "N/A";
                 displayName = data.displayName || username;
                 if (data.logoUrl) logoUrl = data.logoUrl;
             } else {
-                await userRef.set({ life: 0, age: "N/A", gender: "N/A", displayName: username, logoUrl: logoUrl }, { merge: true });
+                await userRef.set({ life: 0, age: "18", gender: "Male", displayName: username, logoUrl: logoUrl }, { merge: true });
             }
 
             document.getElementById('profile-name-display').innerText = displayName;
-            document.getElementById('profile-age-display').innerText = age;
-            document.getElementById('profile-gender-display').innerText = gender;
             document.getElementById('profile-avatar-img').src = logoUrl;
             
             const isMyProfile = (currentUser && currentUser.username === username);
@@ -755,14 +749,15 @@
             }
         }
 
-        // SIGN IN FUNCTION
+        // SIGN IN FUNCTION (With Age Verification)
         async function handleSignIn() {
             const username = document.getElementById('auth-username').value.trim();
             const password = document.getElementById('auth-password').value.trim();
+            const age = document.getElementById('auth-age').value;
             const errorDiv = document.getElementById('auth-error-msg');
 
-            if (!username || !password) {
-                errorDiv.innerText = "Please enter both Username and Password to Sign In.";
+            if (!username || !password || !age) {
+                errorDiv.innerText = "Please enter Username, Password, and Age to Sign In.";
                 return;
             }
 
@@ -773,11 +768,17 @@
                 if (doc.exists) {
                     const data = doc.data();
                     if (data.password === password) {
+                        // Check if entered age matches registered age
+                        if (String(data.age) !== String(age)) {
+                            errorDiv.innerText = "Login Failed: Entered age does not match your registered age!";
+                            return;
+                        }
+
                         const displayName = data.displayName || username;
                         const logoUrl = data.logoUrl || "https://picsum.photos/70/70?random=88";
                         currentUser = { 
                             username: username, 
-                            age: data.age || "N/A", 
+                            age: data.age, 
                             gender: data.gender || "N/A", 
                             displayName: displayName, 
                             logoUrl: logoUrl 
@@ -813,7 +814,7 @@
             try {
                 const doc = await userRef.get();
                 if (doc.exists) {
-                    errorDiv.innerText = "Username already exists! Please use 'Sign Up' with a different name or 'Sign In'.";
+                    errorDiv.innerText = "Username already exists! Please use a different name or 'Sign In'.";
                 } else {
                     const defaultLogo = "https://picsum.photos/70/70?random=88";
                     await userRef.set({
