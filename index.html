@@ -279,7 +279,7 @@
                     </div>
                     <div class="profile-title-name">
                         <h1>
-                            <span id="profile-name-display">Guest User</span>
+                            <span id="profile-name-display">Not Logged In</span>
                             <span id="edit-name-btn" class="profile-name-pencil" onclick="editProfileDisplayName()" title="Edit Name">✎</span>
                         </h1>
                         <p><b>Status:</b> <span id="profile-status-text">Member</span></p>
@@ -374,7 +374,7 @@
         const db = firebase.firestore();
         
         let currentUser = null;
-        let currentVideoId = "alien_shooter_video";
+        let currentVideoId = null;
         let currentProfileUsername = null;
         let activeVideoListener = null;
         let activeCommentsListener = null;
@@ -382,7 +382,6 @@
         let activeProfileListener = null;
 
         window.addEventListener('DOMContentLoaded', () => {
-            seedDefaultVideoIfNeeded();
             setupHomeFeedListener();
             populateAgeDropdown();
         });
@@ -403,24 +402,6 @@
             if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
             if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
             return num.toString();
-        }
-
-        async function seedDefaultVideoIfNeeded() {
-            const defaultRef = db.collection('videos').doc("alien_shooter_video");
-            const doc = await defaultRef.get();
-            if (!doc.exists) {
-                await defaultRef.set({
-                    title: "Alien Shooter ChildHood Memories Video",
-                    description: "Reliving the legendary classic top-down shooter game video from the 2000s era.",
-                    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
-                    uploader: "RetroGamer",
-                    uploaderDisplayName: "RetroGamer",
-                    uploaderLogoUrl: "https://picsum.photos/50/50?random=88",
-                    views: 5420,
-                    likes: 420,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            }
         }
 
         function setupHomeFeedListener() {
@@ -447,7 +428,7 @@
                         </div>
                       `;
                   });
-                  grid.innerHTML = html || '<p style="font-size:11px; color:#666;">No videos uploaded yet.</p>';
+                  grid.innerHTML = html || '<p style="font-size:11px; color:#666;">No videos uploaded yet. Log in and upload your video!</p>';
               });
         }
 
@@ -472,7 +453,7 @@
                     document.getElementById('likes-count').innerText = (data.likes || 0).toLocaleString();
                     document.getElementById('photo-likes-count').innerText = (data.likes || 0).toLocaleString();
                     
-                    const uploaderUsername = data.uploader || "RetroGamer";
+                    const uploaderUsername = data.uploader || "Anonymous";
                     const uploaderDisplayName = data.uploaderDisplayName || uploaderUsername;
                     const uploaderLogoUrl = data.uploaderLogoUrl || "https://picsum.photos/50/50?random=88";
 
