@@ -69,9 +69,11 @@
         .subscribers-count { font-size: 11px; color: #666666; margin-top: 2px; }
         
         .action-btns { display: flex; gap: 5px; }
-        .subscribe-btn { background-color: #CC0000; color: #FFFFFF; border: 1px solid #990000; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; }
-        .subscribe-btn:hover { background-color: #990000; }
-        .like-btn { background-color: #EEEEEE; color: #000000; border: 1px solid #999999; padding: 5px 10px; font-weight: bold; font-size: 11px; cursor: pointer; }
+        .subscribe-btn { background-color: #FFFFFF; color: #000000; border: 1px solid #999999; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .subscribe-btn:hover { background-color: #E5ECF9; }
+        
+        /* Updated Like Button Style */
+        .like-btn { background-color: #FFFFFF; color: #000000; border: 1px solid #999999; padding: 5px 10px; font-weight: bold; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .like-btn:hover { background-color: #E5ECF9; }
 
         .video-details-box { background-color: #E5ECF9; border: 1px solid #999999; padding: 10px; margin-top: 10px; font-size: 11px; line-height: 1.4; }
@@ -155,7 +157,7 @@
 
     <div class="container">
 
-        <!-- 1. HOME VIEW -->
+        <!-- HOME VIEW -->
         <div id="view-home" class="view-section active">
             <div class="box">
                 <div class="box-header">
@@ -168,7 +170,7 @@
             </div>
         </div>
 
-        <!-- 2. VIDEO / DETAIL VIEW -->
+        <!-- VIDEO / DETAIL VIEW -->
         <div id="view-video" class="view-section">
             <div class="video-layout">
                 <div class="left-column">
@@ -187,8 +189,14 @@
                             </div>
                         </div>
                         <div class="action-btns">
-                            <button class="like-btn" onclick="incrementLikes()">👍 Like (<span id="likes-count">0</span>)</button>
-                            <button class="subscribe-btn" onclick="toggleLife()">⭐ Lifeline (<span id="life-btn-count">0</span>)</button>
+                            <!-- Updated Like Button with White Background & Red SVG Icon -->
+                            <button class="like-btn" onclick="incrementLikes()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="#CC0000">
+                                    <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                                </svg>
+                                Like <span id="likes-count">0</span>
+                            </button>
+                            <button class="subscribe-btn" onclick="toggleLife()"><span style="color: #CC0000;">&#9658;</span> Lifeline <span id="life-btn-count">0</span></button>
                         </div>
                     </div>
 
@@ -233,7 +241,7 @@
             </div>
         </div>
 
-        <!-- 3. UPLOAD SYSTEM VIEW -->
+        <!-- UPLOAD SYSTEM VIEW -->
         <div id="view-upload" class="view-section">
             <div class="box" style="width: 550px; margin: 20px auto;">
                 <div class="box-header">Upload Your Video - Life line (2006 Style)</div>
@@ -268,7 +276,7 @@
             </div>
         </div>
 
-        <!-- 4. PROFILE VIEW -->
+        <!-- PROFILE VIEW -->
         <div id="view-profile" class="view-section">
             <div class="profile-banner">
                 <div class="profile-main-info">
@@ -300,7 +308,7 @@
             </div>
         </div>
 
-        <!-- 5. LOGIN / SIGN UP VIEW -->
+        <!-- LOGIN / SIGN UP VIEW -->
         <div id="view-login" class="view-section">
             <div class="box" style="width: 480px; margin: 20px auto;">
                 <div class="box-header">Life line Member Sign In / Sign Up</div>
