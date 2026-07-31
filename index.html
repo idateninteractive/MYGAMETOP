@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life line - 2006 Video Sharing Community</title>
+    <title>Life line - 2006 Image Sharing Community</title>
     
     <!-- Firebase App & Firestore CDN (Compat version) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -45,7 +45,7 @@
         .image-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
         .image-item { background-color: #F8F8F8; border: 1px solid #CCCCCC; padding: 8px; text-align: left; cursor: pointer; }
         .image-container { position: relative; width: 100%; aspect-ratio: 4/3; background-color: #000000; border: 1px solid #999999; margin-bottom: 6px; }
-        .image-container video { width: 100%; height: 100%; object-fit: cover; }
+        .image-container img { width: 100%; height: 100%; object-fit: cover; }
         
         .image-title { font-weight: bold; color: #0033CC; text-decoration: none; font-size: 12px; display: block; margin-bottom: 4px; cursor: pointer; }
         .image-title:hover { text-decoration: underline; }
@@ -53,12 +53,12 @@
         .image-meta { font-size: 10px; color: #666666; }
         .ratings { color: #FF9900; font-size: 11px; margin-bottom: 4px; }
 
-        /* Video View Layout */
+        /* Photo View Layout */
         .photo-layout { display: flex; gap: 15px; }
         .left-column { width: 630px; }
         .right-column { width: 305px; }
         .main-image-container { background-color: #000000; border: 1px solid #999999; text-align: center; padding: 10px; }
-        .main-image-container video { width: 100%; max-height: 450px; border: 1px solid #444444; }
+        .main-image-container img { max-width: 100%; height: auto; border: 1px solid #444444; max-height: 450px; }
         .image-title-header { font-size: 16px; font-weight: bold; color: #003366; margin: 10px 0 5px 0; }
         
         .uploader-box { background-color: #F8F8F8; border: 1px solid #CCCCCC; padding: 10px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between; }
@@ -95,6 +95,7 @@
         .profile-banner { background-color: #003366; color: #FFFFFF; padding: 15px 20px; border: 1px solid #999999; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
         .profile-main-info { display: flex; align-items: center; gap: 15px; }
         
+        /* Profile Logo & Clean Dark Pencil Icon (No Background Box) */
         .profile-logo-container { position: relative; display: inline-block; cursor: pointer; }
         .profile-logo-large { width: 70px; height: 70px; background-color: #FFFFFF; border: 2px solid #FFFFFF; object-fit: cover; display: block; }
         .profile-pencil-badge { position: absolute; bottom: -2px; right: -2px; color: #111111; font-size: 16px; font-weight: bold; display: none; text-shadow: 0 1px 2px #FFFFFF, 0 -1px 2px #FFFFFF, 1px 0 2px #FFFFFF, -1px 0 2px #FFFFFF; cursor: pointer; }
@@ -102,14 +103,18 @@
         .profile-title-name h1 { margin: 0 0 5px 0; font-size: 20px; color: #FFFFFF; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         .profile-title-name p { margin: 0; font-size: 13px; color: #E5ECF9; }
         
+        /* Clean Dark Pencil Icon for Name Edit (No Background Box) */
         .profile-name-pencil { color: #FFFFFF; font-size: 15px; font-weight: bold; display: none; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; text-shadow: 0 1px 2px #000000; margin-left: 4px; }
         .profile-name-pencil:hover { color: #FFCC00; }
 
+        /* Improved Profile Stats Box */
         .profile-stats { text-align: right; font-size: 13px; background-color: rgba(0,0,0,0.25); padding: 10px 14px; border: 1px solid #336699; line-height: 1.6; }
         .profile-stats .stat-row { margin-bottom: 3px; }
         .profile-stats .stat-value { font-size: 14px; font-weight: bold; color: #FFCC00; }
         
-        .side-item { display: flex; gap: 8px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted #CCCCCC; font-size: 11px; }
+        .side-item { display: flex; gap: 8px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted #CCCCCC; }
+        .side-thumb { width: 100px; height: 75px; background-color: #000; border: 1px solid #999999; object-fit: cover; flex-shrink: 0; }
+        .side-info { font-size: 11px; }
         .side-title { font-weight: bold; color: #0033CC; text-decoration: none; display: block; margin-bottom: 2px; cursor: pointer; }
 
         /* Footer */
@@ -125,16 +130,16 @@
                 <a onclick="switchView('home')" class="logo">
                     <span class="logo-life">Life</span><span class="logo-line">line</span>
                 </a>
-                <span style="font-size: 11px; color: #666666; margin-left: 5px;"><i>Share Your Videos.®</i></span>
+                <span style="font-size: 11px; color: #666666; margin-left: 5px;"><i>Share Your Images.®</i></span>
             </div>
             <div class="search-box">
                 <form onsubmit="event.preventDefault();">
-                    <input type="text" placeholder="Search videos...">
+                    <input type="text" placeholder="Search images...">
                     <button type="submit">Search</button>
                 </form>
             </div>
             <div class="top-links">
-                <a onclick="switchView('upload')" style="font-weight: bold; color: #CC0000; cursor: pointer;">Upload Video</a> | 
+                <a onclick="switchView('upload')" style="font-weight: bold; color: #CC0000; cursor: pointer;">Upload</a> | 
                 <a onclick="switchView('home')">Home</a> | 
                 <a onclick="openMyProfile()">My Account</a> | 
                 <a onclick="switchView('login')" id="auth-link" style="color: #CC0000; font-weight: bold;">Log In</a>
@@ -145,7 +150,7 @@
     <div class="nav-tabs">
         <div class="nav-tabs-inner">
             <a id="tab-home" class="active" onclick="switchView('home')">Home</a>
-            <a id="tab-upload" onclick="switchView('upload')">Upload Videos</a>
+            <a id="tab-upload" onclick="switchView('upload')">Upload Images</a>
             <a id="tab-profile" onclick="openMyProfile()">Profile</a>
             <a id="tab-login" onclick="switchView('login')">Account Login</a>
         </div>
@@ -157,7 +162,7 @@
         <div id="view-home" class="view-section active">
             <div class="box">
                 <div class="box-header">
-                    <span>Featured Community Videos</span>
+                    <span>Featured Community Images</span>
                     <a style="font-size: 11px; color: #0033CC; text-decoration: none; cursor: pointer;">See More &raquo;</a>
                 </div>
                 <div class="box-content">
@@ -166,14 +171,14 @@
             </div>
         </div>
 
-        <!-- 2. VIDEO DETAIL VIEW -->
+        <!-- 2. PHOTO / DETAIL VIEW -->
         <div id="view-photo" class="view-section">
             <div class="photo-layout">
                 <div class="left-column">
                     <div class="image-title-header" id="detail-title">Loading...</div>
                     
                     <div class="main-image-container">
-                        <video id="detail-video" src="" controls autoplay></video>
+                        <img id="detail-img" src="" alt="Wallpaper Image">
                     </div>
 
                     <div class="uploader-box">
@@ -218,9 +223,11 @@
                         <div class="box-header">Community Spotlight</div>
                         <div class="box-content">
                             <div class="side-item">
+                                <img src="https://picsum.photos/100/75?random=5" alt="Thumb" class="side-thumb">
                                 <div class="side-info">
-                                    <span class="side-title" onclick="switchView('home')">Welcome to Life line</span>
-                                    <div style="color: #666666; margin-top: 2px;">Log in and be the first to upload a community video!</div>
+                                    <span class="side-title" onclick="switchView('home')">Explore Community Uploads</span>
+                                    <div class="side-meta">Life line Archives</div>
+                                    <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
                                 </div>
                             </div>
                         </div>
@@ -229,32 +236,32 @@
             </div>
         </div>
 
-        <!-- 3. UPLOAD SYSTEM VIEW (Video URL) -->
+        <!-- 3. UPLOAD SYSTEM VIEW -->
         <div id="view-upload" class="view-section">
             <div class="box" style="width: 550px; margin: 20px auto;">
-                <div class="box-header">Upload Your Video - Life line (2006 Style)</div>
+                <div class="box-header">Upload Your Image - Life line (2006 Style)</div>
                 <div class="box-content" style="padding: 15px;">
                     <p style="margin-top: 0; color: #666666; font-size: 11px;">
-                        Share your favorite video clips, retro recordings or memories with the Life line community via direct URL (.mp4 / .webm)!
+                        Share your favorite photographs, retro wallpapers or childhood memories with the Life line community!
                     </p>
-                    <form onsubmit="handleUploadVideo(event)">
+                    <form onsubmit="handleUploadImage(event)">
                         <table style="width: 100%; font-size: 11px;" cellpadding="5">
                             <tr>
-                                <td style="width: 120px;"><b>Video Title:</b></td>
-                                <td><input type="text" id="upload-title" placeholder="e.g. Classic Gameplay 2006" style="width: 350px; border: 1px solid #7f9db9; padding: 3px;" required></td>
+                                <td style="width: 120px;"><b>Image Title:</b></td>
+                                <td><input type="text" id="upload-title" placeholder="e.g. Classic Gaming Setup 2006" style="width: 350px; border: 1px solid #7f9db9; padding: 3px;" required></td>
                             </tr>
                             <tr>
                                 <td><b>Description:</b></td>
-                                <td><textarea id="upload-desc" placeholder="Enter video description..." style="width: 350px; height: 60px; border: 1px solid #7f9db9; padding: 3px; font-family: Arial;" required></textarea></td>
+                                <td><textarea id="upload-desc" placeholder="Enter image description..." style="width: 350px; height: 60px; border: 1px solid #7f9db9; padding: 3px; font-family: Arial;" required></textarea></td>
                             </tr>
                             <tr>
-                                <td><b>Video Direct URL:</b></td>
-                                <td><input type="url" id="upload-url" placeholder="https://example.com/my-video.mp4" style="width: 350px; border: 1px solid #7f9db9; padding: 3px;" required></td>
+                                <td><b>Image Direct URL:</b></td>
+                                <td><input type="url" id="upload-url" placeholder="https://example.com/my-image.jpg" style="width: 350px; border: 1px solid #7f9db9; padding: 3px;" required></td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td style="padding-top: 10px;">
-                                    <button type="submit" style="background-color: #EEEEEE; border: 1px solid #999999; font-weight: bold; padding: 4px 14px; cursor: pointer;">Upload Video</button>
+                                    <button type="submit" style="background-color: #EEEEEE; border: 1px solid #999999; font-weight: bold; padding: 4px 14px; cursor: pointer;">Upload Image</button>
                                 </td>
                             </tr>
                         </table>
@@ -264,7 +271,7 @@
             </div>
         </div>
 
-        <!-- 4. PROFILE VIEW -->
+        <!-- 4. PROFILE VIEW (Age & Gender Hidden/Invisible) -->
         <div id="view-profile" class="view-section">
             <div class="profile-banner">
                 <div class="profile-main-info">
@@ -275,7 +282,7 @@
                     </div>
                     <div class="profile-title-name">
                         <h1>
-                            <span id="profile-name-display">Not Logged In</span>
+                            <span id="profile-name-display">Guest User</span>
                             <span id="edit-name-btn" class="profile-name-pencil" onclick="editProfileDisplayName()" title="Edit Name">✎</span>
                         </h1>
                         <p><b>Status:</b> <span id="profile-status-text">Member</span></p>
@@ -370,14 +377,15 @@
         const db = firebase.firestore();
         
         let currentUser = null;
-        let currentVideoId = null;
+        let currentWallpaperId = "alien_shooter_memories";
         let currentProfileUsername = null;
-        let activeVideoListener = null;
+        let activeWallpaperListener = null;
         let activeCommentsListener = null;
         let activeUploaderLifeListener = null;
         let activeProfileListener = null;
 
         window.addEventListener('DOMContentLoaded', () => {
+            seedDefaultWallpaperIfNeeded();
             setupHomeFeedListener();
             populateAgeDropdown();
         });
@@ -400,8 +408,26 @@
             return num.toString();
         }
 
+        async function seedDefaultWallpaperIfNeeded() {
+            const defaultRef = db.collection('wallpapers').doc("alien_shooter_memories");
+            const doc = await defaultRef.get();
+            if (!doc.exists) {
+                await defaultRef.set({
+                    title: "Alien Shooter ChildHood Memories",
+                    description: "Reliving the legendary classic top-down shooter game memories from the 2000s era.",
+                    imageUrl: "https://cdn.phototourl.com/free/2026-07-30-4ffefc1e-3f65-4858-ba46-d037870fccaf.jpg",
+                    uploader: "RetroGamer",
+                    uploaderDisplayName: "RetroGamer",
+                    uploaderLogoUrl: "https://picsum.photos/50/50?random=88",
+                    views: 5420,
+                    likes: 420,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        }
+
         function setupHomeFeedListener() {
-            db.collection('videos')
+            db.collection('wallpapers')
               .orderBy('timestamp', 'desc')
               .onSnapshot((snapshot) => {
                   const grid = document.getElementById('home-image-grid');
@@ -413,9 +439,9 @@
                       const uploaderDisplayName = escapeHTML(item.uploaderDisplayName || item.uploader || 'Anonymous');
                       
                       html += `
-                        <div class="image-item" onclick="openVideo('${id}')">
+                        <div class="image-item" onclick="openWallpaper('${id}')">
                             <div class="image-container">
-                                <video src="${escapeHTML(item.videoUrl || '')}" preload="metadata"></video>
+                                <img src="${escapeHTML(item.imageUrl || '')}" alt="${escapeHTML(item.title || '')}">
                             </div>
                             <span class="image-title">${escapeHTML(item.title || 'Untitled')}</span>
                             <div class="image-desc">${escapeHTML(item.description || '')}</div>
@@ -424,32 +450,32 @@
                         </div>
                       `;
                   });
-                  grid.innerHTML = html || '<p style="font-size:11px; color:#666;">No videos uploaded yet. Log in and upload your video!</p>';
+                  grid.innerHTML = html || '<p style="font-size:11px; color:#666;">No images uploaded yet.</p>';
               });
         }
 
-        function openVideo(docId) {
-            currentVideoId = docId;
+        function openWallpaper(docId) {
+            currentWallpaperId = docId;
             switchView('photo');
-            setupVideoRealtime(docId);
+            setupWallpaperRealtime(docId);
             setupCommentsListener(docId);
             incrementViews(docId);
         }
 
-        function setupVideoRealtime(docId) {
-            if (activeVideoListener) activeVideoListener();
+        function setupWallpaperRealtime(docId) {
+            if (activeWallpaperListener) activeWallpaperListener();
 
-            activeVideoListener = db.collection('videos').doc(docId).onSnapshot((doc) => {
+            activeWallpaperListener = db.collection('wallpapers').doc(docId).onSnapshot((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
                     document.getElementById('detail-title').innerText = data.title || "";
-                    document.getElementById('detail-video').src = data.videoUrl || "";
+                    document.getElementById('detail-img').src = data.imageUrl || "";
                     document.getElementById('detail-desc').innerText = data.description || "";
                     document.getElementById('photo-views-count').innerText = (data.views || 0).toLocaleString();
                     document.getElementById('likes-count').innerText = (data.likes || 0).toLocaleString();
                     document.getElementById('photo-likes-count').innerText = (data.likes || 0).toLocaleString();
                     
-                    const uploaderUsername = data.uploader || "Anonymous";
+                    const uploaderUsername = data.uploader || "RetroGamer";
                     const uploaderDisplayName = data.uploaderDisplayName || uploaderUsername;
                     const uploaderLogoUrl = data.uploaderLogoUrl || "https://picsum.photos/50/50?random=88";
 
@@ -555,7 +581,7 @@
                 });
                 currentUser.displayName = trimmedName;
 
-                const snapshot = await db.collection('videos').where('uploader', '==', currentUser.username).get();
+                const snapshot = await db.collection('wallpapers').where('uploader', '==', currentUser.username).get();
                 const batch = db.batch();
                 snapshot.forEach((doc) => {
                     batch.update(doc.ref, { uploaderDisplayName: trimmedName });
@@ -590,7 +616,7 @@
                 });
                 currentUser.logoUrl = trimmedUrl;
 
-                const snapshot = await db.collection('videos').where('uploader', '==', currentUser.username).get();
+                const snapshot = await db.collection('wallpapers').where('uploader', '==', currentUser.username).get();
                 const batch = db.batch();
                 snapshot.forEach((doc) => {
                     batch.update(doc.ref, { uploaderLogoUrl: trimmedUrl });
@@ -617,7 +643,7 @@
         function setupCommentsListener(docId) {
             if (activeCommentsListener) activeCommentsListener();
 
-            activeCommentsListener = db.collection('videos').doc(docId).collection('comments')
+            activeCommentsListener = db.collection('wallpapers').doc(docId).collection('comments')
               .orderBy('timestamp', 'desc')
               .onSnapshot((snapshot) => {
                   const commentsContainer = document.getElementById('comments-container');
@@ -666,7 +692,7 @@
             }
 
             try {
-                await db.collection('videos').doc(currentVideoId).collection('comments').add({
+                await db.collection('wallpapers').doc(currentWallpaperId).collection('comments').add({
                     author: currentUser.username,
                     text: commentText,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -678,11 +704,11 @@
             }
         }
 
-        async function handleUploadVideo(event) {
+        async function handleUploadImage(event) {
             event.preventDefault();
 
             if (!currentUser) {
-                alert("Please log in first to upload videos!");
+                alert("Please log in first to upload images!");
                 switchView('login');
                 return;
             }
@@ -698,10 +724,10 @@
             }
 
             try {
-                const newDocRef = await db.collection('videos').add({
+                const newDocRef = await db.collection('wallpapers').add({
                     title: title,
                     description: desc,
-                    videoUrl: url,
+                    imageUrl: url,
                     uploader: currentUser.username,
                     uploaderDisplayName: currentUser.displayName || currentUser.username,
                     uploaderLogoUrl: currentUser.logoUrl || "https://picsum.photos/50/50?random=88",
@@ -715,15 +741,15 @@
                 document.getElementById('upload-url').value = '';
                 errorDiv.innerText = '';
 
-                alert("Video uploaded successfully!");
-                openVideo(newDocRef.id);
+                alert("Image uploaded successfully!");
+                openWallpaper(newDocRef.id);
             } catch (e) {
                 console.error("Upload error:", e);
-                errorDiv.innerText = "Failed to upload video. Please check the URL.";
+                errorDiv.innerText = "Failed to upload image. Please check the URL.";
             }
         }
 
-        // SIGN IN FUNCTION
+        // SIGN IN FUNCTION (With Age Verification)
         async function handleSignIn() {
             const username = document.getElementById('auth-username').value.trim();
             const password = document.getElementById('auth-password').value.trim();
@@ -742,6 +768,7 @@
                 if (doc.exists) {
                     const data = doc.data();
                     if (data.password === password) {
+                        // Check if entered age matches registered age
                         if (String(data.age) !== String(age)) {
                             errorDiv.innerText = "Login Failed: Entered age does not match your registered age!";
                             return;
@@ -833,7 +860,7 @@
         }
 
         function loadUserUploads(username) {
-            db.collection('videos')
+            db.collection('wallpapers')
               .where('uploader', '==', username)
               .onSnapshot((snapshot) => {
                   const grid = document.getElementById('profile-uploads-grid');
@@ -847,9 +874,9 @@
                       totalViews += views;
 
                       html += `
-                        <div class="image-item" onclick="openVideo('${id}')">
+                        <div class="image-item" onclick="openWallpaper('${id}')">
                             <div class="image-container">
-                                <video src="${escapeHTML(item.videoUrl || '')}" preload="metadata"></video>
+                                <img src="${escapeHTML(item.imageUrl || '')}" alt="${escapeHTML(item.title || '')}">
                             </div>
                             <span class="image-title">${escapeHTML(item.title || 'Untitled')}</span>
                             <div class="image-desc">${escapeHTML(item.description || '')}</div>
@@ -871,7 +898,7 @@
         }
 
         async function incrementViews(docId) {
-            const docRef = db.collection('videos').doc(docId);
+            const docRef = db.collection('wallpapers').doc(docId);
             try {
                 await db.runTransaction(async (transaction) => {
                     const doc = await transaction.get(docRef);
@@ -887,13 +914,13 @@
 
         async function incrementLikes() {
             if (!currentUser) {
-                alert("Please log in first to like videos!");
+                alert("Please log in first to like images!");
                 switchView('login');
                 return;
             }
 
-            const videoRef = db.collection('videos').doc(currentVideoId);
-            const likeRef = videoRef.collection('likes').doc(currentUser.username);
+            const wallpaperRef = db.collection('wallpapers').doc(currentWallpaperId);
+            const likeRef = wallpaperRef.collection('likes').doc(currentUser.username);
 
             try {
                 await db.runTransaction(async (transaction) => {
@@ -902,20 +929,20 @@
                         throw new Error("ALREADY_LIKED");
                     }
 
-                    const videoDoc = await transaction.get(videoRef);
-                    const currentLikes = videoDoc.exists ? (videoDoc.data().likes || 0) : 0;
+                    const wallpaperDoc = await transaction.get(wallpaperRef);
+                    const currentLikes = wallpaperDoc.exists ? (wallpaperDoc.data().likes || 0) : 0;
 
                     transaction.set(likeRef, { 
                         username: currentUser.username, 
                         timestamp: firebase.firestore.FieldValue.serverTimestamp() 
                     });
                     
-                    transaction.update(videoRef, { likes: currentLikes + 1 });
+                    transaction.update(wallpaperRef, { likes: currentLikes + 1 });
                 });
-                alert("You liked this video successfully!");
+                alert("You liked this image successfully!");
             } catch (e) {
                 if (e.message === "ALREADY_LIKED") {
-                    alert("Aap is video ko pehle hi like kar chuke hain! Ek account se sirf ek hi like ho sakti hai.");
+                    alert("Aap is image ko pehle hi like kar chuke hain! Ek account se sirf ek hi like ho sakti hai.");
                 } else {
                     console.error("Error updating likes:", e);
                     alert("Failed to process like.");
@@ -973,7 +1000,7 @@
                 document.getElementById('view-photo').classList.add('active');
             } else if(viewName === 'upload') {
                 if (!currentUser) {
-                    alert("Please log in first to upload videos!");
+                    alert("Please log in first to upload images!");
                     switchView('login');
                     return;
                 }
