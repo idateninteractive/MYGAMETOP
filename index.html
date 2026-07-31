@@ -109,9 +109,7 @@
         .profile-stats .stat-row { margin-bottom: 3px; }
         .profile-stats .stat-value { font-size: 14px; font-weight: bold; color: #FFCC00; }
         
-        .side-item { display: flex; gap: 8px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted #CCCCCC; }
-        .side-thumb { width: 100px; height: 75px; background-color: #000; border: 1px solid #999999; object-fit: cover; flex-shrink: 0; }
-        .side-info { font-size: 11px; }
+        .side-item { display: flex; gap: 8px; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dotted #CCCCCC; font-size: 11px; }
         .side-title { font-weight: bold; color: #0033CC; text-decoration: none; display: block; margin-bottom: 2px; cursor: pointer; }
 
         /* Footer */
@@ -220,11 +218,9 @@
                         <div class="box-header">Community Spotlight</div>
                         <div class="box-content">
                             <div class="side-item">
-                                <video src="https://www.w3schools.com/html/mov_bbb.mp4" class="side-thumb" muted></video>
                                 <div class="side-info">
-                                    <span class="side-title" onclick="switchView('home')">Explore Community Videos</span>
-                                    <div class="side-meta">Life line Archives</div>
-                                    <div class="ratings">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                                    <span class="side-title" onclick="switchView('home')">Welcome to Life line</span>
+                                    <div style="color: #666666; margin-top: 2px;">Log in and be the first to upload a community video!</div>
                                 </div>
                             </div>
                         </div>
@@ -268,7 +264,7 @@
             </div>
         </div>
 
-        <!-- 4. PROFILE VIEW (Age & Gender Hidden/Invisible) -->
+        <!-- 4. PROFILE VIEW -->
         <div id="view-profile" class="view-section">
             <div class="profile-banner">
                 <div class="profile-main-info">
@@ -727,7 +723,7 @@
             }
         }
 
-        // SIGN IN FUNCTION (With Age Verification)
+        // SIGN IN FUNCTION
         async function handleSignIn() {
             const username = document.getElementById('auth-username').value.trim();
             const password = document.getElementById('auth-password').value.trim();
