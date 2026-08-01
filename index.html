@@ -58,7 +58,6 @@
         .left-column { width: 630px; }
         .right-column { width: 305px; }
         
-        /* Fixed Black Frame Issue Here */
         .main-video-container { background-color: #000000; border: 1px solid #999999; text-align: center; padding: 0; overflow: hidden; }
         .main-video-container video { width: 100%; max-height: 450px; display: block; background: #000; object-fit: cover; }
         
@@ -75,7 +74,6 @@
         .subscribe-btn { background-color: #FFFFFF; color: #000000; border: 1px solid #999999; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .subscribe-btn:hover { background-color: #E5ECF9; }
         
-        /* Like Button Style */
         .like-btn { background-color: #FFFFFF; color: #000000; border: 1px solid #999999; padding: 5px 10px; font-weight: bold; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .like-btn:hover { background-color: #E5ECF9; }
 
@@ -446,6 +444,26 @@
             return num.toString();
         }
 
+        // YouTube Style Time Ago Function
+        function timeAgo(timestamp) {
+            if (!timestamp) return "just now";
+            const now = new Date();
+            const commentDate = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            const elapsedSeconds = Math.floor((now - commentDate) / 1000);
+
+            if (elapsedSeconds < 60) return "just now";
+            const elapsedMinutes = Math.floor(elapsedSeconds / 60);
+            if (elapsedMinutes < 60) return `${elapsedMinutes} minute${elapsedMinutes > 1 ? 's' : ''} ago`;
+            const elapsedHours = Math.floor(elapsedMinutes / 60);
+            if (elapsedHours < 24) return `${elapsedHours} hour${elapsedHours > 1 ? 's' : ''} ago`;
+            const elapsedDays = Math.floor(elapsedHours / 24);
+            if (elapsedDays < 30) return `${elapsedDays} day${elapsedDays > 1 ? 's' : ''} ago`;
+            const elapsedMonths = Math.floor(elapsedDays / 30);
+            if (elapsedMonths < 12) return `${elapsedMonths} month${elapsedMonths > 1 ? 's' : ''} ago`;
+            const elapsedYears = Math.floor(elapsedMonths / 12);
+            return `${elapsedYears} year${elapsedYears > 1 ? 's' : ''} ago`;
+        }
+
         function setupHomeFeedListener() {
             db.collection('videos')
               .orderBy('timestamp', 'desc')
@@ -679,15 +697,20 @@
                       const commentId = doc.id;
                       const authorName = escapeHTML(comment.author || "Visitor");
                       const isMyComment = currentUser && currentUser.username === comment.author;
+                      
+                      const timeAgoStr = timeAgo(comment.timestamp);
 
-                      let topRigthAction = `<span>Today</span>`;
+                      let topRigthAction = `<span style="color: #666666;">${timeAgoStr}</span>`;
                       if (isMyComment) {
                           topRigthAction = `
-                            <div style="position: relative; display: inline-block;">
-                                <span onclick="toggleCommentMenu(event, '${commentId}')" style="cursor: pointer; font-weight: bold; font-size: 14px; padding: 0 4px;" title="Options">&#8942;</span>
-                                <div id="comment-menu-${commentId}" style="display: none; position: absolute; right: 0; top: 16px; background: #FFFFFF; border: 1px solid #999999; padding: 4px 8px; z-index: 10; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); font-size: 10px; width: 50px; text-align: left;">
-                                    <a onclick="editComment('${docId}', '${commentId}', '${encodeURIComponent(comment.text)}')" style="color: #0033CC; cursor: pointer; display: block; margin-bottom: 3px; text-decoration: underline;">Edit</a>
-                                    <a onclick="deleteComment('${docId}', '${commentId}')" style="color: #CC0000; cursor: pointer; display: block; text-decoration: underline;">Delete</a>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="color: #666666;">${timeAgoStr}</span>
+                                <div style="position: relative; display: inline-block;">
+                                    <span onclick="toggleCommentMenu(event, '${commentId}')" style="cursor: pointer; font-weight: bold; font-size: 14px; padding: 0 4px;" title="Options">&#8942;</span>
+                                    <div id="comment-menu-${commentId}" style="display: none; position: absolute; right: 0; top: 16px; background: #FFFFFF; border: 1px solid #999999; padding: 4px 8px; z-index: 10; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); font-size: 10px; width: 50px; text-align: left;">
+                                        <a onclick="editComment('${docId}', '${commentId}', '${encodeURIComponent(comment.text)}')" style="color: #0033CC; cursor: pointer; display: block; margin-bottom: 3px; text-decoration: underline;">Edit</a>
+                                        <a onclick="deleteComment('${docId}', '${commentId}')" style="color: #CC0000; cursor: pointer; display: block; text-decoration: underline;">Delete</a>
+                                    </div>
                                 </div>
                             </div>
                           `;
